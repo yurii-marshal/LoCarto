@@ -1,0 +1,116 @@
+<form #formProfile="ngForm" aria-labelledby="title">
+
+  <h4 class="title-tab">{{'ADDING_PROFILE.TITLES.BASIC' | translate}}</h4>
+
+  <div class="form-control-group">
+    <nb-radio-group>
+      <nb-radio
+              *ngFor="let option of options"
+              [value]="option.value"
+              [checked]="option.checked"
+              (valueChange)="changed($event, formProfile)">
+        {{ option.label }}
+      </nb-radio>
+    </nb-radio-group>
+  </div>
+
+  <div class="form-control-group" *ngIf="formProfile.value.typePr === 'artist'">
+    <input nbInput fullWidth ngModel type="text" #artistName="ngModel" name="artistName" placeholder="Artist name *"
+           [status]="artistName.touched ? (artistName.invalid  ? 'danger' : 'success') : ''" required>
+    <ng-container *ngIf="artistName.invalid && artistName.touched">
+      <p class="error-message">
+        Name is required!
+      </p>
+    </ng-container>
+  </div>
+
+  <div class="form-control-group" *ngIf="formProfile.value.typePr === 'curator'">
+    <input nbInput fullWidth ngModel type="text" #curatorName="ngModel" name="curatorName" placeholder="Administrator’s name *"
+           [status]="curatorName.touched ? (curatorName.invalid  ? 'danger' : 'success') : ''" required>
+    <ng-container *ngIf="curatorName.invalid && curatorName.touched">
+      <p class="error-message">
+        Administrator’s name is required!
+      </p>
+    </ng-container>
+  </div>
+
+  <input nbInput [ngModel]="selectedOpt" type="hidden" #typePr="ngModel" name="typePr">
+
+  <div class="contact-data">
+    <h5>Contact Data</h5>
+    <div class="form-control-group">
+      <input nbInput fullWidth [ngModel]="currentEmail" #email="ngModel" name="email"
+             (keyup)="validation('email', formProfile, 'email', $event.target.value)"
+             placeholder="E-mail" [status]="email.dirty ? (email.invalid  ? 'danger' : 'success') : ''"
+             [attr.aria-invalid]="email.invalid && email.touched ? true : null">
+      <ng-container *ngIf="email.invalid && email.touched">
+        <p class="error-message">
+          Email should be the real one!
+        </p>
+      </ng-container>
+    </div>
+
+    <div class="form-control-group">
+      <label>Phone</label>
+
+      <input [pattern]="phonePattern" [maxlength]="15"
+             ngModel #phone="ngModel" ng2TelInput nbInput fullWidth name="phone"
+             [status]="phone.dirty ? (phone.invalid ? 'danger' : 'success') : ''"
+             (intlTelInputObject)="initTelInputObject($event)"
+             (countryChange)="onCountryChange($event)"
+             [attr.aria-invalid]="phone.invalid && phone.touched ? true : null"
+      />
+
+      <ng-container *ngIf="phone.invalid && phone.touched">
+        <p *ngIf="phone.errors.pattern" class="error-message">
+          Invalid phone number
+        </p>
+      </ng-container>
+    </div>
+
+    <div class="form-control-group">
+      <input nbInput fullWidth type="text" name="studioAddress" placeholder="Studio address" #studioAddress="ngModel"
+             [(ngModel)]="addresses.studio"
+             ngx-google-places-autocomplete  (onAddressChange)="handleAddressChange($event, 'studio', formProfile)"
+             [status]="studioAddress.dirty ? (studioAddress.invalid  ? 'danger' : 'success') : ''"
+             [attr.aria-invalid]="studioAddress.invalid && studioAddress.touched ? true : null">
+    </div>
+
+    <div class="form-control-group">
+      <input nbInput fullWidth type="url" ngModel #website="ngModel" name="website" placeholder="Website"
+             (keyup)="validation('link', formProfile, 'website', $event.target.value)"
+             [status]="website.dirty ? (website.invalid  ? 'danger' : 'success') : ''"
+             [attr.aria-invalid]="website.invalid && website.touched ? true : null">
+      <ng-container *ngIf="website.invalid && website.touched">
+        <p class="error-message">
+          Link should be a valid!
+        </p>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="contact-data"  *ngIf="formProfile.value.typePr === 'curator'">
+    <h5>Artist</h5>
+    <div class="form-control-group">
+      <input nbInput fullWidth ngModel type="text" #artistName="ngModel" name="artistName" placeholder="Name *"
+             [status]="artistName.touched ? (artistName.invalid  ? 'danger' : 'success') : ''" required>
+      <ng-container *ngIf="artistName.invalid && artistName.touched">
+        <p class="error-message">
+          Name is required!
+        </p>
+      </ng-container>
+    </div>
+  </div>
+
+  <ng-template *ngIf="false"><!-- TODO temporary hidden -->
+    <h5>Add social media link</h5>
+    <ngx-socials [type]="'horizontal'" (values)="socUpdate($event)"></ngx-socials>
+  </ng-template><!-- TODO END temporary hidden -->
+
+  <div class="button-block">
+    <button class="custom-btn custom-btn-primary-empty back" [routerLink]="'/profile'">Back</button>
+    <button class="custom-btn custom-btn-primary-filled next"
+            [disabled]="phone.invalid || (formProfile.value.typePr === 'curator') ? (!formProfile.value.artistName || !formProfile.value.curatorName) : !formProfile.value.artistName"
+            (click)="setActiveTab(activeTab + 1)">Next</button>
+  </div>
+</form>

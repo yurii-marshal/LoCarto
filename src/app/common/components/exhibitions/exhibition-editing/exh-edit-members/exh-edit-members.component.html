@@ -1,0 +1,139 @@
+<div class="steps-body has-bg">
+  <div class="container-card">
+      <h4 *ngIf="!viewMode">Members</h4>
+
+      <form [formGroup]="formMembers" *ngIf="!viewMode">
+        <p class="description">You can invite artists who participated in exhibition.</p>
+
+        <div class="inputs-wrap">
+          <div class="form-control-group email-wr">
+            <input class="email-input" nbInput fullWidth type="text" formControlName="email" placeholder="User e-mail"
+                   (keyup)="searchUsers($event.target.value)">
+            <input nbInput type="hidden" formControlName="user" required>
+          </div>
+
+          <div class="form-control-group type-wr">
+            <!--<nb-select placeholder="User type" (selectedChange)="setFormValue($event, 'userType')" [selected]="types[0].value">-->
+              <!--<nb-option *ngFor="let type of types" [value]="type.value">{{type.title}}</nb-option>-->
+            <!--</nb-select>-->
+            <ngx-select placeholder="User type" [items]="types" optionValueField="value" optionTextField="title"
+                        [noAutoComplete]="true" [defaultValue]="types[0].value"
+                        (select)="setFormValue($event, 'userType')">
+            </ngx-select>
+            <div class="add user-add" (click)="currentPro ? setUser(formMembers) : ''" [ngClass]="{'active': currentPro}">
+              <span>+</span>
+            </div>
+            <input nbInput type="hidden" formControlName="userType" required>
+          </div>
+
+          <ul class="profiles" *ngIf="profiles && profiles.length > 0">
+            <li *ngFor="let prof of profiles" (click)="chooseProf(prof)">
+              <div class="img" [ngStyle]="{'background-image': 'url(' + prof.photos.avatar + ')'}"></div>
+              <p class="name">{{prof.name}}</p><!-- {{prof.curator ? prof.curator : prof.name}} -->
+              <p class="type">{{prof.curator ? 'Curator' : 'Artist'}}</p>
+            </li>
+          </ul>
+
+          <div class="invitation" *ngIf="showInvitation">
+            <h6>Not found.</h6>
+            <p>Check your search query or invite a <br> member to Locarto</p>
+            <button class="custom-btn custom-btn-primary-filled" (click)="sendInvite(formMembers)">Invite to Locarto</button>
+          </div>
+        </div>
+      </form>
+
+      <br>
+      <br>
+      <br>
+
+      <h5 *ngIf="members && (fromBulk ? true : members.length > 1)">Members</h5>
+      <ul class="users">
+        <li *ngFor="let member of members; let i = index" [hidden]="member.creator && !fromBulk">
+          <div class="info">
+            <div class="img" [ngStyle]="{'background-image': 'url(' + member.photos.avatar + ')'}"></div>
+            <p class="name">{{member.name}}</p><!-- {{member.curator ? member.curator : member.name}} -->
+            <p class="type">Exhibiting artist</p>
+          </div>
+          <div class="actions" *ngIf="!viewMode">
+
+            <div *ngIf="member.editMode">
+              <!--<nb-select placeholder="User type" (selectedChange)="changeUsersType($event, 'members', i, member)" [selected]="types[0].value">-->
+                <!--<nb-option *ngFor="let type of types" [value]="type.value">{{type.title}}</nb-option>-->
+              <!--</nb-select>-->
+              <ngx-select placeholder="User type" [items]="types" optionValueField="value" optionTextField="title"
+                          [noAutoComplete]="true" [defaultValue]="types[0].value"
+                          (select)="changeUsersType($event, 'members', i, member)">
+              </ngx-select>
+
+              <button class="custom-btn custom-btn-primary-filled next" [disabled]="!changeUsers"
+                      (click)="member.editMode = !member.editMode; updateUsers()">Save</button>
+              <i class="icon-cancel-2 close-icon" (click)="member.editMode = !member.editMode; clearChangeUsers()"></i>
+            </div>
+
+            <!-- TODO show info after user select in nb-select and push button 'save' -->
+
+            <div class="edit-delete" *ngIf="!member.editMode">
+              <i class="icon-trash-empty remove" (click)="openModal(deleteModal, member, 'members', i)"></i>
+              <i class="icon-pencil edit" (click)="member.editMode = !member.editMode"></i>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <br>
+      <br>
+
+      <h5 *ngIf="admins && (fromBulk ? true : admins.length > 0)">Admins</h5>
+      <ul class="users">
+        <li *ngFor="let admin of admins; let i = index">
+          <div class="info">
+            <div class="img" [ngStyle]="{'background-image': 'url(' + admin.photos.avatar + ')'}"></div>
+            <p class="name">{{admin.name}}</p><!-- {{admin.curator ? admin.curator : admin.name}} -->
+            <p class="type">{{admin.creator ? 'Creator' : 'Admin'}}</p>
+          </div>
+          <div class="actions" *ngIf="!viewMode && role === 'creator'">
+
+            <div *ngIf="admin.editMode">
+              <!--<nb-select placeholder="User type" (selectedChange)="changeUsersType($event, 'admins', i, admin)" [selected]="types[1].value">-->
+                <!--<nb-option *ngFor="let type of types" [value]="type.value">{{type.title}}</nb-option>-->
+              <!--</nb-select>-->
+              <ngx-select placeholder="User type" [items]="types" optionValueField="value" optionTextField="title"
+                          [noAutoComplete]="true" [defaultValue]="types[1].value"
+                          (select)="changeUsersType($event, 'admins', i, admin)">
+              </ngx-select>
+
+              <button class="custom-btn custom-btn-primary-filled next" [disabled]="!changeUsers"
+                      (click)="admin.editMode = !admin.editMode; updateUsers()">Save</button>
+              <i class="icon-cancel-2 close-icon" (click)="admin.editMode = !admin.editMode; clearChangeUsers()"></i>
+            </div>
+
+            <!-- TODO show info after user select in nb-select and push button 'save' -->
+
+            <div class="edit-delete" *ngIf="!admin.editMode && !admin.creator">
+              <i class="icon-trash-empty remove" (click)="openModal(deleteModal, admin, 'admins', i)"></i>
+              <i class="icon-pencil edit" (click)="admin.editMode = !admin.editMode"></i>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <div class="button-block" *ngIf="!viewMode">
+        <button class="custom-btn custom-btn-primary-filled next" (click)="saveData(newMembers, admins)">Save</button>
+      </div>
+
+    <nb-spinner *ngIf="showSnipper" [message]="''"></nb-spinner>
+  </div>
+</div>
+
+<ng-template #deleteModal let-data let-ref="dialogRef">
+  <nb-card class="artworks-modal">
+    <nb-card-header>
+      <p class="title">Do you really want remove the user?<span class="icon-cancel" (click)="ref.close()"></span></p>
+    </nb-card-header>
+    <nb-card-body></nb-card-body>
+    <nb-card-footer>
+      <button class="custom-btn custom-btn-primary-empty" (click)="ref.close()">Cancel</button>
+      <button class="custom-btn custom-btn-primary-filled" (click)="removeUser(userToRemove, ref, userToRemove.index)">Remove</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

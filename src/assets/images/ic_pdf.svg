@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="56px" height="57px" viewBox="0 0 56 57" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53 (72520) - https://sketchapp.com -->
+    <title>ic_pdf</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFFFFF" stop-opacity="0.8" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0.4" offset="5%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="20%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <path d="M3.48208902,0 L39.2476411,0 L54.9293818,15.6639226 L54.9293818,52.3758968 C54.9293818,54.3050065 53.3694766,55.8675871 51.4472928,55.8675871 L3.48208902,55.8675871 C1.55990526,55.8675871 -9.52872882e-17,54.3050065 -9.52872882e-17,52.3758968 L-9.52872882e-17,3.49169032 C1.94767217e-13,1.56258065 1.56008541,0 3.48208902,0 Z" id="path-2"></path>
+    </defs>
+    <g id="Artist-profile" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="File-storage_5" transform="translate(-490.000000, -233.000000)">
+            <g id="ic_pdf" transform="translate(491.000000, 234.000000)">
+                <g id="pdf-2">
+                    <g id="pdf">
+                        <g id="Path" fill-rule="nonzero" stroke-width="0.5">
+                            <path stroke-opacity="0" stroke="#000000" d="M54.6793818,15.7675592 L39.1441709,0.25 L3.48208902,0.25 C1.69766861,0.25 0.25,1.70114167 0.25,3.49169032 L0.25,52.3758968 C0.25,54.1665098 1.69755269,55.6175871 3.48208902,55.6175871 L51.4472928,55.6175871 C53.2318291,55.6175871 54.6793818,54.1665098 54.6793818,52.3758968 L54.6793818,15.7675592 Z" stroke-linejoin="square" fill="#ED5D5D" fill-rule="evenodd"></path>
+                            <use stroke="url(#linearGradient-1)" xlink:href="#path-2"></use>
+                        </g>
+                        <path d="M54.9383892,15.7126968 L42.8014292,15.7126968 C40.8792454,15.7126968 39.3193401,14.1484903 39.3193401,12.2210065 L39.3193401,0.0348645161 L54.9383892,15.7126968 Z" id="Path" fill="#CB4545"></path>
+                    </g>
+                </g>
+                <text id="pdf" font-family="SFProText-Medium, SF Pro Text" font-size="18" font-weight="400" fill="#FFFFFF">
+                    <tspan x="12" y="35">pdf</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>

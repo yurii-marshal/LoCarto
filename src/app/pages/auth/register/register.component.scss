@@ -1,0 +1,56 @@
+@import "../../../common/styles/variables";
+
+:host {
+  .title {
+    margin-bottom: 2rem;
+  }
+}
+/deep/ .nb-theme-default nb-alert.outline-success {
+  border-color: $color-fg-highlight;
+  text-align: center;
+  border-radius: initial;
+
+  p {
+    margin-bottom: 0;
+    color: $color-fg-highlight;
+    b {
+      margin-bottom: .5rem;
+    }
+  }
+}
+/deep/ .customised-control-description a {
+  color: $color-fg-highlight;
+
+  &:hover {
+    color: $color-fg;
+  }
+}
+.custom-btn {
+  width: 100%;
+}
+a.text-link {
+  cursor: pointer;
+  transition: all .25s;
+
+  &:hover {
+    color: $color-fg-highlight;
+  }
+}
+/deep/ .nb-theme-default nb-checkbox:hover .customised-control-input:enabled + .customised-control-indicator,
+/deep/ .nb-theme-default nb-checkbox .customised-control-input:focus:enabled + .customised-control-indicator {
+  border-color: $color-fg-highlight;
+}
+/deep/ .nb-theme-default nb-auth nb-card-header {
+  display: none;
+}
+form {
+  position: relative;
+}
+button[disabled] {
+  background: lighten($color-fg, 45%);
+  border-color: lighten($color-fg, 45%);
+
+  &:hover {
+    cursor: initial;
+  }
+}

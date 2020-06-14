@@ -1,0 +1,51 @@
+<div class="search-block">
+	<form #searchForm="ngForm">
+		<div class="input-block">
+			<input nbInput fullWidth type="text" ngModel #search="ngModel" name="search">
+			<button class="search-btn" (click)="send(searchForm)"><i class="icon-search"></i></button>
+		</div>
+	</form>
+
+	<div class="add-storage">
+		<div class="add" (click)="openModal(artworksModal)">
+			<span>+</span>Add artworks
+		</div>
+	</div>
+</div>
+
+<div class="empty-state" *ngIf="showMask">
+	<div class="icon"></div>
+	<p>Add your artworks</p>
+</div>
+
+<ngx-artworks [data]="artworks" [showMode]="true" (removeItem)="deleteArtwork($event)" [removeActionMode]="true"></ngx-artworks>
+
+<nb-spinner *ngIf="showSnipper" [message]="''"></nb-spinner>
+
+<ng-template #artworksModal let-data let-ref="dialogRef">
+	<nb-card class="artworks-modal">
+		<nb-card-header>
+			<p class="title">Select artworks <span class="icon-cancel" (click)="ref.close()"></span></p>
+			<div class="search-block">
+				<form #searchArtwork="ngForm">
+					<div class="input-block">
+						<input nbInput fullWidth type="text" ngModel #search="ngModel" name="search">
+						<button class="search-btn" (click)="send(searchArtwork)"><i class="icon-search"></i></button>
+					</div>
+					<div class="add clear" *ngIf="searchArtwork.value.search" (click)="send(searchArtwork, true)">
+						<span class="icon-cancel"></span>Clear search
+					</div>
+				</form>
+			</div>
+		</nb-card-header>
+		<nb-card-body>
+			<ngx-artworks *ngIf="artworksPopup" [link]="paginationLink" [maxPage]="maxPage" [curPage]="curPage" [data]="artworksPopup"
+			              [showMode]="true" [pointedArtworks]="pointedArtworks"
+			              (selectedItems)="selectArtworks($event)" (emitPage)="pageChanged($event)"></ngx-artworks>
+		</nb-card-body>
+		<nb-card-footer>
+			<button class="custom-btn custom-btn-primary-empty" (click)="ref.close()">Cancel</button>
+			<button class="custom-btn custom-btn-primary-filled" (click)="addArtworks(ref)">Add artworks</button>
+		</nb-card-footer>
+	</nb-card>
+</ng-template>

@@ -1,0 +1,106 @@
+@import "../../artist/artist-adding/artist-adding.component";
+
+.temp-image {
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 7;
+  border-radius: 50%;
+}
+
+.banner-block {
+  height: 150px;
+  position: relative;
+  background: lighten($color-fg, 65%);
+  overflow: hidden;
+
+  .temp-image {
+    border-radius: initial;
+  }
+
+  .banner-image {
+    box-shadow: 0 2px 12px 0 rgba($color-fg, 0.25);
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70px;
+    line-height: 70px;
+    color: #fff;
+    background: $color-fg;
+    border-radius: 50%;
+    text-align: center;
+    transition: all .25s;
+    z-index: 55;
+
+    .icon-camera {
+      font-size: 27px;
+    }
+
+    &:hover {
+      background: $color-fg-highlight;
+    }
+  }
+}
+
+.profile-image {
+  width: 70px;
+  line-height: 70px;
+  text-align: center;
+  position: relative;
+
+  &:hover {
+    &:before {
+      background: lighten($color-fg, 70%);
+    }
+    &:after {
+      background: $color-fg-highlight;
+    }
+  }
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    background: lighten($color-fg, 65%);
+    transition: all .25s;
+  }
+
+  &:after {
+    content: '\e80e';
+    font-family: fontello;
+    color: #fff;
+    border-radius: 50%;
+    background: $color-fg;
+    position: absolute;
+    bottom: 0;
+    right: 0px;
+    text-align: center;
+    line-height: 15px;
+    padding: 8px 9px;
+    font-size: 14px;
+    z-index: 10;
+    transition: all .25s;
+  }
+
+  .icon-user {
+    color: #fff;
+    font-size: 27px;
+    position: relative;
+    z-index: 4;
+  }
+
+  input[type="file"] {
+    z-index: 15;
+  }
+}

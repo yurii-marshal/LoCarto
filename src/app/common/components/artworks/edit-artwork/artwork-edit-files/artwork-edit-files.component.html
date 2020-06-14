@@ -1,0 +1,55 @@
+<div class="row" *ngIf="mainFiles">
+  <div class="empty-card files-card col-3 in-list">
+    <div class="icon files-icon"></div>
+    <p class="desc">Add files of artwork</p>
+    <div class="file-container banner-image">
+      <button class="custom-btn custom-btn-primary-filled"><i class="icon-ic_plus"></i> Add files</button>
+      <input type="file" (change)="photoChange($event)" multiple/>
+    </div>
+  </div>
+  <div class="file col-3 cover">
+    <div class="box main">
+      <div class="box-image">
+        <div [class]="'image-block ' + setClassName(mainFiles?.name)" [ngClass]="{'need-transform': mainFiles?.rotation}"
+             [ngStyle]="{'background-image': 'url(' + (mainFiles?.url || mainFiles?.tempUrl) + ')', 'transform': mainFiles?.rotation}"
+             (click)="openGallery(0)">
+        </div>
+        <span class="cover-label">Cover</span>
+        <div class="actions"></div>
+      </div>
+      <p class="name">{{mainFiles?.name}}</p>
+    </div>
+  </div>
+</div>
+
+<div class="row all" ngxDroppable (drop)="movedFiles($event)">
+  <div class="file col-3" *ngFor="let image of filesData; let i = index" [attr.data-item]="image._id" ngxDraggable [moves]="canMoves"> <!-- [ngxDraggable]="(i > 0) ? 'true' : ''" -->
+    <div class="box">
+      <div class="box-image">
+        <div [class]="'image-block ' + setClassName(image.name)"
+             [ngStyle]="{'background-image': 'url(' + (image?.url || image?.tempUrl) + ')', 'transform': image?.rotation}"
+             [ngClass]="{'need-transform': image?.rotation}"
+             (click)="openGallery(0)">
+        </div>
+        <div class="actions">
+          <div class="remove" title="Delete"
+               (click)="openModal('', 'removeModal', 'removeFile', i); $event.stopPropagation()"><i class="icon-trash"></i></div>
+        </div>
+      </div>
+      <p class="name">{{image.name}}</p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!mainFiles" class="empty-card files-card">
+  <div class="icon files-icon"></div>
+  <h5 class="status-title">No files yet</h5>
+  <p class="desc">Add files of artwork</p>
+  <div class="file-container banner-image">
+    <button class="custom-btn custom-btn-primary-filled"><i class="icon-ic_plus"></i> Add files</button>
+    <input type="file" (change)="photoChange($event)" multiple/>
+  </div>
+</div>
+
+
+<ngx-image-gallery *ngIf="filesUrl" [images]="filesUrl" [conf]="galConf"></ngx-image-gallery>

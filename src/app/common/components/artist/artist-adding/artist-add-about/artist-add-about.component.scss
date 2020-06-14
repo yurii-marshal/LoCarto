@@ -1,0 +1,23 @@
+@import "../artist-adding.component";
+
+.birthday {
+  display: inline-block;
+  width: 50%;
+
+  input {
+    width: 100%;
+  }
+
+  &.day,
+  &.month,
+  &.year {
+    width: 30%;
+  }
+  &.month,
+  &.year {
+    margin-left: 5%;
+  }
+}
+.form-control-group textarea {
+  margin-bottom: -4px;
+}

@@ -1,0 +1,48 @@
+<div class="container-block" *ngIf="!openArtworks">
+  <div class="exh-list folder-list row">
+    <div class="col-4">
+      <div class="folder public">
+        <h4>Listed exhibition</h4>
+        <p class="desc">Only artworks shown publicly</p>
+        <ul>
+          <li *ngFor="let artwork of exhArtworks; let i = index;" [hidden]="i > 3 && exhArtworks.length > 5">
+            <div class="img" [ngStyle]="{'background-image': 'url(' + artwork.image?.url + ')', 'transform': artwork.image?.rotation}"
+                 [ngClass]="{'need-transform': artwork.image?.rotation}"></div>
+          </li>
+          <li *ngIf="exhArtworks?.length > 5" class="number"><span>+ {{exhArtworks?.length - 4}}</span></li>
+        </ul>
+
+        <div class="hover">
+          <button class="custom-btn custom-btn-primary-empty" (click)="showArtworks(exhArtworks, undefined, role, true)">View artworks</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-4" *ngFor="let member of members; let i = index"
+         [hidden]="(creatorId === member.profile) ||
+                   (role === 'member' && personalMember.profile !== member.profile) ||
+                   !member.active">
+      <div class="folder" [ngClass]="{'hover': member.selected}">
+        <div class="avatar" [ngStyle]="{'background-image': 'url(' + member.proData?.photos?.avatar + ')'}"></div>
+        <h4>{{member.proData?.name}}</h4>
+        <ul>
+          <li *ngFor="let artwork of member.artworksData; let i = index;" [hidden]="i > 3 && member.artworksData?.length > 5">
+            <div class="img"
+                 [ngStyle]="{'background-image': 'url(' + artwork?.image?.url + ')', 'transform': artwork.image?.rotation}"
+                 [ngClass]="{'need-transform': artwork.image?.rotation}"></div>
+          </li>
+          <li *ngIf="artwork?.images?.length > 5" class="number"><span>+ {{member.artworksData?.length - 4}}</span></li>
+        </ul>
+
+        <div class="hover">
+          <button class="custom-btn custom-btn-primary-empty" (click)="showArtworks(member.artworksData, member, role)">View artworks</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nb-spinner *ngIf="showSnipper" [message]="''"></nb-spinner>
+</div>
+
+<ngx-exh-edit-artwork *ngIf="openArtworks" [canAdd]="canAddArtworks" [curRole]="role" [listedFolder]="listed" [canMove]="canMove" (exhUpdate)="updateExhData()"
+                      [data]="selectedArtworks" [memeber]="selectedMember" [exhId]="currentId"></ngx-exh-edit-artwork>

@@ -1,0 +1,66 @@
+@import '../../styles/variables';
+
+:host {
+  margin-top: 2em;
+  display: block;
+  margin-bottom: 3em;
+  text-align: center;
+}
+
+.pagination {
+  text-align: center;
+  display: inline-block;
+  margin: auto;
+  background: #fff;
+  border-radius: 25px;
+  box-shadow: 0 2px 12px 0 #dfe3eb;
+  padding: 1em;
+
+
+  li {
+    margin: 0 .5em;
+    text-decoration: none;
+    display: inline-block;
+    line-height: 1.2em;
+    font-size: 1em;
+
+    &.active a {
+      color: #fff;
+      background: $color-fg;
+    }
+
+    a {
+      color: $color-fg;
+      border-radius: 50%;
+      transition: all .25s;
+      font-weight: 400;
+      display: inline-block;
+      width: 21px;
+      text-align: center;
+      line-height: 21px;
+      text-decoration: none;
+
+      &:hover {
+        cursor: pointer;
+        color: $color-fg-highlight;
+      }
+    }
+
+    &.next a,
+    &.prev a {
+      color: $color-fg-highlight;
+
+      &:hover {
+        color: $color-fg;
+      }
+    }
+
+    &.prev {
+      margin-right: 1em;
+    }
+
+    &.next {
+      margin-left: 1em;
+    }
+  }
+}

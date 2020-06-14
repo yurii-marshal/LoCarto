@@ -1,0 +1,261 @@
+<form>
+
+  <div class="steps">
+    <ul class="steps-header" *ngIf="!finalResult">
+      <li *ngFor="let tab of tabs; let i = index"
+          [ngClass]="{'active': activeTab === i + 1, 'prev': activeTab > i + 1, 'next': activeTab < i + 1 }"
+          (click)="setActiveTab(i + 1, formArtwork)">
+        <p class="title"><span>{{tab.title | translate}}</span></p>
+      </li>
+    </ul>
+
+    <div class="steps-body">
+
+      <!-- ----------- 1 step --------- -->
+      <div class="container-card category" [hidden]="activeTab !== 1">
+        <ngx-artwork-add-category [tab]="activeTab" [categoriesData]="categories" [formData]="formArtwork"
+                                  [curCat]="currentCategory" (activeCat)="setCat($event)"
+                                  (activeSet)="setActiveTab($event)">
+        </ngx-artwork-add-category>
+      </div>
+      <!-- ----------- END 1 step --------- -->
+
+      <!-- ----------- 2 step --------- -->
+      <div class="container-card" [hidden]="activeTab !== 2" *ngIf="activeTab >= 2">
+        <ngx-artwork-add-basic [tab]="activeTab" [categoriesData]="categories" [formData]="formArtwork" [curPro]="profileData"
+                               (activeSet)="setActiveTab($event)" [curCat]="currentCategory">
+        </ngx-artwork-add-basic>
+      </div>
+      <!-- ----------- END 2 step --------- -->
+
+      <!-- ----------- 3 step --------- -->
+      <div class="container-card editions-step" [hidden]="activeTab !== 3" *ngIf="activeTab >= 3">
+        <ngx-artwork-add-location [tab]="activeTab" [formData]="formArtwork" [categoriesData]="categories"
+                               (activeSet)="setActiveTab($event)" [curCat]="currentCategory">
+        </ngx-artwork-add-location>
+      </div>
+      <!-- ----------- END 3 step --------- -->
+
+      <!-- ----------- 4 step --------- -->
+      <div class="container-card gallery" [hidden]="activeTab !== 4" *ngIf="activeTab >= 4" [ngClass]="{'over-zone': overZone && (files && files.length < 1), 'last': finalResult}"> <!-- TODO need remove 'last' class logic -->
+        <ngx-artwork-add-gallery *ngIf="!finalResult" [formData]="formArtwork" (filesData)="files = $event"
+                                 [tab]="activeTab" (dataToSend)="sendForm($event)" (firstId)="firstFileId = $event"
+                                 (activeSet)="setActiveTab($event)">
+        </ngx-artwork-add-gallery>
+        <!-- -------------------- final result ----------------------- -->
+        <!--<div *ngIf="finalResult" class="final">-->
+          <!--<ngx-artwork-add-final [id]="createdArtwork._id"></ngx-artwork-add-final>-->
+        <!--</div>-->
+        <!-- -------------------- END final result ----------------------- -->
+
+      </div>
+      <!-- ----------- END 4 step --------- -->
+
+
+      <!-- ----------- 5 step Exhibitions --------- -->  <!-- TODO Temp hidden !!!!!!!  -------------------------------- -->
+      <!--<div class="container-card" [hidden]="activeTab !== 5" *ngIf="activeTab >= 5">-->
+        <!--<h4>{{'ADDING_ARTWORK.TITLES.EXHIBITION' | translate}}</h4>-->
+
+        <!--<h5>Choose from existing exhibitions</h5>-->
+        <!--<div class="form-control-group dynamic-wrapper">-->
+          <!--<input nbInput fullWidth type="text" placeholder="Exhibition title"-->
+                 <!--#exh (keyup)="findExisting('dynamicExhibitions', exh.value, 'existingExi')" formControlName="nameExhibition">-->
+          <!--<i class="icon-search"></i>-->
+          <!--<ul class="dynamic" *ngIf="dynamicExhibitions && dynamicExhibitions.length > 0">-->
+            <!--<li *ngFor="let item of dynamicExhibitions" (click)="selectedExisting('exhibition', item)">{{item.name}}</li>-->
+          <!--</ul>-->
+          <!--<p *ngIf="dynamicExhibitions && dynamicExhibitions.length < 1">Sorry, no result</p>-->
+          <!--<input nbInput type="hidden" formControlName="exibitionId">-->
+        <!--</div>-->
+
+        <!--<h5 class="add-title">Add a new-profile exhibition</h5>-->
+        <!--<div formArrayName="exhibitions">-->
+          <!--<div class="exhibitions" *ngFor="let item of getArrForms('exhibitions').controls; let i = index" [formGroupName]="i">-->
+            <!--<div class="form-control-group">-->
+              <!--<input nbInput fullWidth type="text" placeholder="Title" formControlName="title">-->
+            <!--</div>-->
+
+            <!--<div class="form-control-group">-->
+              <!--<input nbInput fullWidth type="text" placeholder="Museum, Gallery..." formControlName="museum">-->
+            <!--</div>-->
+
+            <!--<div class="form-control-group">-->
+              <!--<input nbInput fullWidth type="text" placeholder="Country" formControlName="country">-->
+            <!--</div>-->
+
+            <!--<div class="form-control-group">-->
+              <!--<input nbInput fullWidth type="text" placeholder="City" formControlName="city">-->
+            <!--</div>-->
+            <!--<i class="icon-trash remove-item" *ngIf="getArrForms('exhibitions').controls.length > 1" (click)="deleteFromArr(i, 'exhibitions')"></i>-->
+          <!--</div>-->
+        <!--</div>-->
+
+        <!--<hr>-->
+        <!--<div class="add" (click)="setEditions(1, 'exhibitions', 'addExhibition')">-->
+          <!--<span>+</span>Create one more exhibition-->
+        <!--</div>-->
+
+        <!--<div class="button-block">-->
+            <!--<button class="custom-btn custom-btn-primary-empty back" (click)="setActiveTab(activeTab - 1)">{{'COMMON.BUTTONS.BACK' | translate}}</button>-->
+            <!--<button class="custom-btn custom-btn-primary-filled next"-->
+                    <!--(click)="setActiveTab(activeTab + 1)"-->
+                    <!--[disabled]="!formArtwork.valid"-->
+            <!--&gt;{{'COMMON.BUTTONS.NEXT' | translate}}</button>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!-- ----------- END 5 step Exhibitions --------- -->
+
+
+      <!-- ----------- 6 step literature --------- -->   <!-- TODO Temp hidden !!!!!!!  -------------------------------- -->
+      <!--<div class="container-card" [ngClass]="{'last': finalResult}" [hidden]="activeTab !== 6" *ngIf="activeTab >= 6">-->
+
+        <!--<h4 *ngIf="!finalResult">{{'ADDING_ARTWORK.TITLES.LITERATURE' | translate}}</h4>-->
+
+        <!--&lt;!&ndash; -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; step -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; &ndash;&gt;-->
+        <!--<div *ngIf="!finalResult">-->
+          <!--<h5>Choose from existing literature</h5>-->
+
+          <!--<div class="form-control-group dynamic-wrapper">-->
+            <!--<input nbInput fullWidth type="text" placeholder="Literature title"-->
+                   <!--#lit (keyup)="findExisting('dynamicLiterature', lit.value, 'existingLit')" formControlName="nameLiterature">-->
+            <!--<i class="icon-search"></i>-->
+            <!--<ul class="dynamic" *ngIf="dynamicLiterature && dynamicLiterature.length > 0">-->
+              <!--<li *ngFor="let item of dynamicLiterature" (click)="selectedExisting('literature', item)">{{item.name}}</li>-->
+            <!--</ul>-->
+            <!--<p *ngIf="dynamicLiterature && dynamicLiterature.length < 1">Sorry, no result</p>-->
+
+            <!--<input nbInput type="hidden" formControlName="literatureId">-->
+          <!--</div>-->
+
+          <!--<h5 class="add-title">Add a new-profile literature</h5>-->
+          <!--<div formArrayName="literature">-->
+            <!--<div class="exhibitions" *ngFor="let item of getArrForms('literature').controls; let i = index" [formGroupName]="i">-->
+              <!--<div class="form-control-group">-->
+                <!--<input nbInput type="text" [status]="getArrForms('literature').controls[i]['controls'].isbnNumber.dirty ? (getArrForms('literature').controls[i]['controls'].isbnNumber.valid  ? 'success' : 'danger') : ''"-->
+                       <!--class="width-60" placeholder="ISBN number" #isbn formControlName="isbnNumber" (keyup)="validationIsbn($event.target.value, i)">-->
+                <!--<button class="custom-btn custom-btn-primary-filled next width-30 float-right"-->
+                        <!--[disabled]="!getArrForms('literature').controls[i]['controls'].isbnNumber.valid"-->
+                        <!--(click)="findBook(isbn.value)">{{'COMMON.BUTTONS.FIND' | translate}}</button>-->
+                <!--<div class="error" *ngIf="getArrForms('literature').controls[i]['controls'].isbnNumber.dirty &&-->
+                            <!--!getArrForms('literature').controls[i]['controls'].isbnNumber.valid">Not valid ISBN number</div>-->
+              <!--</div>-->
+
+              <!--<div class="finded-book" *ngIf="findedBook && findedBook[i]">-->
+
+                <!--<div class="question" *ngIf="!findedBook[i]?.selected">-->
+                  <!--<p class="width-60">This is the book what you are looking for?</p>-->
+                  <!--<div class="width-30 float-right">-->
+                    <!--<button class="custom-btn custom-btn-primary-empty back width-50" (click)="bookAction('no', i)">No</button>-->
+                    <!--<button class="custom-btn custom-btn-primary-filled next width-50" (click)="bookAction('yes', i)">Yes</button>-->
+                  <!--</div>-->
+                <!--</div>-->
+
+                <!--<div class="book">-->
+                  <!--<div class="image" [ngStyle]="{'background-image': 'url(' + findedBook[i].covers.medium + ')'}">-->
+                    <!--<i class="icon-trash del-item" *ngIf="findedBook[i]?.selected" (click)="findedBook[i].selected = false"></i>-->
+                  <!--</div>-->
+                  <!--<h5>{{findedBook[i].title}}</h5>-->
+                  <!--<p>{{findedBook[i].publisher}}</p>-->
+                  <!--<p>{{findedBook[i].year}}</p>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;9780743232906&ndash;&gt;-->
+
+                <!--<input nbInput type="hidden" formControlName="findedIsbn">-->
+              <!--</div>-->
+
+              <!--<div class="form-control-group" *ngIf="!findedBook[i]?.selected">-->
+                <!--<input nbInput fullWidth type="text" placeholder="Title" formControlName="title">-->
+              <!--</div>-->
+
+              <!--<div class="form-control-group" *ngIf="!findedBook[i]?.selected">-->
+                <!--<input nbInput fullWidth type="text" placeholder="Author" formControlName="author">-->
+              <!--</div>-->
+
+              <!--<div class="form-control-group" *ngIf="!findedBook[i]?.selected">-->
+                <!--<input nbInput type="text" class="width-60" placeholder="Publisher" formControlName="publisher">-->
+                <!--&lt;!&ndash;<input nbInput type="text" class="width-30 float-right" placeholder="Year" formControlName="year">&ndash;&gt;-->
+                <!--<div class="dynamic-wrapper width-30 float-right">-->
+                  <!--<input nbInput type="text" placeholder="Year" formControlName="year"-->
+                         <!--[owlDateTime]="dtgc" [max]="todayDate" readonly ngxDateView [needChange]="changeYearLit">-->
+                  <!--<span [owlDateTimeTrigger]="dtgc"><i class="fa fa-calendar"></i></span>-->
+                  <!--<owl-date-time #dtgc [pickerType]="'calendar'" [startView]="'multi-years'"-->
+                                 <!--(yearSelected)="selectDateYear(dtgc, $event, i)"></owl-date-time>-->
+                <!--</div>-->
+              <!--</div>-->
+
+              <!--<div class="form-control-group page-illustration">-->
+                <!--<input nbInput type="text" class="width-30" placeholder="Page №" formControlName="page">-->
+                <!--<input nbInput type="text" class="width-30" placeholder="Illustration №" formControlName="illustration">-->
+              <!--</div>-->
+              <!--<i class="icon-trash remove-item" *ngIf="getArrForms('literature').controls.length > 1" (click)="deleteFromArr(i, 'literature')"></i>-->
+            <!--</div>-->
+          <!--</div>-->
+
+          <!--<hr>-->
+          <!--<div class="add" (click)="setEditions(1, 'literature', 'addLiterature')">-->
+            <!--<span>+</span>Add one more-->
+          <!--</div>-->
+
+          <!--<div class="button-block">-->
+            <!--<button class="custom-btn custom-btn-primary-empty back" (click)="setActiveTab(activeTab - 1)">{{'COMMON.BUTTONS.BACK' | translate}}</button>-->
+            <!--<button class="custom-btn custom-btn-primary-filled next"-->
+                    <!--(click)="sendForm(formArtwork)"-->
+                    <!--[disabled]="!formArtwork.valid"-->
+            <!--&gt;{{'COMMON.BUTTONS.SEND' | translate}}</button>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--&lt;!&ndash; -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; END step literature -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; &ndash;&gt;-->
+
+        <!--&lt;!&ndash; &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; final result -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; &ndash;&gt;-->
+        <!--<div *ngIf="finalResult" class="final">-->
+          <!--<h2>{{'ADDING_PROFILE.TITLES.GREAT_WORK' | translate}}</h2>-->
+          <!--<p class="description">-->
+            <!--Your artwork added. You can look <b>Add artwork to profile</b> or else-->
+          <!--</p>-->
+
+          <!--<div class="row">-->
+            <!--<div class="col-3">-->
+              <!--<div class="final-item artworks">-->
+                <!--<div class="image-block" [routerLink]="'/pages/artworks/all'"></div>-->
+                <!--<h5 [routerLink]="'/pages/artworks/all'">Back to artworks</h5>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-3">-->
+              <!--<div class="final-item artist">-->
+                <!--<div class="image-block" (click)="setCurrentProfile(createdId)"></div>-->
+                <!--<h5 (click)="setCurrentProfile(createdId)">Open profile</h5>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-3">-->
+              <!--<div class="final-item artwork">-->
+                <!--<div class="image-block" [routerLink]="'/pages/artwork/' + createdArtwork._id"></div>-->
+                <!--<h5 [routerLink]="'/pages/artwork/' + createdArtwork._id">View artwork</h5>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-3 addartwork">-->
+              <!--<div class="final-item">-->
+                <!--<div class="image-block" [routerLink]="'/pages/artworks/all'"></div>-->
+                <!--<h5 [routerLink]="'/pages/artworks/all'">Add new-profile artworks</h5>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--&lt;!&ndash; &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; END final result -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; &ndash;&gt;-->
+
+      <!--</div>-->
+      <!-- ----------- END 6 step --------- -->
+
+    </div>
+  </div>
+
+  <nb-spinner *ngIf="showSnipper" [message]="''"></nb-spinner>
+</form>
+
+<ng-template #proofModal let-data let-ref="dialogRef"> <!-- TODO need  remove -->
+  <nb-card  class="proof-modal">
+    <nb-card-header>What is it</nb-card-header>
+    <nb-card-body>
+      <ngx-proof-info></ngx-proof-info>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

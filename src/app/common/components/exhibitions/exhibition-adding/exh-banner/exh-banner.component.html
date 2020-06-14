@@ -1,0 +1,23 @@
+<form [formGroup]="formExhibition">
+	<div class="container-card">
+		<h4>Banner photo</h4>
+
+		<div class="banner-block">
+			<div class="file-container banner-image">
+				<div class="icon-camera"></div>
+				<input type="file" (change)="photoChange($event)" accept="image/gif, image/jpeg, image/png"/>
+			</div>
+			<div class="temp-image" *ngIf="banner && banner.url"
+			     [ngStyle]="{'background-image': 'url(' + banner.url + ')', 'transform': banner?.rotation}"
+			     [ngClass]="{'need-transform': banner?.rotation}"></div>
+		</div>
+		<div *ngIf="banner.name" class="file-name">{{banner.name}}</div>
+
+		<div class="button-block">
+			<button class="custom-btn custom-btn-primary-empty back" (click)="setActiveTab(activeTab - 1)"
+			        [disabled]="filesInProgress">{{'COMMON.BUTTONS.BACK' | translate}}</button>
+			<button class="custom-btn custom-btn-primary-filled next" [disabled]="filesInProgress"
+			        (click)="setActiveTab(activeTab + 1)">{{'COMMON.BUTTONS.NEXT' | translate}}</button>
+		</div>
+	</div>
+</form>

@@ -1,0 +1,54 @@
+<form [formGroup]="collectorForm">
+  <h4 class="title-tab">{{'ADDING_PROFILE.TITLES.BASIC' | translate}}</h4>
+
+  <div class="form-control-group">
+    <input nbInput fullWidth type="text" formControlName="name" placeholder="Name *" required
+           [status]="collectorForm.get('name').dirty ? (collectorForm.get('name').invalid  ? 'danger' : 'success') : ''"
+           [attr.aria-invalid]="collectorForm.get('name').invalid && collectorForm.get('name').touched ? true : null">
+    <ng-container *ngIf="collectorForm.get('name').invalid && collectorForm.get('name').touched">
+      <p class="error-message">
+        Name is required!
+      </p>
+    </ng-container>
+  </div>
+  <div class="form-control-group">
+    <input nbInput fullWidth type="email" formControlName="email" placeholder="E-mail"
+           (keyup)="validationAct('email', collectorForm, 'email', $event.target.value)"
+           [status]="collectorForm.get('email').dirty ? (collectorForm.get('email').invalid  ? 'danger' : 'success') : ''"
+           [attr.aria-invalid]="collectorForm.get('email').invalid && collectorForm.get('email').touched ? true : null">
+    <ng-container *ngIf="collectorForm.get('email').invalid && collectorForm.get('email').touched">
+      <p class="error-message">
+        E-mail should be the real one!
+      </p>
+    </ng-container>
+  </div>
+  <div class="form-control-group">
+    <label>Phone</label>
+    <input type="text" [pattern]="phonePattern" [maxlength]="15" formControlName="phone"
+           ng2TelInput nbInput fullWidth name="phone"
+           [status]="collectorForm.get('phone').dirty ? (collectorForm.get('phone').invalid  ? 'danger' : 'success') : ''"
+           (intlTelInputObject)="initTelInputObject($event)"
+           (countryChange)="onCountryChange($event)"
+           [attr.aria-invalid]="collectorForm.get('phone').invalid && collectorForm.get('phone').touched ? true : null"
+    />
+
+    <ng-container *ngIf="collectorForm.get('phone').invalid && collectorForm.get('phone').touched">
+      <p *ngIf="collectorForm.get('phone').errors.pattern" class="error-message">
+        Invalid phone number
+      </p>
+    </ng-container>
+  </div>
+  <div class="form-control-group">
+    <input nbInput fullWidth type="text" formControlName="address" placeholder="Address">
+  </div>
+  <div class="form-control-group">
+    <input nbInput fullWidth type="text" formControlName="company" placeholder="Company">
+  </div>
+
+  <div class="button-block">
+    <button class="custom-btn custom-btn-primary-empty back" [routerLink]="'/profile'">Back</button>
+    <button class="custom-btn custom-btn-primary-filled next"
+            [disabled]="!collectorForm.valid"
+            (click)="sendData()">Next</button>
+  </div>
+</form>

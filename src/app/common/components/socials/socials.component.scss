@@ -1,0 +1,74 @@
+@import "../../styles/variables";
+@import '../../styles/themes';
+
+@include nb-install-component() {
+  .socials-list {
+    list-style: none;
+    padding: 0;
+    padding-left: .4rem !important;
+    margin-bottom: 0;
+    border: 0;
+
+    li {
+
+      a {
+        display: block;
+        border-radius: 50%;
+        padding: 0;
+        width: 35px;
+        line-height: 35px;
+        background: lighten($color-fg, 45%);
+        transition: all .25s;
+        color: #fff;
+        text-align: center;
+
+        &:hover {
+          cursor: pointer;
+          background: $color-fg;
+        }
+      }
+
+      &.has-link a {
+        background: $color-fg-highlight;
+      }
+    }
+
+    &.horizontal {
+      li {
+        display: inline-block;
+        margin: 0 .5em;
+
+        &:first-child {
+          margin-left: 0;
+        }
+      }
+    }
+    &.vertical {
+      li {
+        display: block;
+
+        & + li {
+          margin-top: .5em;
+        }
+      }
+    }
+  }
+  .title {
+    color: lighten($color-fg, 50%);
+    font-size: 1em;
+  }
+}
+/deep/ .cdk-overlay-pane nb-dialog-container nb-card-body,
+/deep/ .cdk-overlay-pane nb-dialog-container nb-card-footer {
+  padding: 1.5rem 8rem;
+  min-width: 730px;
+}
+
+button[disabled] {
+  background: lighten($color-fg, 45%);
+  border-color: lighten($color-fg, 45%);
+
+  &:hover {
+    cursor: initial;
+  }
+}

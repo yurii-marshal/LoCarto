@@ -1,0 +1,53 @@
+<form [formGroup]="formArtwork">
+
+  <h4 class="tab-title" *ngIf="currentCat?.copies">Editions</h4>
+  <h4 class="tab-title" *ngIf="!currentCat?.copies">Status</h4>
+
+
+  <!-- -------------- location ------------------- -->
+  <div class="location" *ngIf="!currentCat?.copies">
+    <div class="form-control-group">
+      <!--<nb-select placeholder="Choose place" (selectedChange)="setFormValue($event, 'placeLoc')">-->
+        <!--<nb-option *ngFor="let place of places" [value]="place.id">-->
+          <!--{{place.title}}-->
+        <!--</nb-option>-->
+      <!--</nb-select>-->
+      <ngx-select placeholder="Choose place" [items]="places" optionValueField="id" optionTextField="title"
+                  [noAutoComplete]="true" [defaultValue]="places[1].id"
+                  (select)="setFormValue($event, 'placeLoc')">
+      </ngx-select>
+
+      <input nbInput type="hidden" formControlName="placeLoc">
+    </div>
+
+    <div *ngIf="false" class="form-control-group"> <!-- TODO temporary hidden --> <!-- *ngIf="formArtwork.get('placeLoc').value !== 'notCreated'" -->
+      <nb-select *ngIf="formArtwork.get('placeLoc').value === 'artstorage'"
+                 placeholder="Choose place" (selectedChange)="setFormValue($event, 'namePlaceLoc')">
+        <nb-option *ngFor="let storage of artStorages" [value]="storage._id">{{storage.title}}</nb-option>
+        <nb-option *ngIf="artStorages && artStorages.length < 1">No storages yet</nb-option>
+      </nb-select>
+
+      <input nbInput fullWidth [type]="(formArtwork.get('placeLoc').value === 'artstorage' ? 'hidden' : 'text')"
+             [placeholder]="setPlaceholder(formArtwork.get('placeLoc').value)" formControlName="namePlaceLoc"
+             [readonly]="!formArtwork.get('placeLoc').value">
+    </div>
+    <!-- TODO END temporary hidden -->
+
+  </div>
+  <!-- -------------- END location ------------------- -->
+
+
+  <!-- ------------ editions generator ------------------- -->
+  <ngx-generator-editions *ngIf="currentCat?.copies" [form]="formArtwork"
+                        [category]="currentCat" [listOptions]="options"
+                        [listCategories]="categories"></ngx-generator-editions>
+
+  <div class="button-block">
+    <button class="custom-btn custom-btn-primary-empty back" (click)="changeTab(activeTab - 1)">{{'COMMON.BUTTONS.BACK' | translate}}</button>
+    <button class="custom-btn custom-btn-primary-filled next"
+            (click)="changeTab(activeTab + 1)"
+            [disabled]="!formArtwork.valid"
+    >{{'COMMON.BUTTONS.NEXT' | translate}}</button>
+  </div>
+
+</form>

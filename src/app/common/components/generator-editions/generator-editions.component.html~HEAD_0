@@ -1,0 +1,141 @@
+<div [formGroup]="formArtwork">
+  <div class="generator">
+    <h5>Fill in the data for your set of editions:</h5>
+
+    <div class="form-control-group radios">
+      <nb-radio-group>
+        <nb-radio
+                *ngFor="let option of options"
+                [value]="option.value"
+                [checked]="option.checked"
+                (valueChange)="setFormValue($event, 'units')">
+          {{ option.label }}
+        </nb-radio>
+      </nb-radio-group>
+
+      <input nbInput type="hidden" formControlName="units">
+    </div>
+    <div class="row form-control-group">
+      <div class="col-6">
+        <div class="form-control-group" *ngIf="currentCategory?.sizes?.artwork">
+          <label>Artwork size</label>
+          <input nbInput type="number" class="width-50" placeholder="Height" formControlName="heightArt">
+          <input nbInput type="number" class="width-50" placeholder="Width" formControlName="widthArt">
+        </div>
+
+        <div class="form-control-group price" *ngIf="!photography">
+          <input nbInput type="text" class="width-50" formControlName="priceCop" placeholder="Price">
+          <div class="form-control-group birthday month width-50">
+            <!--<nb-select class="currency" placeholder="Currency" [selected]="currency[1].value"-->
+                       <!--(selectedChange)="setFormValue($event, 'currencyCop')">-->
+              <!--<nb-option *ngFor="let currency of currency" value="{{currency.value}}">{{currency.title}}</nb-option>-->
+            <!--</nb-select>-->
+            <div class="currency">
+              <ngx-select placeholder="Currency" [items]="currency" optionValueField="value" optionTextField="title"
+                          [noAutoComplete]="true" [defaultValue]="currency[1].value"
+                          (select)="setFormValue($event, 'currencyCop')">
+              </ngx-select>
+            </div>
+            <input nbInput type="hidden" formControlName="currencyCop">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6" *ngIf="currentCategory?.sizes?.motif">
+        <div class="form-control-group" >
+          <label>Motif size</label>
+          <input nbInput type="number" class="width-50" placeholder="Height" formControlName="heightMot">
+          <input nbInput type="number" class="width-50" placeholder="Width" formControlName="widthMot">
+        </div>
+      </div>
+
+      <div class="col-6" *ngIf="currentCategory?.sizes?.dimensions === 3">
+        <div class="form-control-group">
+          <label>Depth</label>
+          <input nbInput type="number" class="width-50" placeholder="Depth" formControlName="depth">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-control-group">
+      <p class="descr width-60">Total number of ordinary editions:</p>
+      <input nbInput class="width-30 float-right" type="number" placeholder="Total editions"
+             formControlName="totalNumber">
+    </div>
+
+    <div class="form-control-group">
+      <nb-checkbox formControlName="proof" class="width-60">
+        Proof editions (AP, EA, PA)
+        <div class="info" (click)="openModal(proofModal)">!</div>
+      </nb-checkbox>
+      <!--<nb-select placeholder="Copies" class="width-30 float-right" *ngIf="formArtwork.get('proof').value"-->
+                 <!--[(selected)]="selectedCopies" (selectedChange)="setFormValue($event, 'copyNumber')">-->
+        <!--<nb-option *ngFor="let copy of copies" value="{{copy}}">{{copy}}</nb-option>-->
+      <!--</nb-select>-->
+      <div class="width-30 float-right" *ngIf="formArtwork.get('proof').value">
+        <ngx-select placeholder="Editions" [items]="editions" optionValueField="value" optionTextField="title"
+                    [noAutoComplete]="true" [defaultValue]="selectedEditions"
+                    (select)="setFormValue($event, 'copyNumber')">
+          <ng-template ngx-select-option let-option let-text="text">
+            {{option.data}}
+          </ng-template>
+        </ngx-select>
+      </div>
+      <input nbInput type="hidden" formControlName="copyNumber">
+    </div>
+
+    <div class="form-control-group">
+      <button class="custom-btn custom-btn-primary-filled next"
+              (click)="generateEditions(formArtwork)">{{'COMMON.BUTTONS.GENERATE_SET' | translate}}</button>
+      <p class="error" *ngIf="showError">Please fill all fields.</p>
+    </div>
+  </div>
+
+  <!-- ------------ proofs and ordinary ------------------- -->
+  <div formArrayName="allEditions" class="all-editions">
+    <div *ngFor="let item of viewEditions; let i = index">
+      <div class="proofs ordinary">
+        <i class="icon-trash remove-item" (click)="deleteFromArr(i, 'allEditions')"></i>
+
+        <div class="info-copie">
+          <p class="width-50" *ngIf="currentCategory?.sizes?.artwork">
+            Artwork size: {{item.heightArt}}x{{item.widthArt}}{{item.depth ? ('x' + item.depth) : ''}} {{item?.units === 'cm' ? 'cm' : (item?.units === 'inch' ? 'inch' : '')}}
+          </p>
+          <p class="width-50" *ngIf="currentCategory?.sizes?.motif && (item.heightMot && item.widthMot)">
+            Motif size: {{item.heightMot}}x{{item.widthMot}} {{item?.units === 'cm' ? 'cm' : (item?.units === 'inch' ? 'inch' : '')}}
+          </p>
+          <p *ngIf="item.price">Sale price: {{item.price}} {{item.currency}}</p>
+        </div>
+
+        <div class="types-editions">
+          <div *ngIf="item.ordinary && item.ordinary > 0">
+            <h5>Ordinary editions:</h5>
+            <ul class="type">
+              <li *ngFor="let ord of generateArray(item.ordinary); let z = index">
+                <div class="number">{{z + 1}}/{{item.ordinary}}</div>
+              </li>
+            </ul>
+          </div>
+          <div *ngIf="item.proof && item.proof > 0">
+            <h5>Proof editions (AP, EA, PA):</h5>
+            <ul class="type">
+              <li *ngFor="let ord of generateArray(item.proof); let v = index">
+                <div class="number">AP/{{v + 1}}</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ------------ END proofs and ordinary ------------------- -->
+</div>
+
+<ng-template #proofModal let-data let-ref="dialogRef">
+  <nb-card  class="proof-modal">
+    <nb-card-header>What is it</nb-card-header>
+    <nb-card-body>
+      <ngx-proof-info></ngx-proof-info>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

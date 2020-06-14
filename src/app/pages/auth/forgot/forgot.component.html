@@ -1,0 +1,55 @@
+<section class="reset-password">
+  <h1 id="title" class="title">Forgot Password</h1>
+  <p class="sub-title">Enter your email address and we’ll send a link to reset your password</p>
+
+  <form (ngSubmit)="requestPass(requestPassForm)" #requestPassForm="ngForm" aria-labelledby="title">
+
+    <div class="form-control-group">
+      <label class="label" for="input-email">Email address</label>
+      <input nbInput
+             [(ngModel)]="user.email"
+             #email="ngModel"
+             id="input-email"
+             name="email"
+             pattern=".+@.+\..+"
+             placeholder="Email address"
+             autofocus
+             fullWidth
+             [status]="email.dirty ? (email.invalid  ? 'danger' : 'success') : ''"
+             [attr.aria-invalid]="email.invalid && email.touched ? true : null">
+      <ng-container *ngIf="email.invalid && email.touched">
+        <p class="error-message" *ngIf="email.errors?.required">
+          Email is required!
+        </p>
+        <p class="error-message" *ngIf="email.errors?.pattern">
+          Please enter a valid email
+        </p>
+      </ng-container>
+      <nb-alert *ngIf="showMessages.error && errors?.length && !submitted" outline="danger" role="alert">
+        <ul class="alert-message-list">
+          <li *ngFor="let error of errors" class="alert-message">{{ error }}</li>
+        </ul>
+      </nb-alert>
+
+      <nb-alert *ngIf="showMessages.success" outline="success" role="alert">
+        <p class="alert-title"><b>We send new password to your e-mail.</b> <br/>Check your e-mail for verification.</p>
+        <ul class="alert-message-list">
+          <li *ngFor="let message of messages" class="alert-message">{{ message }}</li>
+        </ul>
+      </nb-alert>
+    </div>
+
+    <div class="back-link">
+      <a routerLink="../sign-in">Back to sign in</a>
+    </div>
+
+    <div class="send-btn-container">
+      <button fullWidth status="success" class="custom-btn custom-btn-primary"
+              [disabled]="!requestPassForm.valid || errors?.length > 0">
+        Request password
+      </button>
+    </div>
+
+    <nb-spinner *ngIf="showSnipper" [message]="''"></nb-spinner>
+  </form>
+</section>

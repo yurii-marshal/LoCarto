@@ -1,0 +1,277 @@
+@import '../../../styles/themes';
+@import '../../../styles/variables';
+@import '../../../../../../node_modules/bootstrap/scss/mixins/breakpoints';
+@import '../../../../../../node_modules/@nebular/theme/styles/global/breakpoints';
+
+:host {
+  overflow: auto;
+  display: block;
+  position: relative;
+  margin-top: -2.22rem;
+  margin-left: -2.2rem;
+  margin-right: -2.2rem;
+  padding-bottom: 2.5rem;
+  min-height: 700px;
+
+  .nav-titles {
+    padding-left: 3rem;
+  }
+}
+
+.nav-titles {
+  list-style: none;
+  background: #fff;
+  padding: 1.1rem 2.5rem;
+  border-top: 1px solid #bbb;
+
+  li {
+    display: inline-block;
+    position: relative;
+
+    & + li {
+      margin-left: 2rem;
+    }
+
+    &:hover a {
+      cursor: pointer;
+      color: $color-fg2-highlight;
+    }
+
+    &.active:after {
+      background: $color-fg2-highlight;
+    }
+
+    &:after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 3px;
+      background: none;
+      position: absolute;
+      bottom: -15px;
+      left: 0;
+    }
+  }
+
+  a {
+    font-size: 1.4rem;
+    color: $color-fg;
+    text-decoration: none;
+    transition: all .25s;
+    padding-left: 0;
+  }
+}
+
+.steps-body {
+  position: relative;
+  padding: 3rem 2rem;
+  width: 93%;
+  margin: auto;
+  margin-bottom: 1.5rem;
+
+  &.has-bg {
+    background: #fff;
+    border-radius: .375rem;
+    box-shadow: 0 2px 12px 0 #dfe3eb;
+  }
+}
+
+.container-card {
+  max-width: 460px;
+  margin: auto;
+
+  &.editions {
+    max-width: 800px;
+    width: 100%;
+  }
+
+  &.files,
+  &.books {
+    max-width: inherit;
+  }
+}
+
+.files /deep/ .all .file:first-child {
+  margin-left: 49%;
+}
+
+.books {
+  .book {
+    margin-bottom: 1.5rem;
+
+    .image {
+      width: 100%;
+      background-color: lighten($color-fg, 85%);
+      margin-bottom: 1rem;
+      background-position: center;
+      background-size: cover;
+
+      &:before {
+        content: '';
+        display: block;
+        padding-bottom: 120%;
+      }
+    }
+
+    p {
+      margin-bottom: .2rem;
+    }
+  }
+}
+
+.tabs-head {
+  .add-fix {
+    //position: fixed;
+    //bottom: 3rem;
+    //right: 3rem;
+
+    &.move-top {
+      bottom: 10rem;
+    }
+
+    .add:not([class*='file-container']) {
+      span {
+        margin: 0;
+        width: 50px;
+        line-height: 50px;
+      }
+    }
+  }
+}
+
+.dynamic-wrapper {
+  position: relative;
+
+  i {
+    position: absolute;
+    top: 10px;
+    right: 1rem;
+    font-size: 1.2em;
+    color: $color-fg;
+  }
+}
+.literature-wrapper {
+  margin-top: 3rem;
+}
+
+/deep/ .cdk-overlay-pane .literature-modal nb-card-body {
+  max-height: 600px;
+  overflow: auto;
+}
+
+.question {
+  margin-top: 1.5rem;
+
+  p {
+    margin-top: .8rem;
+    color: $color-fg;
+  }
+}
+.book {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+
+  .image {
+    width: 150px;
+    height: 200px;
+    background-color: lighten($color-fg, 85%);
+    margin-bottom: 1rem;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+  }
+
+  .remove {
+    display: inline-block;
+    font-size: 1em;
+    text-align: center;
+    border-radius: 50%;
+    background: $color-fg;
+    color: #fff;
+    width: 30px;
+    line-height: 30px;
+    transition: .25s all;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+
+    &:hover {
+      cursor: pointer;
+      background: $color-fg-highlight;
+    }
+  }
+
+  p {
+    margin-bottom: .2rem;
+  }
+}
+.literature-wrapper {
+  overflow: auto;
+}
+
+.delete-modal {
+  text-align: center;
+  min-width: 500px;
+  max-height: 100%;
+}
+
+.editions-modal,
+.del-editions-modal {
+  max-height: 100%;
+
+  &::ng-deep .button-block {
+    margin-top: 0;
+  }
+}
+
+.add-editions-modal {
+  min-width: 800px;
+  overflow: auto;
+  max-height: 100%;
+
+  &::ng-deep ngx-generator-editions {
+    display: block;
+    width: 58%;
+    margin: auto;
+  }
+}
+
+file-drop ::ng-deep {
+  .drop-zone {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    left: 0;
+    top: 0;
+    border: none;
+
+    .content {
+      height: 100%;
+    }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  position: relative;
+  margin-top: 10%;
+
+  .icon {
+    background: url("../../../../../assets/images/ic_empty_state.svg") no-repeat;
+    background-position: center;
+    background-size: contain;
+    display: inline-block;
+    width: 155px;
+    height: 115px;
+    margin-bottom: .5rem;
+  }
+}
+
+.with-scroll /deep/ nb-card {
+  max-height: 100%;
+}
+
+.center-frame {
+  margin: 0 2%;
+}

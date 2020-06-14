@@ -1,0 +1,34 @@
+<div class="image-block">
+  <div class="banner-block">
+    <div class="file-container banner-image">
+      <div class="icon-pencil-2"></div>
+      <input type="file" (change)="photoChange($event, 'bannerFileUrl')"/>
+    </div>
+    <div class="temp-image" *ngIf="banner && banner.url"
+         [ngStyle]="{'background-image': 'url(' + banner.url + ')', 'transform': banner?.rotation}"
+         [ngClass]="{'need-transform': banner?.rotation}"></div>
+    <nb-spinner class="snipper-banner" *ngIf="showSnipperBanner" [message]="''"></nb-spinner>
+  </div>
+
+  <div class="file-container profile-image">
+    <div class="icon-user"></div>
+    <input type="file" (change)="photoChange($event, 'profileFileUrl')"/>
+    <div class="temp-image" *ngIf="avatar && avatar.url"
+         [ngStyle]="{'background-image': 'url(' + avatar.url + ')',
+          'transform': avatar?.rotation}"
+         [ngClass]="{'need-transform': avatar?.rotation}"></div>
+    <nb-spinner class="snipper-avatar" *ngIf="showSnipperAvatar" [message]="''"></nb-spinner>
+  </div>
+</div>
+
+<div class="profile-info" *ngIf="profileData">
+  <ngx-artist-edit *ngIf="profileType === 'artist'"
+                   [proData]="profileData" [dataForm]="formData"
+                   (dataSend)="saveData($event, 'artist')"></ngx-artist-edit>
+
+  <ngx-collector-edit *ngIf="profileType === 'collector'"
+                      [collectorData]="{data: profileData, form: collectorForm}"
+                      (dataSend)="saveData($event, 'collector')"></ngx-collector-edit>
+
+  <nb-spinner *ngIf="showSnipper" [message]="''"></nb-spinner>
+</div>

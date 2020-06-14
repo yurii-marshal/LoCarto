@@ -1,0 +1,30 @@
+@import '../../styles/variables';
+
+.add {
+  outline: none;
+}
+form {
+  width: 65%;
+  margin-right: 2em;
+}
+
+.input-block {
+  width: 100%;
+}
+.actions-block {
+  display: inline-block;
+  line-height: 41px;
+
+  i {
+    display: inline-block;
+    color: $color-fg;
+    transition: all .25s;
+    margin: 0 .3em;
+
+    &.active,
+    &:hover {
+      cursor: pointer;
+      color: $color-fg-highlight;
+    }
+  }
+}

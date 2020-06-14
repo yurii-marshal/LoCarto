@@ -1,0 +1,50 @@
+<h4 class="tab-title">{{'ADDING_ARTWORK.TITLES.GALLERY' | translate}}</h4>
+
+<div>
+  <div class="center">
+    <file-drop (onFileDrop)="dropped($event)"
+               (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
+
+      <div class="empty" *ngIf="files && files.length < 1">
+        <div class="icon icon-drag"></div>
+        <h4>{{'ADDING_ARTWORK.TITLES.DRAG_DROP' | translate}}</h4>
+        <div>
+          <p class="descr">{{'ADDING_ARTWORK.TEXTS.FILES' | translate}}</p>
+          <div class="file-container banner-image">
+            <button class="custom-btn custom-btn-primary-filled next">{{'COMMON.BUTTONS.BROWSE' | translate}}</button>
+            <input type="file" (change)="photoChange($event)" multiple/>
+          </div>
+        </div>
+      </div>
+
+      <div class="list ngx-dnd-container" *ngIf="files && files.length > 0">
+        <div class="item item-more">
+          <div class="file-container add">
+            <span>+</span>Add more
+            <input type="file" (change)="photoChange($event)" multiple/>
+          </div>
+        </div>
+        <div class="dnb-list" ngxDroppable (drop)="setMainFile($event)">
+          <div class="item ngx-dnd-item" ngxDraggable *ngFor="let item of files; let i = index" [attr.data-item]="item._id">
+            <div class="close" (click)="removeFile(i)"><i class="icon-cancel"></i></div>
+            <div class="temp-image"
+                 [ngStyle]="{'background-image': 'url(' + item.tempUrl + ')', 'transform': item.rotation}"
+                 [ngClass]="{'doc': (item.type === 'doc'), 'pdf': (item.type === 'pdf'), 'xls': (item.type === 'xls'), 'need-transform': item?.rotation}">
+              <span class="cover-label">Cover</span>
+            </div>
+            <p class="name">{{item?.name}}</p>
+            <p class="sizes">{{item?.sizeFile}} Mb</p>
+          </div>
+        </div>
+      </div>
+    </file-drop>
+  </div>
+
+  <div class="button-block">
+    <button class="custom-btn custom-btn-primary-empty back" (click)="changeTab(activeTab - 1)">{{'COMMON.BUTTONS.BACK' | translate}}</button>
+    <button class="custom-btn custom-btn-primary-filled next"
+            (click)="sendForm(formArtwork)"
+            [disabled]="!formArtwork.valid || filesInProgress"
+    >{{'COMMON.BUTTONS.SEND' | translate}}</button>
+  </div>
+</div>

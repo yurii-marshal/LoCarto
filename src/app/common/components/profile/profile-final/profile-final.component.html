@@ -1,0 +1,19 @@
+<h2>{{'ADDING_PROFILE.TITLES.GREAT_WORK' | translate}}</h2>
+<p class="description">
+  Your artist profile just created. You can look <b>Profile view</b> or add some <b>Artworks</b>
+</p>
+
+<div class="row">
+  <div class="col-6">
+    <div class="item artist">
+      <div class="image-block" (click)="setCurrentProfile(createdId)"></div>
+      <h5 (click)="setCurrentProfile(createdId)">View profile</h5>
+    </div>
+  </div>
+  <div class="col-6 artwork">
+    <div class="item">
+      <div class="image-block" [routerLink]="'/pages/artworks/all'"></div>
+      <h5 [routerLink]="'/pages/artworks/all'">Add artworks</h5>
+    </div>
+  </div>
+</div>

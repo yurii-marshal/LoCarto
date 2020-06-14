@@ -1,0 +1,26 @@
+@import '../../common/styles/variables';
+
+:host {
+  display: block;
+  position: relative;
+  margin-top: -2.22rem;
+  margin-left: -2.2rem;
+  margin-right: -2.2rem;
+  padding-bottom: 2.5rem;
+  min-height: 700px;
+}
+.empty-state {
+  text-align: center;
+  position: relative;
+  margin-top: 10%;
+
+  .icon {
+    background: url("../../../assets/images/ic_empty_state.svg") no-repeat;
+    background-position: center;
+    background-size: contain;
+    display: inline-block;
+    width: 155px;
+    height: 115px;
+    margin-bottom: .5rem;
+  }
+}

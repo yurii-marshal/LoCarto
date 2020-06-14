@@ -1,0 +1,553 @@
+@import '../../styles/themes';
+@import '../../styles/variables';
+@import '~bootstrap/scss/mixins/breakpoints';
+@import '~@nebular/theme/styles/global/breakpoints';
+
+@include nb-install-component() {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  .left {
+    display: flex;
+    width: 100%;
+    order: 0;
+    flex-direction: row;
+  }
+  .right {
+    order: 1;
+    flex-direction: row-reverse;
+  }
+
+  .control-item {
+    display: block;
+  }
+
+  .header-container {
+    display: flex;
+    align-items: center;
+    width: auto;
+
+    .navigation {
+      @include nb-ltr(padding-right, nb-theme(padding));
+      @include nb-rtl(padding-left, nb-theme(padding));
+      font-size: 2.5rem;
+      text-decoration: none;
+
+      i {
+        display: block;
+      }
+    }
+  }
+
+  .nav-titles {
+    padding: 0;
+    list-style: none;
+    margin-top: .5rem;
+
+    li {
+      display: inline-block;
+      position: relative;
+
+      & + li {
+        margin-left: 2rem;
+      }
+
+      &:hover a {
+        color: $color-fg2-highlight;
+      }
+
+      &.active:after {
+        background: $color-fg2-highlight;
+      }
+
+      &:after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 3px;
+        background: none;
+        position: absolute;
+        bottom: -15px;
+        left: 0;
+      }
+    }
+
+    a {
+      font-size: 1.4rem;
+      color: $color-fg;
+      text-decoration: none;
+      transition: all .25s;
+      padding-left: 0;
+    }
+  }
+
+  nb-user /deep/ {
+    margin-left: 1rem;
+
+    .user-container {
+      border-radius: 16px;
+      background: #fff;
+      padding-left: .5rem;
+      box-shadow: 0 2px 12px 0 rgba($color-fg, 0.25);
+    }
+    .user-picture {
+      order: 2;
+      margin-left: .7rem;
+    }
+    .user-name:hover {
+      color: $color-fg-highlight;
+    }
+  }
+  nb-user:hover {
+    cursor: pointer;
+  }
+
+  .toggle-layout,
+  .control-item {
+    padding: 0;
+  }
+
+  @include nb-for-theme(corporate) {
+    $menu-action-separator-color: #3f4550;
+
+    nb-action {
+      @include nb-ltr(border-left-color, $menu-action-separator-color);
+      @include nb-rtl(border-right-color, $menu-action-separator-color);
+    }
+
+    .header-container .logo {
+      //@include nb-ltr(border, none);
+      //@include nb-rtl(border, none);
+    }
+
+    .header-container /deep/ ngx-theme-switcher .dropdown-toggle {
+      color: nb-theme(color-white);
+      background: transparent;
+    }
+  }
+
+  ngx-layout-direction-switcher {
+    margin: 0 1.5rem;
+  }
+
+  ngx-theme-switcher {
+    margin: nb-theme(layout-padding);
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  @include media-breakpoint-down(xl) {
+    ngx-layout-direction-switcher {
+      display: none;
+    }
+  }
+
+  .toggle-layout /deep/ a {
+    display: block;
+    text-decoration: none;
+    line-height: 1;
+
+    i {
+      color: $color-fg-highlight;
+      font-size: 2.25rem;
+      border-radius: 50%;
+      position: relative;
+      animation-name: pulse-light;
+
+      &::after {
+        content: ' ';
+        // hack to be able to set border-radius
+        background-image: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
+        border-radius: 50%;
+        pointer-events: none;
+
+        position: absolute;
+        top: 52.3%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 13%;
+        height: 13%;
+
+        animation: 3s linear infinite pulse;
+
+        @include nb-for-theme(default) {
+          animation-name: pulse-light;
+        }
+      }
+    }
+  }
+
+  @include keyframes(pulse) {
+    0% {
+      box-shadow: 0 0 1px 0 rgba($color-fg-highlight, 0);
+    }
+    20% {
+      box-shadow: 0 0 3px 10px rgba($color-fg-highlight, 0.4);
+    }
+    100% {
+      box-shadow: 0 0 5px 20px rgba($color-fg-highlight, 0);
+    }
+  }
+
+  @include keyframes(pulse-light) {
+    0% {
+      box-shadow: 0 0 1px 0 rgba(115, 255, 208, 0);
+    }
+    20% {
+      box-shadow: 0 0 3px 10px rgba(115, 255, 208, 0.4);
+    }
+    100% {
+      box-shadow: 0 0 5px 20px rgba(115, 255, 208, 0);
+    }
+  }
+
+  @include media-breakpoint-down(md) {
+
+    nb-action:not(.toggle-layout) {
+      border: none;
+    }
+
+    .control-item {
+      display: none;
+    }
+
+    .toggle-layout {
+      padding: 0;
+    }
+
+    ngx-layout-direction-switcher {
+      display: none;
+    }
+
+    ngx-theme-switcher {
+      margin: 0 0.5rem;
+    }
+  }
+
+  @include media-breakpoint-down(sm) {
+
+    nb-user /deep/ .user-name {
+      display: none;
+    }
+  }
+
+  @include media-breakpoint-down(is) {
+
+    .header-container {
+      .logo {
+        font-size: 1.25rem;
+      }
+    }
+
+    .toggle-layout {
+      display: none;
+    }
+
+    ngx-theme-switcher {
+      display: none;
+    }
+
+    nb-action:not(.toggle-layout) {
+      padding: 0;
+    }
+  }
+
+  @include media-breakpoint-down(xs) {
+    .right /deep/ {
+      display: none;
+    }
+  }
+
+  .header-container.expanted {
+    width: 16rem;
+  }
+  .header-container.compacted {
+    width: 3.5rem;
+  }
+}
+/deep/ .nb-theme-default {
+  nb-layout .layout nb-layout-header nav ngx-header {
+    position: relative;
+    height: 60px;
+    top: 0;
+    background: #fff;
+  }
+  nb-layout .layout nb-layout-header.compacted nav ngx-header {
+    background: none;
+
+    .header-container:last-child {
+      display: none;
+    }
+  }
+  nb-actions.medium nb-action {
+    border: 0;
+
+    &[icon='icon-cog'] {
+      line-height: 40px;
+    }
+  }
+  nb-actions.medium nb-action i.control-icon {
+    color: $color-fg;
+    font-size: 20px;
+
+    &.disabled {
+      color: lighten($color-fg, 15%);
+    }
+
+    &:hover:not([class*="disabled"]) {
+      color: $color-fg-highlight;
+    }
+  }
+  nb-actions.medium nb-action {
+    height: 2.6rem;
+    padding: 0;
+  }
+}
+
+.user-container {
+  margin-left: 1rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.25);
+
+  &:hover .list-accounts {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+.nb-theme-default [_nghost-c3] nb-user[_ngcontent-c3] .user-picture {
+  -webkit-box-ordinal-group: 3;
+  -ms-flex-order: 2;
+  order: 2;
+  margin-left: .7rem;
+}
+.user-picture.image {
+  order: 2;
+  position: relative;
+  border-radius: 50%;
+  flex-shrink: 0;
+  height: 2.5rem;
+  width: 2.5rem;
+  background-color: $color-fg;
+  border: solid 2px #bcc3cc;
+  overflow: hidden;
+  cursor: pointer;
+
+  i {
+    color: #fff;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 6;
+  }
+  .img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 10;
+  }
+
+}
+.info-container {
+  outline: none;
+
+  .user-name {
+    margin-right: .7rem;
+    margin-left: 1rem;
+    outline: none;
+  }
+  .user-name:hover {
+    cursor: pointer;
+    color: $color-fg-highlight;
+  }
+}
+
+.list-accounts {
+  opacity: 0;
+  visibility: hidden;
+  transition: all .25s;
+  z-index: 5099;
+  position: absolute;
+  top: 110%;
+  right: 0;
+  width: 310px;
+  background: #FFFFFF;
+  box-shadow: 0 0 8px 0 rgba(0,0,0,0.12), 0 8px 8px 0 rgba(0,0,0,0.24);
+  border-radius: 2px;
+  list-style: none;
+  padding-left: 0 !important;
+  max-height: 385px;
+  overflow: auto;
+
+  li {
+    position: relative;
+    padding: .4rem 1.2rem;
+    outline: none;
+
+    &::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+
+    &:first-child {
+      padding: 1rem .4rem;
+
+      .account-picture {
+        width: 56px;
+        height: 56px;
+      }
+      .info {
+        margin-left: 1rem;
+        font-size: 1.2em;
+        padding-top: 1rem;
+      }
+    }
+
+    & + li {
+      margin-top: .4rem;
+      border-top: 1px solid lighten($color-fg, 80%);
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      .name {
+        color: $color-fg-highlight;
+      }
+      .account-picture {
+        opacity: .7;
+      }
+    }
+
+    .name {
+      margin-bottom: .2rem;
+      transition: all .25s;
+      font-weight: 600;
+    }
+    .position {
+      color: lighten($color-fg, 70%);
+      margin-bottom: 0;
+      font-size: .9em;
+    }
+    .info {
+      display: inline-block;
+      margin-left: 1.5rem;
+      padding: .5rem 1rem;
+      outline: none;
+    }
+
+    .account-picture {
+      float: left;
+      position: relative;
+      left: .5rem;
+      top: .5rem;
+      overflow: hidden;
+      height: 36px;
+      width: 36px;
+      background-color: $color-fg;
+      border: solid 2px #bcc3cc;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all .25s;
+
+      i {
+        color: #fff;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 6;
+      }
+      .img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        z-index: 10;
+      }
+    }
+  }
+
+  .logout p {
+    margin-bottom: 0;
+    font-weight: 700;
+    font-size: 1.1em;
+    margin-left: 1rem;
+    padding: 1rem 0;
+    color: lighten($color-fg, 70%);
+
+    &:hover {
+      color: $color-fg-highlight;
+      cursor: pointer;
+    }
+  }
+
+  .more .add {
+    margin-bottom: .2rem;
+
+    span {
+      height: 35px;
+      line-height: 40px;
+    }
+  }
+}
+.add {
+  clear: both;
+  font-weight: 600;
+  outline: none;
+
+  &:hover {
+    color: $color-fg-highlight;
+    cursor: pointer;
+
+    span {
+      background: $color-fg-highlight;
+    }
+  }
+
+  span {
+    display: inline-block;
+    font-size: 1.5em;
+    text-align: center;
+    margin-right: 1.9rem;
+    margin-left: .6rem;
+    margin-top: .5rem;
+    border-radius: 50%;
+    background: $color-fg;
+    color: #fff;
+    width: 35px;
+    line-height: 35px;
+    transition: .25s all;
+    box-shadow: 0 0 6px 0 rgba(0,0,0,0.16);
+  }
+}
+
+.title-page {
+  span {
+    font-size: .8em;
+    position: relative;
+    top: -2px;
+    transition: all .25s;
+    outline: none;
+
+    &:hover {
+      cursor: pointer;
+      color: $color-fg-highlight;
+    }
+  }
+}

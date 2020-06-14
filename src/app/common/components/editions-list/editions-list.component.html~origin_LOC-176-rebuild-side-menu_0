@@ -1,0 +1,57 @@
+<div>
+  <div class="editions-artworks" *ngFor="let artwork of artworkWithEditions; let i = index" [hidden]="activeArt !== i">
+
+    <div class="avatar-block" [ngStyle]="{'transform': (tempAvatar?.rotation || artworkData?.rotation)}"
+         [ngClass]="{'need-transform': (tempAvatar?.rotation || artworkData?.rotation)}">
+      <div class="bg">
+        <img [src]="artwork?.image"
+             onerror="this.style.display='none'" onload="this.style.display='block'">
+      </div>
+    </div>
+    <h4 class="title">{{artwork.title}}</h4>
+    <div class="count" *ngIf="artworkWithEditions && artworkWithEditions.length > 1">
+      {{i + 1}}/{{artworkWithEditions.length}}
+    </div>
+
+    <table class="editions-table">
+      <thead>
+      <tr>
+        <th class="text-center">Number</th>
+        <th>Artwork size</th>
+        <th>Price</th>
+        <th>Status</th>
+        <th>Where</th>
+        <th>Select</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let copy of artwork.copies; let i = index" [hidden]="deleteMode ? !copy.canDelete : ''">
+        <td class="text-center"><span class="number">{{copy?.id?.replace('-', '/')}}</span></td>
+        <td>{{copy.sizes?.artwork[0]}}x{{copy.sizes?.artwork[1]}}{{copy.sizes?.artwork[2] ? 'x' + copy.sizes?.artwork[2] : ''}} {{copy.sizes?.units === 'cm' ? 'cm' : 'inch'}}</td>
+        <td>{{copy.price?.value}} {{copy.price?.currency}}</td>
+        <td>{{(copy.locationStatus === 'notCreated' && photography) ? 'Not printed' : (copy.locationStatus ? 'In ' + copy.locationPlace : '')}}</td>
+        <td class="where">
+          <!--<div class="user-logo"></div>-->
+          <i class="icon-location" *ngIf="copy.locationPlaceName"></i><span>{{copy.locationPlaceName}}</span>
+          <!--<p class="where-name">User name</p>-->
+        </td>
+        <td>
+          <div>
+            <nb-checkbox (change)="selectCopy($event, copy, artwork)" [value]="copy.checked"></nb-checkbox>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+
+    <!--<div class="editions-copy" *ngFor="let copy of artwork.copies; let c = index"-->
+         <!--[hidden]="deleteMode ? !copy.canDelete : ''">-->
+      <!--<nb-checkbox (change)="selectCopy($event, copy, artwork)" [value]="copy.checked">-->
+      <!--</nb-checkbox>-->
+      <!--<span class="number">{{copy?.id?.replace('-', '/')}}</span>-->
+      <!--<div class="sizes">{{copy.sizes.artwork[0]}}x{{copy.sizes.artwork[1]}} {{copy.sizes.units}}</div>-->
+    <!--</div>-->
+
+  </div>
+</div>

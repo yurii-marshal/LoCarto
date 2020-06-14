@@ -1,0 +1,116 @@
+<form [formGroup]="formExhibition">
+	<div class="container-card">
+		<h4>Basic info</h4>
+		<div class="form-control-group">
+			<textarea nbInput fullWidth formControlName="description" placeholder="Description of the exhibition"></textarea>
+		</div>
+
+		<br>
+		<br>
+
+		<h5>Add instagram tags</h5>
+		<div class="form-control-group">
+			<input class="tags-input" nbInput fullWidth type="text" #tagsAr name="tagsAr" placeholder="Tags"
+			       (keydown.enter)="actionTag('set', tagsAr.value); tagsAr.value = ''; $event.preventDefault()">
+			<div class="add tags-add" (click)="actionTag('set', tagsAr.value); tagsAr.value = ''">
+				<span>+</span>
+			</div>
+			<ul class="tags">
+				<li *ngFor="let tag of tagsArr; let i = index">{{tag}} <i class="icon-cancel" (click)="actionTag('remove', i)"></i></li>
+			</ul>
+			<input nbInput type="hidden" formControlName="tags">
+		</div>
+
+		<br>
+		<br>
+
+		<h5>Info about exhibition venue:</h5>
+		<div class="form-control-group">
+			<input nbInput fullWidth type="url" formControlName="website" name="website" placeholder="Website"
+			       (keyup)="validationAct('link', formExhibition, 'website', $event.target.value)"
+			       [status]="formExhibition.get('website').dirty ? (formExhibition.get('website').invalid  ? 'danger' : 'success') : ''"
+			       [attr.aria-invalid]="formExhibition.get('website').invalid && formExhibition.get('website').touched ? true : null">
+			<ng-container *ngIf="formExhibition.get('website').invalid && formExhibition.get('website').touched">
+				<p class="error-message">
+					Link should be a valid!
+				</p>
+			</ng-container>
+		</div>
+
+		<div class="form-control-group">
+      <label>Phone</label>
+      <input type="text" [pattern]="phonePattern" [maxlength]="15" formControlName="phone"
+             ng2TelInput nbInput fullWidth name="phone"
+             [status]="formExhibition.get('phone').dirty ? (formExhibition.get('phone').invalid  ? 'danger' : 'success') : ''"
+             (intlTelInputObject)="initTelInputObject($event)"
+             (countryChange)="onCountryChange($event)"
+             [attr.aria-invalid]="formExhibition.get('phone').invalid && formExhibition.get('phone').touched ? true : null"
+      />
+
+      <ng-container *ngIf="formExhibition.get('phone').invalid && formExhibition.get('phone').touched">
+        <p *ngIf="formExhibition.get('phone').errors.pattern" class="error-message">
+          Invalid phone number
+        </p>
+      </ng-container>
+		</div>
+
+		<br>
+		<br>
+
+		<div class="add" (click)="addWorkDays()" *ngIf="!showWorkDays">
+			<span>+</span>Add work days
+		</div>
+
+		<br>
+
+		<div *ngIf="showWorkDays">
+			<h5 class="title-wd">Work days:</h5>
+			<div class="appointment">
+				<nb-checkbox (change)="changeVal($event, 'appointment')"></nb-checkbox>
+				<label>By appointment</label>
+			</div>
+			<ul class="days">
+				<li *ngFor="let day of days; let i = index">
+					<div class="val-active">
+						<ngx-switcher [firstValue]="false" [secondValue]="true" [vertical]="true"
+						              (valueChange)="toggleDay($event, i)" [value]="day.active">
+						</ngx-switcher>
+						<label>{{day.title}}</label>
+					</div>
+					<p class="closed" *ngIf="!day.active">Closed</p>
+					<div class="info" *ngIf="day.active">
+						<div class="dynamic-wrapper width-50">
+							<input nbInput type="text" placeholder="From"
+							       [owlDateTime]="dtfrom" readonly [value]="day.from">
+							<span [owlDateTimeTrigger]="dtfrom"><i class="fa fa-caret-down"></i></span>
+							<owl-date-time #dtfrom [pickerType]="'timer'"
+							               (afterPickerClosed)="timeAction('from', dtfrom, $event, i)"></owl-date-time>
+						</div>
+
+						<div class="dynamic-wrapper width-50">
+							<input nbInput type="text" placeholder="To" [value]="day.to"
+							       [owlDateTime]="dtto" [min]="day.from" readonly>
+							<span [owlDateTimeTrigger]="dtto"><i class="fa fa-caret-down"></i></span>
+							<owl-date-time #dtto [pickerType]="'timer'"
+							               (afterPickerClosed)="timeAction('to', dtto, $event, i)"></owl-date-time>
+						</div>
+					</div>
+					<div class="set-times" *ngIf="day.active"><i class="icon-exchange-1" (click)="setTimes(day, i)"
+					                                             nbTooltip="Make this time default for all days" nbTooltipPlacement="right"></i></div>
+				</li>
+			</ul>
+
+			<br>
+			<br>
+		</div>
+
+
+		<div class="button-block">
+			<button class="custom-btn custom-btn-primary-empty back" (click)="setActiveTab(activeTab - 1)">{{'COMMON.BUTTONS.BACK' | translate}}</button>
+			<button class="custom-btn custom-btn-primary-filled next"
+			        (click)="setActiveTab(activeTab + 1)"
+			        [disabled]="!formExhibition.valid"
+			>{{'COMMON.BUTTONS.NEXT' | translate}}</button>
+		</div>
+	</div>
+</form>

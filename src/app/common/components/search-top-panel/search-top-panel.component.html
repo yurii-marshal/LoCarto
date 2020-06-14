@@ -1,0 +1,19 @@
+<form #searchForm="ngForm">
+  <div class="input-block">
+    <input nbInput fullWidth type="text" ngModel #search="ngModel" name="search">
+    <button class="search-btn" (click)="send(searchForm)"><i class="icon-search"></i></button>
+  </div>
+  <div class="add clear" *ngIf="searchForm.value.search" (click)="send(searchForm, true)">
+    <span class="icon-cancel"></span>Clear search
+  </div>
+</form>
+
+<div class="add-storage">
+  <div class="add" *ngIf="actionButton?.url" [routerLink]="actionButton.url">
+    <span>+</span>{{actionButton?.text || 'Add new'}}
+  </div>
+
+  <div class="add" *ngIf="actionButton && !actionButton?.url" (click)="emitAction()">
+    <span>+</span>{{actionButton?.text || 'Add new'}}
+  </div>
+</div>

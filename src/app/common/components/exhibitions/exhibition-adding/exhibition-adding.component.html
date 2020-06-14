@@ -1,0 +1,68 @@
+<div class="adding-exh" *ngIf="!existExh">
+  <div class="wrapper">
+    <h4>Add an exhibition</h4>
+
+    <form [formGroup]="draftFormExhibition">
+      <div class="form-control-group">
+        <input nbInput fullWidth type="text" formControlName="title" placeholder="Title *" required>
+      </div>
+
+      <div class="form-control-group dynamic-wrapper width-50 half">
+        <input nbInput fullWidth [placeholder]="fullDateCreation ? 'Start date *' : 'Start year *'"
+               name="startDate" formControlName="startDate" required
+               [owlDateTime]="dt1" [readonly]="!fullDateCreation" ngxDateView [needChange]="changeYear">
+        <span [owlDateTimeTrigger]="dt1"><i class="fa fa-calendar"></i></span>
+        <owl-date-time #dt1 [pickerType]="'calendar'" [startView]="'multi-years'"
+                       (confirmSelectedChange)="fullDateCreation ? selectDate(dt1, $event, 'startDate') : ''"
+                       (yearSelected)="fullDateCreation ? '' : selectDate(dt1, $event, 'startDate')"></owl-date-time>
+      </div>
+
+      <div class="form-control-group dynamic-wrapper width-50 date-right">
+        <input nbInput fullWidth [placeholder]="fullDateCreation ? 'End date *' : 'End year *'" required
+               [min]="draftFormExhibition.get('startDate').value" name="endDate" formControlName="endDate"
+               [owlDateTime]="dt2" [readonly]="!fullDateCreation" ngxDateView [needChange]="changeYear">
+        <span [owlDateTimeTrigger]="dt2"><i class="fa fa-calendar"></i></span>
+        <owl-date-time #dt2 [pickerType]="'calendar'" [startView]="'multi-years'"
+                       (confirmSelectedChange)="fullDateCreation ? selectDate(dt2, $event, 'endDate') : ''"
+                       (yearSelected)="fullDateCreation ? '' : selectDate(dt2, $event, 'endDate')"></owl-date-time>
+      </div>
+
+      <div class="form-control-group full-date">
+        <label>Year only</label>
+        <nb-checkbox (change)="changeTypeDate($event)">
+        </nb-checkbox>
+      </div>
+
+      <div class="form-control-group">
+        <input nbInput fullWidth type="text" name="preAddress" formControlName="preAddress" placeholder="Address *"
+               ngx-google-places-autocomplete  (onAddressChange)="handleAddressChange($event, 'address')">
+        <input nbInput type="hidden" formControlName="address" name="address" required>
+      </div>
+
+      <div class="form-control-group">
+        <input nbInput fullWidth type="text" formControlName="nameLocation" placeholder="Name of gallery, museum, etc">
+      </div>
+
+      <div class="button-block">
+        <button class="custom-btn custom-btn-primary-empty back" [routerLink]="'/pages/exhibitions'">Cancel</button>
+        <button class="custom-btn custom-btn-primary-filled next" (click)="sendForm(draftFormExhibition)"
+        [disabled]="!draftFormExhibition.valid">Add</button>
+        <div class="link-wrap">
+          <a [routerLink]="['/pages/exhibitions/add-past']">Add past exhibitions in bulk</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="list-founded" *ngIf="existExh">
+  <div class="actions-wrapper">
+    <h5>We found an exhibition which looks same as yours!</h5>
+    <div class="button-block">
+      <button class="custom-btn custom-btn-primary-filled back" (click)="actionExh('id', 'join')">Join this exhibition</button>
+      <button class="custom-btn custom-btn-primary-empty next" (click)="actionExh('id', 'report')">Report this exhibition</button>
+    </div>
+  </div>
+
+  <ngx-exhibitions-list [data]="exhibition" [viewMode]="true"></ngx-exhibitions-list>
+</div>

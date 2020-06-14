@@ -1,0 +1,91 @@
+@import '../../styles/variables';
+
+.editions-artworks {
+  width: 100%;
+  max-width: 845px;
+  margin: auto;
+  padding: 1.5rem 2rem;
+
+  & + .editions-artworks {
+    margin-top: 1rem;
+  }
+
+  .number {
+    border: 1px solid $color-fg-highlight;
+    border-radius: 10px;
+    padding: .1rem .5rem;
+    width: 3rem;
+    text-align: center;
+    color: $color-fg;
+    background: #fff;
+    display: inline-block;
+    margin-right: .6rem;
+  }
+
+  nb-checkbox /deep/ label.customised-control {
+    padding-right: .5rem;
+  }
+
+  .sizes {
+    display: inline-block;
+  }
+
+  .editions-copy + .editions-copy {
+    margin-top: .5rem;
+  }
+}
+
+.avatar-block {
+  width: 220px;
+  min-height: 130px;
+  margin: auto;
+  background-color: lighten($color-fg, 85%);
+  box-shadow: 0 5px 16px 0 #4f5052;
+  margin-bottom: 3rem;
+  position: relative;
+  background-repeat: no-repeat;
+
+  &::before {
+    content: '\e81a';
+    font-family: fontello;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 120px;
+    transform: translate(-50%, -50%);
+    color: rgba(255,255,255,.5);
+  }
+
+  .bg {
+    width: 100%;
+    height: auto;
+    z-index: 9;
+    position: relative;
+    transition: all .25s;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}
+
+.title {
+  text-align: center;
+}
+
+.count {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 0;
+  color: darken($color-fg-border, 15%);
+  font-size: 1.5em;
+}
+
+.editions-table {
+  margin-top: 2em;
+  width: 100%;
+  table-layout: fixed;
+}

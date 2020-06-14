@@ -1,0 +1,191 @@
+@import "../../../styles/custom-tabs";
+@import "../../../styles/variables";
+
+.container-card {
+  max-width: 459px;
+  margin: auto;
+  display: block;
+  width: 100%;
+  margin-bottom: 2em;
+
+
+  & ::ng-deep {
+    .form-control-group + .form-control-group {
+      margin-top: 1rem;
+    }
+
+    button {
+      margin-top: 1.5em;
+    }
+  }
+}
+
+h4.title-tab {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+h2, h5 {
+  margin-top: 1.5em;
+  margin-bottom: 1em;
+}
+.button-block {
+  margin-top: 2rem;
+  margin-bottom: 2.5rem;
+
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+
+  &.center {
+    text-align: center;
+
+    .custom-btn {
+      float: none;
+      display: inline-block;
+    }
+  }
+  button[disabled] {
+    background: lighten($color-fg, 45%);
+    border-color: lighten($color-fg, 45%);
+
+    &:hover {
+      cursor: initial;
+    }
+  }
+  .back,
+  .next {
+    width: 48%;
+  }
+  .back {
+    float: left;
+  }
+  .next {
+    float: right;
+  }
+}
+nb-radio-group {
+  margin-top: 1rem;
+  display: block;
+
+  nb-radio {
+    display: inline-block;
+  }
+}
+
+.date-right,
+.date-left {
+  width: 48%;
+
+  input {
+    width: 100%;
+  }
+}
+.date-right {
+  float: right;
+}
+.date-left {
+  float: left;
+}
+.education:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.add {
+  clear: both;
+  margin-top: 1rem;
+
+  &:hover {
+    color: $color-fg-highlight;
+    cursor: pointer;
+
+    span {
+      background: $color-fg-highlight;
+    }
+  }
+
+  span {
+    display: inline-block;
+    font-size: 1.5em;
+    text-align: center;
+    margin-right: 1rem;
+    border-radius: 50%;
+    background: $color-fg;
+    color: #fff;
+    width: 35px;
+    line-height: 35px;
+    transition: .25s all;
+  }
+}
+.education {
+  .item {
+    position: relative;
+
+    & + .item {
+      margin-top: 1rem;
+      border-top: 1px solid lighten($color-fg, 75%);
+      padding-top: 1rem;
+
+      .remove-item {
+        top: 20px;
+      }
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+  }
+}
+.grant {
+  .item {
+    position: relative;
+    margin-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 1rem;
+
+    .name {
+      width: 65%;
+      display: inline-block;
+    }
+    .year {
+      width: 30%;
+      float: right;
+      margin-top: 0;
+    }
+    input {
+      width: 100%;
+    }
+
+    .remove-item {
+      top: 20px;
+    }
+  }
+}
+.remove-item {
+  position: absolute;
+  right: -38px;
+  top: 5px;
+  color: lighten($color-fg, 65%);
+  transition: .25s all;
+  font-size: 25px;
+
+  &:hover {
+    cursor: pointer;
+    color: red;
+  }
+}
+.error-message {
+  color: red;
+  margin-bottom: .2rem;
+  margin-top: .1rem;
+  font-size: .9em;
+}
+textarea {
+  min-height: 200px;
+}

@@ -1,0 +1,155 @@
+<!-- -------------- location ------------------- -->
+
+<form class="locations-form" [formGroup]="formLocations" *ngIf="!selectedCat.copies">
+  <h2>Status</h2>
+  <div class="location">
+    <div class="form-control-group">
+      <!--<nb-select placeholder="Choose place" (selectedChange)="setFormValueLoc($event, 'placeLoc')" [selected]="formLocations.get('placeLoc').value">-->
+        <!--<nb-option *ngFor="let place of places" [value]="place.id">-->
+          <!--{{place.title}}-->
+        <!--</nb-option>-->
+      <!--</nb-select>-->
+      <ngx-select placeholder="Choose place" [items]="places" optionValueField="id" optionTextField="title"
+                  [noAutoComplete]="true" [defaultValue]="formLocations.get('placeLoc').value"
+                  (select)="setFormValue($event, 'placeLoc')">
+      </ngx-select>
+      <input nbInput type="hidden" formControlName="id">
+      <input nbInput type="hidden" formControlName="placeLoc">
+    </div>
+
+    <div class="form-control-group" *ngIf="formLocations.get('placeLoc').value === 'collection' && formLocations.get('placeLoc').value === 'commission'">
+      <input nbInput fullWidth type="text" formControlName="placeLoc" readonly>
+    </div>
+
+    <div class="form-control-group" *ngIf="false"> <!-- TODO temporary hidden -->
+      <!-- *ngIf="formLocations.get('placeLoc').value === 'artstorage'" -->
+      <nb-select *ngIf="formLocations.get('placeLoc').value === 'artstorage'" placeholder="Choose place"
+                 (selectedChange)="setFormValueLoc($event, 'namePlaceLoc')" [selected]="formLocations.get('id').value">
+        <nb-option *ngFor="let storage of artStorages" [value]="storage._id">{{storage.title}}</nb-option>
+        <nb-option *ngIf="artStorages && artStorages.length < 1">No storage yet</nb-option>
+      </nb-select>
+    </div>
+
+    <!--<div class="form-control-group" *ngIf="formLocations.get('placeLoc').value !== 'artstorage'">-->
+      <!--<input nbInput fullWidth type="text" formControlName="namePlaceLoc" placeholder="Place name"-->
+             <!--[readonly]="(!formLocations.get('placeLoc').value || formLocations.get('placeLoc').value === 'collection' || formLocations.get('placeLoc').value === 'commission')">-->
+    <!--</div>-->
+    <!-- TODO END temporary hidden -->
+
+    <div class="button-block">
+      <button class="custom-btn custom-btn-primary-filled next center"
+              (click)="sendDataLoc(formLocations)"
+              [disabled]="!formLocations.valid"
+      >{{'COMMON.BUTTONS.SAVE' | translate}}</button>
+    </div>
+  </div>
+</form>
+<!-- -------------- END location ------------------- -->
+
+
+<!-- ------------ editions ------------------- -->
+<div class="info-block" *ngIf="selectedCat.copies">
+
+  <div class="base-state" *ngIf="!showSteps && editionsData && editionsData.length > 0">
+    <i class="icon"></i>
+    <div class="description">
+      <h6>Add location for your editions to manage your logistic</h6>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur dolore, dolores eius nihil quod voluptas.</p>
+    </div>
+    <div class="button-block">
+      <button class="custom-btn custom-btn-primary-empty" (click)="showSteps = true">Set location</button>
+    </div>
+  </div>
+
+  <div class="step" *ngIf="showSteps">
+    <h6 class="title-step"><span>{{typeStep === 'set' ? '1' : '2'}}</span> {{typeStep === 'set' ? 'Add location for your editions' : 'Select editions for this location'}}</h6>
+    <form [formGroup]="formLocations">
+
+      <div class="form-control-group" *ngIf="typeStep === 'set'">
+        <nb-select placeholder="Choose place" (selectedChange)="setFormValueLoc($event, 'placeLoc')" [selected]="formLocations.get('placeLoc').value">
+          <nb-option *ngFor="let place of places" [value]="place"
+                     [hidden]="place.id !== 'artstorage' && (place.id !== 'notCreated' && photography)">{{place.title}}</nb-option>
+        </nb-select>
+        <input nbInput type="hidden" formControlName="id">
+        <input nbInput type="hidden" formControlName="placeLoc" required>
+      </div>
+
+      <div class="form-control-group" *ngIf="(formLocations.get('placeLoc').value?.id !== 'notCreated' && photography) && typeStep === 'set'">
+        <nb-select *ngIf="formLocations.get('placeLoc').value?.id === 'artstorage'" placeholder="Choose place" (selectedChange)="setFormValueLoc($event, 'namePlaceLoc')">
+          <nb-option *ngFor="let storage of artStorages" [value]="storage">{{storage.title}}</nb-option>
+          <nb-option *ngIf="artStorages && artStorages.length < 1">No storages yet</nb-option>
+        </nb-select>
+
+        <input nbInput fullWidth formControlName="namePlaceLoc" required
+               [type]="(formLocations.get('placeLoc').value?.id === 'artstorage' ? 'hidden' : 'text')"
+               [placeholder]="setPlaceholder(formLocations.get('placeLoc').value?.title)">
+      </div>
+
+      <div *ngIf="typeStep === 'done'" class="step-values">
+        <p class="location">{{formLocations.get('placeLoc').value?.title}}</p>
+        <p class="place" *ngIf="formLocations.get('placeLoc').value?.id === 'artstorage'">
+          <i class="icon-location"></i>
+          {{formLocations.get('namePlaceLoc').value?.title ? (formLocations.get('namePlaceLoc').value?.title + ' - ' + formLocations.get('namePlaceLoc').value?.address) : formLocations.get('namePlaceLoc').value}}
+        </p>
+      </div>
+
+      <div class="form-control-group buttons">
+        <button class="custom-btn custom-btn-primary-filled next"
+                (click)="setNext((typeStep === 'set' ? 'done' : 'set'))"
+                [disabled]="typeStep === 'set' ? (!formLocations.valid && (formLocations.get('placeLoc').value?.id !== 'notCreated' && photography)) : false">{{typeStep === 'set' ? 'Set location' : 'Done'}}</button>
+      </div>
+
+    </form>
+  </div>
+
+  <!--<div *ngIf="selectedCat.copies">-->
+    <!--<div class="empty-state" *ngIf="!editionsData || (editionsData && editionsData.length < 1)">-->
+      <!--<div class="icon"></div>-->
+      <!--<p>Add editions to artwork</p>-->
+    <!--</div>-->
+  <!--</div>-->
+
+  <div *ngIf="selectedCat.copies && (!editionsData || (editionsData && editionsData.length < 1))" class="empty-card editions-card">
+    <div class="icon editions-icon"></div>
+    <h5 class="status-title">No editions yet</h5>
+    <p class="desc">Here you can add and edit editions <br> of your artwork</p>
+    <button class="custom-btn custom-btn-primary-filled" (click)="openModal('', 'addEditionsModal')"><i class="icon-ic_plus"></i> Add Editions</button>
+  </div>
+</div>
+
+
+<table class="editions-table" *ngIf="editionsData && editionsData.length > 0">
+  <thead>
+  <tr>
+    <th class="text-center">Number</th>
+    <th>Artwork size</th>
+    <th>Price</th>
+    <th>Status</th>
+    <th>Where</th>
+    <th><nb-checkbox *ngIf="typeStep === 'done'" (change)="setNewEditions($event, 'all')"></nb-checkbox>{{typeStep === 'done' ? 'Select' : ''}}</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let copy of editionsData; let i = index">
+    <td class="text-center"><span class="number">{{copy?.id?.replace('-', '/')}}</span></td>
+    <td>{{copy.sizes?.artwork[0]}}x{{copy.sizes?.artwork[1]}}{{copy.sizes?.artwork[2] ? 'x' + copy.sizes?.artwork[2] : ''}} {{copy.sizes?.units === 'cm' ? 'cm' : (copy.sizes?.units === 'in' ? 'inch' : '')}}</td>
+    <td>{{copy.price?.value}} {{copy.price?.currency}}</td>
+    <td>{{(copy.locationStatus === 'notCreated' && photography) ? 'Not printed' : (copy.locationStatus ? 'In ' + copy.locationPlace : '')}}</td>
+    <td class="where">
+      <!--<div class="user-logo"></div>-->
+      <i class="icon-location" *ngIf="copy.locationPlaceName"></i><span>{{copy.locationPlaceName}}</span>
+      <!--<p class="where-name">User name</p>-->
+      <div class="actions">
+        <i class="icon-trash-empty remove" (click)="openModal(copy, 'deleteCopieModal', 'delete', i)"></i>
+        <i class="icon-pencil edit" (click)="openModal(copy, 'editCopieModal', 'edit', i)"></i>
+      </div>
+    </td>
+    <td>
+      <div *ngIf="typeStep === 'done'">
+        <nb-checkbox (change)="setNewEditions($event, i)" [value]="copy.selectForSet"></nb-checkbox>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<!-- ------------ END editions ------------------- -->

@@ -1,0 +1,140 @@
+@import '../../../common/styles/variables';
+
+/deep/ .nb-theme-default nb-alert.outline-success {
+  border-color: $color-fg-highlight;
+  text-align: center;
+  margin: 1.5rem 0;
+  border-radius: 4px;
+  p {
+    margin-bottom: 0;
+    color: $color-fg-highlight;
+    b {
+      margin-bottom: .5rem;
+    }
+  }
+}
+
+:host {
+  .reset-password {
+    max-width: 385px;
+    margin: 85px auto 0;
+    padding: 0 24px;
+    .form-group:last-of-type {
+      margin-bottom: 3rem;
+    }
+    .custom-btn {
+      width: 100%;
+    }
+
+    .sub-title {
+      font-family: FuturaBook;
+      font-weight: 400;
+      font-size: 18px;
+    }
+
+    .form-control-group {
+      margin-bottom: 35px;
+      input, label, .error-message {
+        font-family: FuturaBook;
+        font-weight: 400;
+      }
+      label {
+        margin-bottom: 12px;
+        font-size: 18px;
+        line-height: 18px;
+        letter-spacing: 0.02em;
+        color: #000000;
+      }
+      input {
+        background: #FFFFFF;
+        border: 1px solid #DADFE6;
+        box-sizing: border-box;
+        border-radius: 4px;
+
+        font-size: 18px;
+        line-height: 18px;
+        letter-spacing: 0.02em;
+
+        &::placeholder {
+          font-size: 18px;
+        }
+        &:focus {
+          border-color: $color-fg-highlight;
+        }
+      }
+      &.accept-group {
+        margin: 5px 0 20px;
+        text-align: right;
+        font-family: FuturaBook;
+        font-weight: 400;
+        font-size: 18px;
+        a {
+          width: 100%;
+          color: $color-fg-highlight;
+          &:hover {
+            text-decoration: none;
+          }
+        }
+        .forgot-password {
+          line-height: 1;
+        }
+      }
+      .error-message {
+        font-size: 13px;
+        position: absolute;
+      }
+    }
+
+    .back-link {
+      margin: -5px 0 20px;
+      text-align: right;
+      font-family: FuturaBook;
+      font-weight: 400;
+      font-size: 18px;
+      a {
+        width: 100%;
+        color: $color-fg-highlight;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+
+    .send-btn-container {
+      width: 100%;
+      display: flex;
+      .custom-btn {
+        font-family: FuturaBook;
+        width: 100%;
+        height: 44px;
+        font-weight: 400;
+        background: #000000;
+        border-radius: 4px;
+        font-size: 20px;
+        line-height: 22px;
+        letter-spacing: 0.02em;
+        text-transform: capitalize;
+        margin: 5px 50px;
+        color: #FFFFFF;
+      }
+    }
+
+    .outline-danger {
+      margin: 1.5rem 0;
+      .alert-message-list {
+        .alert-message {
+          margin: 0;
+          color: #f63057;
+        }
+      }
+    }
+  }
+}
+
+/deep/ .nb-theme-default nb-auth nb-card-header {
+  display: none;
+}
+
+form {
+  position: relative;
+}

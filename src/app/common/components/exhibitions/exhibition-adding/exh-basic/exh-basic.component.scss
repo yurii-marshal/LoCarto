@@ -1,0 +1,238 @@
+@import '../../../../styles/themes';
+@import '../../../../styles/variables';
+
+.container-card {
+  & > h4 {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+}
+
+.button-block {
+  margin-top: 1.5em;
+  margin-bottom: 2em;
+
+  &:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+  .back,
+  .next {
+    width: 48%;
+  }
+  .back {
+    float: left;
+  }
+  .next {
+    float: right;
+  }
+
+  button[disabled] {
+    background: lighten($color-fg, 45%);
+    border-color: lighten($color-fg, 45%);
+
+    &:hover {
+      cursor: initial;
+    }
+  }
+}
+
+.form-control-group + .form-control-group {
+  margin-top: 1rem;
+}
+
+textarea {
+  min-height: 200px;
+}
+
+[nbInput].input-full-width.tags-input {
+  display: inline-block;
+  width: 85%;
+}
+
+.tags-add {
+  float: right;
+  margin-top: .3rem;
+
+  span {
+    margin: 0;
+  }
+}
+
+.width-60 {
+  width: 64%;
+}
+.width-30 {
+  width: 32%;
+}
+.width-50 {
+  width: 48%;
+  display: inline-block;
+  vertical-align: top;
+
+  & + .width-50 {
+    margin-left: 4%;
+  }
+}
+
+ul.tags {
+  padding: 0;
+  list-style: none;
+  margin-top: .5rem;
+
+  li {
+    display: inline-block;
+    border: 1px solid $color-fg-highlight;
+    border-radius: 18px;
+    padding: .3rem .9rem;
+    margin-bottom: .3rem;
+    transition: all .25s;
+    color: $color-fg;
+    position: relative;
+
+    &:hover {
+      border-color: $color-fg;
+    }
+
+    i {
+      transition: all .25s;
+      margin-right: -.5rem;
+
+      &:hover {
+        cursor: pointer;
+        color: $color-fg-highlight;
+      }
+    }
+  }
+
+  li + li {
+    margin-left: 1rem;
+  }
+}
+
+.add {
+
+  &:hover {
+    color: $color-fg-highlight;
+    cursor: pointer;
+
+    span {
+      background: $color-fg-highlight;
+    }
+  }
+
+  span {
+    display: inline-block;
+    font-size: 1.5em;
+    text-align: center;
+    margin-right: 1rem;
+    border-radius: 50%;
+    background: $color-fg;
+    color: #fff;
+    width: 35px;
+    line-height: 35px;
+    transition: .25s all;
+  }
+}
+
+.title-wd {
+  display: inline-block;
+}
+
+.appointment {
+  float: right;
+  color: $color-fg;
+
+  nb-checkbox ::ng-deep label,
+  label {
+    padding: 0;
+    margin-bottom: 0;
+    vertical-align: middle;
+  }
+}
+
+ul.days {
+  list-style: none;
+  padding: 0;
+
+  li {
+    display: block;
+    border-top: 1px solid $color-fg-border;
+    border-bottom: 1px solid $color-fg-border;
+    padding: .6em 0;
+    color: $color-fg;
+    position: relative;
+
+    & + li {
+      border-top: 0;
+    }
+  }
+
+  .val-active,
+  .info,
+  .closed {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
+  }
+  .val-active {
+    width: 40%;
+  }
+  .info {
+    width: 60%;
+
+    input {
+      width: 100%;
+    }
+  }
+  .closed {
+    line-height: 41px;
+  }
+
+  ngx-switcher ::ng-deep {
+    .switch-label.vertical {
+      display: inline-block;
+    }
+    .switch {
+      margin: 0 !important;
+    }
+    .switch-label.vertical,
+    .switch {
+      vertical-align: middle;
+    }
+    .switch {
+      margin-top: 0;
+    }
+    .switch-label.vertical span.first {
+      padding: 0 !important;
+    }
+  }
+
+  label {
+    margin: 0;
+    margin-left: 1em;
+    line-height: 21px;
+    vertical-align: middle;
+  }
+
+  .set-times {
+    position: absolute;
+    right: -25px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $color-fg-highlight;
+    cursor: pointer;
+    transition: all .25s;
+
+    i {
+      transform: rotate(90deg);
+      display: block;
+    }
+
+    &:hover i {
+      color: $color-fg;
+    }
+  }
+}

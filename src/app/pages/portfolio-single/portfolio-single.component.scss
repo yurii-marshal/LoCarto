@@ -1,0 +1,119 @@
+@import '../../common/styles/variables';
+
+:host {
+  display: block;
+  position: relative;
+  margin-top: -2.5rem;
+  margin-left: -2.2rem;
+  margin-right: -2.2rem;
+  padding-bottom: 2.5rem;
+  min-height: 700px;
+}
+
+ngx-artworks {
+  margin-top: 0;
+}
+
+.search-block {
+  padding: 1.5rem 2.5rem;
+  border-top: 1px solid #bbb;
+  background: #fff;
+
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+
+  form {
+    width: 60%;
+    float: left;
+    position: relative;
+  }
+  .input-block {
+    position: relative;
+
+    .search-btn {
+      position: absolute;
+      right: .5rem;
+      top: 50%;
+      border: 0;
+      background: none;
+      font-size: 20px;
+      transform: translateY(-50%);
+      outline: none;
+
+      &:hover {
+        cursor: pointer;
+        color: $color-fg-highlight;
+      }
+    }
+  }
+  .add-storage {
+    float: right;
+  }
+}
+
+.container-block {
+  padding: 2.5rem;
+}
+
+.artworks-modal {
+  margin: auto;
+  min-width: 1000px;
+  max-width: 80%;
+  max-height: 100%;
+
+  nb-card-header  {
+    background: $color-fg;
+    color: #fff;
+
+    span {
+      float: right;
+      transition: all .25s;
+
+      &:hover {
+        cursor: pointer;
+        opacity: .8;
+      }
+    }
+
+    p {
+      margin-bottom: 0;
+    }
+  }
+
+  nb-card-body {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-height: 500px;
+    overflow: auto;
+  }
+
+  .search-block {
+    padding: 0;
+    border: none;
+    background: none;
+
+    form,
+    .input-block {
+      width: 100%;
+    }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  position: relative;
+  margin-top: 10%;
+
+  .icon {
+    background: url("../../../assets/images/ic_empty_state.svg") no-repeat;
+    background-position: center;
+    background-size: contain;
+    display: inline-block;
+    width: 155px;
+    height: 115px;
+    margin-bottom: .5rem;
+  }
+}

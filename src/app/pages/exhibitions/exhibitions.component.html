@@ -1,0 +1,6 @@
+<div class="search-block" *ngIf="!viewMode">
+	<ngx-search-top-panel (dataOut)="search($event)"></ngx-search-top-panel>
+</div>
+
+<ngx-exhibitions-list (needUpdate)="getExhibitions(currentProfileId)" [data]="exhibitions"></ngx-exhibitions-list>
+<nb-spinner *ngIf="showSnipper" [message]="''"></nb-spinner>

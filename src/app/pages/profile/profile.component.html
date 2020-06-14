@@ -1,0 +1,45 @@
+<h3 class="sub-title">{{fromCreate ? 'Add a new role' : 'Create your profile to start'}}</h3>
+
+<h1 class="title">Choose who are you</h1>
+
+<div class="row">
+  <div class="col-3">
+    <div class="item artist">
+      <div class="image-block" [routerLink]="'/pages/profile-adding'" [queryParams]="{ type: 'artist'}"></div>
+      <h5 [routerLink]="'/pages/profile-adding'" [queryParams]="{ type: 'artist'}">Artist</h5>
+      <p>Short text about artist capabilities</p>
+    </div>
+  </div>
+  <div class="col-3 collector">
+    <div class="item">
+      <div class="image-block" [routerLink]="'/pages/profile-adding'" [queryParams]="{ type: 'collector'}"></div>
+      <h5 [routerLink]="'/pages/profile-adding'" [queryParams]="{ type: 'collector'}">Collector</h5>
+      <p>Short text about collector capabilities</p>
+    </div>
+  </div>
+
+  <!--<div class="col-3 art-professional">-->
+  <!--<div class="item">-->
+  <!--<div class="image-block" [routerLink]="'/pages/profile-adding'" [queryParams]="{ type: 'art-professional'}"></div>-->
+  <!--<h5 [routerLink]="'/pages/profile-adding'" [queryParams]="{ type: 'art-professional'}">Art-professional</h5>-->
+  <!--<p>{{'ProfileComponent.TEXT_ART_PROFESSIONAL' | translate}}</p>-->
+  <!--</div>-->
+  <!--</div>-->
+
+  <div class="col-3 gallery">
+    <div class="item">
+      <div class="image-block"></div>
+      <h5>Gallery</h5>
+      <p>Short text about gallery capabilities</p>
+      <div class="coming-soon"><p>Coming Soon</p></div>
+    </div>
+  </div>
+  <div class="col-3 museum">
+    <div class="item">
+      <div class="image-block"></div>
+      <h5>Museum</h5>
+      <p>Short text about museum capabilities</p>
+      <div class="coming-soon"><p>Coming Soon</p></div>
+    </div>
+  </div>
+</div>

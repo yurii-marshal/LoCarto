@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="231px" height="203px" viewBox="0 0 231 203" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>portfolio_hover</title>
+    <desc>Created with Sketch.</desc>
+    <g id="portfolio_hover" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g fill-rule="nonzero">
+            <rect id="Rectangle" x="0" y="0" width="231" height="203"></rect>
+            <path d="M0,36 L-3.55271368e-15,5 C-3.89089055e-15,2.23857625 2.23857625,5.07265313e-16 5,0 L43.2544061,1.59872116e-14 C44.4292598,1.57713944e-14 45.566594,0.413708649 46.4668739,1.16854455 L57,10 L225.999998,10.1548407 C228.759683,10.1572965 230.995549,12.3951524 230.995549,15.1548387 L231,36 L231,189 C231,191.761424 228.761424,194 226,194 L5,194 C2.23857625,194 3.38176876e-16,191.761424 0,189 L0,36 Z" id="Combined-Shape" fill-opacity="0.64" fill="#000000"></path>
+        </g>
+    </g>
+</svg>

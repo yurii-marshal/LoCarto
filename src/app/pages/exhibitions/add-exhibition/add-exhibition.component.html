@@ -1,0 +1,55 @@
+<form [formGroup]="formExhibition">
+
+  <form [formGroup]="draftFormExhibition">
+    <ngx-exhibition-adding *ngIf="!showSteps" [curTab]="activeTab" (setTab)="setActiveTab($event)"
+                           [form]="draftFormExhibition" (draftCreated)="showSteps = $event"
+                           (addressData)="setInfo($event)"
+    ></ngx-exhibition-adding>
+  </form>
+
+  <div class="steps" *ngIf="showSteps">
+    <ul class="steps-header" *ngIf="!finalResult">
+      <li *ngFor="let tab of tabs; let i = index"
+          [ngClass]="{'active': activeTab === i + 1, 'prev': activeTab > i + 1, 'next': activeTab < i + 1 }"
+          (click)="setActiveTab(i + 1, formExhibition)">
+        <p class="title"><span>{{tab.title | translate}}</span></p>
+      </li>
+    </ul>
+
+    <div class="steps-body">
+
+      <!-- ----------- 1 Basic info step --------- -->
+      <div class="container-card category" [hidden]="activeTab !== 1">
+        <ngx-exh-basic [curTab]="activeTab" (setTab)="setActiveTab($event)" [form]="formExhibition" [addressData]="googleData"></ngx-exh-basic>
+      </div>
+      <!-- ----------- END 1 Basic info step --------- -->
+
+      <!-- ----------- 2 Banner step --------- -->
+      <div class="container-card" [hidden]="activeTab !== 2" *ngIf="activeTab >= 2">
+        <ngx-exh-banner [curTab]="activeTab" (setTab)="setActiveTab($event)" [form]="formExhibition"
+                        (bannerData)="setData('banner', $event)"></ngx-exh-banner>
+      </div>
+      <!-- ----------- END 2 Banner step --------- -->
+
+      <!-- ----------- 3 Photos step --------- -->
+      <div [hidden]="activeTab !== 3" *ngIf="activeTab >= 3">
+        <ngx-exh-photos [curTab]="activeTab" (setTab)="setActiveTab($event)" [form]="formExhibition"
+                        (filesData)="setData('photos', $event)"></ngx-exh-photos>
+      </div>
+      <!-- ----------- END 3 Photos step --------- -->
+
+
+      <!-- ----------- 4 Members step --------- -->
+      <div class="container-card" [hidden]="activeTab !== 4" *ngIf="activeTab >= 4" [ngClass]="{'final': finalResult}">
+        <ngx-exh-members [curTab]="activeTab" (setTab)="setActiveTab($event)" [form]="formExhibition"
+                         (usersData)="setData('users', $event, true)" *ngIf="!finalResult"></ngx-exh-members>
+
+        <!--<ngx-exh-final *ngIf="finalResult" [curId]="exhId"></ngx-exh-final>-->
+      </div>
+      <!-- ----------- END 4 Members step --------- -->
+
+    </div><!-- ----------- END steps-body --------- -->
+  </div><!-- ----------- END steps --------- -->
+
+  <nb-spinner *ngIf="showSnipper" [message]="''"></nb-spinner>
+</form>

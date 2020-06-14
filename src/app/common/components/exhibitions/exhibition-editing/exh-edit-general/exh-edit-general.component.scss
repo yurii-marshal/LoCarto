@@ -1,0 +1,417 @@
+@import '../../../../styles/themes';
+@import '../../../../styles/variables';
+@import '~bootstrap/scss/mixins/breakpoints';
+@import '~@nebular/theme/styles/global/breakpoints';
+
+:host {
+  display: block;
+  margin-top: -.96em;
+}
+
+.avatar-block {
+  width: 100%;
+  margin: auto;
+  background-color: lighten($color-fg, 85%);
+  margin-bottom: 3rem;
+  position: relative;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    display: block;
+    padding-bottom: 35%;
+  }
+
+  &::after {
+    content: '\e811';
+    display: block;
+    font-family: fontello;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(255,255,255,.6);
+    font-size: 150px;
+  }
+
+  .bg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+  }
+
+  img,
+  .img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+
+  .file-container {
+    box-shadow: 0 2px 12px 0 rgba($color-fg, 0.25);
+    display: block;
+    position: absolute;
+    bottom: 2rem;
+    right: 3rem;
+    width: 50px;
+    line-height: 50px;
+    color: #fff;
+    background: $color-fg;
+    border-radius: 50%;
+    text-align: center;
+    transition: all .25s;
+    z-index: 10;
+
+    &:hover {
+      background: $color-fg-highlight;
+    }
+  }
+}
+
+.steps-body {
+  position: relative;
+  padding: 3rem 2rem;
+  width: 93%;
+  margin: auto;
+  margin-bottom: 1.5rem;
+  margin-top: 3em;
+
+  &.has-bg {
+    background: #fff;
+    border-radius: .375rem;
+    box-shadow: 0 2px 12px 0 #dfe3eb;
+  }
+}
+
+.container-card {
+  max-width: 460px;
+  margin: auto;
+}
+
+.basic-title {
+  margin-bottom: 3rem;
+  position: relative;
+
+  &.info,
+  &.inst {
+    margin-bottom: .5em;
+  }
+
+  &.info:after {
+    width: 40%;
+  }
+  &.inst:after {
+    width: 55%;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 74%;
+    right: 0;
+    border-top: 1px solid lighten($color-fg, 85%);
+  }
+}
+
+.adding-exh {
+  background: #fff;
+  margin-bottom: 1.5rem;
+  border-radius: .375rem;
+  box-shadow: 0 2px 12px 0 #dfe3eb;
+  padding: 3rem 2rem;
+
+  .wrapper {
+    max-width: 460px;
+    margin: auto;
+    min-height: 300px;
+
+    & > h4 {
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+.button-block {
+  margin: 1.5em auto 2em auto;
+  max-width: 600px;
+
+  &:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+  .back,
+  .next {
+    width: 30%;
+  }
+  .back {
+    float: left;
+  }
+  .next {
+    float: right;
+  }
+
+  button[disabled] {
+    background: lighten($color-fg, 45%);
+    border-color: lighten($color-fg, 45%);
+
+    &:hover {
+      cursor: initial;
+    }
+  }
+
+  .custom-btn.active-btn {
+    margin-left: 5%;
+  }
+}
+
+.form-control-group + .form-control-group {
+  margin-top: 1rem;
+}
+
+.form-control-group + .form-control-group.full-date {
+  margin-top: .4em;
+}
+.full-date {
+  margin-top: .4em;
+
+  label {
+    margin: 0;
+    padding: 0;
+  }
+
+  nb-checkbox {
+    margin-left: .5em;
+  }
+}
+
+[class*='width'] {
+  display: inline-block;
+}
+.width-60 {
+  width: 64%;
+}
+.width-30 {
+  width: 32%;
+}
+.width-50 {
+  width: 48%;
+  display: inline-block;
+  vertical-align: top;
+
+  & + .width-50 {
+    margin-left: 4%;
+  }
+}
+
+.error {
+  color: red;
+  margin-top: .5rem;
+  text-align: center;
+  font-size: 1.2em;
+  margin-bottom: 0;
+}
+
+.actions-wrapper {
+  width: 94%;
+  margin: auto;
+  margin-top: 3.5em;
+
+  .button-block {
+    max-width: 450px;
+  }
+}
+
+.add {
+
+  &:hover {
+    color: $color-fg-highlight;
+    cursor: pointer;
+
+    span {
+      background: $color-fg-highlight;
+    }
+  }
+
+  span {
+    display: inline-block;
+    font-size: 1.5em;
+    text-align: center;
+    margin-right: 1rem;
+    border-radius: 50%;
+    background: $color-fg;
+    color: #fff;
+    width: 35px;
+    line-height: 35px;
+    transition: .25s all;
+  }
+}
+
+.title-wd {
+  display: inline-block;
+}
+
+.appointment {
+  float: right;
+  color: $color-fg;
+
+  nb-checkbox ::ng-deep label,
+  label {
+    padding: 0;
+    margin-bottom: 0;
+    vertical-align: middle;
+  }
+}
+
+ul.days {
+  list-style: none;
+  padding: 0;
+
+  li {
+    display: block;
+    border-top: 1px solid $color-fg-border;
+    border-bottom: 1px solid $color-fg-border;
+    padding: .6em 0;
+    color: $color-fg;
+    position: relative;
+
+    & + li {
+      border-top: 0;
+    }
+  }
+
+  .val-active,
+  .info,
+  .closed {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
+  }
+  .val-active {
+    width: 40%;
+  }
+  .info {
+    width: 60%;
+
+    input {
+      width: 100%;
+    }
+  }
+  .closed {
+    line-height: 41px;
+  }
+
+  ngx-switcher ::ng-deep {
+    .switch-label.vertical {
+      display: inline-block;
+    }
+    .switch {
+      margin: 0 !important;
+    }
+    .switch-label.vertical,
+    .switch {
+      vertical-align: middle;
+    }
+    .switch {
+      margin-top: 0;
+    }
+    .switch-label.vertical span.first {
+      padding: 0 !important;
+    }
+  }
+
+  label {
+    margin: 0;
+    margin-left: 1em;
+    line-height: 21px;
+    vertical-align: middle;
+  }
+
+  .set-times {
+    position: absolute;
+    right: -25px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $color-fg-highlight;
+    cursor: pointer;
+    transition: all .25s;
+
+    i {
+      transform: rotate(90deg);
+      display: block;
+    }
+
+    &:hover i {
+      color: $color-fg;
+    }
+  }
+}
+
+textarea {
+  min-height: 200px;
+}
+
+[nbInput].input-full-width.tags-input {
+  display: inline-block;
+  width: 85%;
+}
+
+.tags-add {
+  float: right;
+  margin-top: .3rem;
+
+  span {
+    margin: 0;
+  }
+}
+
+ul.tags {
+  padding: 0;
+  list-style: none;
+  margin-top: .5rem;
+
+  li {
+    display: inline-block;
+    border: 1px solid $color-fg-highlight;
+    border-radius: 18px;
+    padding: .3rem .9rem;
+    margin-bottom: .3rem;
+    transition: all .25s;
+    color: $color-fg;
+
+    &:hover {
+      border-color: $color-fg;
+    }
+
+    i {
+      transition: all .25s;
+      margin-right: -.5rem;
+
+      &:hover {
+        cursor: pointer;
+        color: $color-fg-highlight;
+      }
+    }
+  }
+
+  li + li {
+    margin-left: 1rem;
+  }
+}
+
+.input-wrap {
+  position: relative;
+}

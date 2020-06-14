@@ -1,0 +1,249 @@
+<form [formGroup]="formArtwork">
+  <div class="avatar-block" [ngStyle]="{'transform': (tempAvatar?.rotation || artworkData?.rotation)}"
+       [ngClass]="{'need-transform': (tempAvatar?.rotation || artworkData?.rotation)}">
+    <div class="bg" (click)="openGallery(0)">
+      <img [src]="tempAvatar?.tempUrl | safe:'url'" *ngIf="tempAvatar?.tempUrl">
+      <img [src]="artworkData?.image" *ngIf="!tempAvatar?.tempUrl"
+           onerror="this.style.display='none'" onload="this.style.display='block'">
+    </div>
+    <div class="actions">
+      <div class="file-container" [ngStyle]="{'transform': (tempAvatar?.unrotation || artworkData?.unrotation)}">
+        <i class="icon-pencil"></i>
+        <input type="file" (change)="photoChange($event, 'avatar')" accept="image/gif, image/jpeg, image/png"/>
+      </div>
+    </div>
+  </div>
+
+  <h4 class="basic-title">General</h4>
+
+  <div class="form-control-group">
+    <input nbInput fullWidth type="text" formControlName="title" placeholder="Title artwork *" required>
+    <input nbInput type="hidden" formControlName="id">
+  </div>
+
+  <div class="form-control-group" *ngIf="profileData?.type.toLowerCase() === 'collector'">
+    <input nbInput fullWidth type="text" formControlName="artistName" placeholder="Artist name *" required>
+  </div>
+
+  <div class="form-control-group birthday month" *ngIf="categories">
+    <input nbInput fullWidth type="text" [value]="(selectedCat ? selectedCat.title : '')" readonly>
+    <input nbInput type="hidden" formControlName="category">
+  </div>
+
+  <div formArrayName="fields" class="all-fields form-control-group">
+    <div *ngFor="let field of getArrForms('fields').controls; let i = index" [formGroupName]="i" class="form-control-group">
+
+      <div *ngIf="field.value.base">
+        <input nbInput fullWidth type="text" [value]="field?.value?.baseTitle" readonly>
+      </div>
+
+      <div *ngIf="!field.value.base">
+        <div class="form-control-group" *ngIf="(field.value.type === 'multi' || field.value.type === 'single') && field.value.showEl">
+          <!--<nb-select [placeholder]="field.value.title" [multiple]="field.value.type === 'multi'"-->
+                     <!--[selected]="field?.value?.selected"-->
+                     <!--(selectedChange)="setFormValue($event, field.value.title.toLowerCase(), i)">-->
+            <!--<nb-option *ngFor="let opt of field.value['options']" value="{{opt.id}}">{{opt.title}}</nb-option>-->
+          <!--</nb-select>-->
+
+          <!-- | filter:'show' -->
+          <ngx-select [placeholder]="field.value.title" [items]="field.value['options'] | filter:'show'" optionValueField="id" optionTextField="title"
+                      [multiple]="field.value.type === 'multi'" [noAutoComplete]="true"
+                      [defaultValue]="field?.value?.selected" [keepSelectedItems]="field.value.type === 'multi'"
+                      (select)="setFormValue($event, field.value.title.toLowerCase(), i, field.value.type === 'multi')"
+                      (remove)="setFormValue($event, field.value.title.toLowerCase(), i, field.value.type === 'multi', true)">
+          </ngx-select>
+        </div>
+
+        <div class="form-control-group" *ngIf="field.value.type === 'text'">
+          <input nbInput fullWidth type="text" [placeholder]="field.value.title" [value]="field?.value?.selected"
+                 (keyup)="setFormValue($event.target.value, field.value.title.toLowerCase(), i)">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-control-group half dynamic-wrapper width-50">
+    <input nbInput fullWidth [placeholder]="fullDateCreation ? 'Date of creation' : 'Year of creation'"
+           name="dateCreation" formControlName="dateCreation" [max]="todayDate" [value]="formArtwork.get('dateCreation').value"
+           [owlDateTime]="dt1" [readonly]="!fullDateCreation" ngxDateView [needChange]="changeYear">
+    <span [owlDateTimeTrigger]="dt1"><i class="fa fa-calendar"></i></span>
+    <owl-date-time #dt1 [pickerType]="'calendar'" [startView]="'multi-years'"
+                   (confirmSelectedChange)="fullDateCreation ? selectDate(dt1, $event) : ''"
+                   (yearSelected)="fullDateCreation ? '' : selectDate(dt1, $event)"></owl-date-time>
+  </div>
+
+  <div class="form-control-group full-date width-50">
+    <label>Full date</label>
+    <nb-checkbox (change)="changeTypeDate($event)" [value]="fullDateCreation">
+    </nb-checkbox>
+  </div>
+
+  <div class="form-control-group measurement" *ngIf="!editionsData || (editionsData && editionsData.length < 1)"
+       [ngClass]="{'sculpture': selectedCat?.title === 'Sculptures'}">
+    <div class="left sizes">
+      <div>
+        <input nbInput fullWidth type="text" formControlName="height" placeholder="Height">
+      </div>
+      <div>
+        <input nbInput fullWidth type="text" formControlName="width" placeholder="Width">
+      </div>
+      <div *ngIf="selectedCat?.sizes?.dimensions === 3">
+        <input nbInput fullWidth type="text" formControlName="depth" placeholder="Depth">
+      </div>
+    </div>
+
+    <div class="right sizes">
+      <nb-radio-group>
+        <nb-radio
+                *ngFor="let option of options"
+                [value]="option.value"
+                [checked]="option.checked"
+                (valueChange)="setFormValue($event, 'measurement')">
+          {{ option.label }}
+        </nb-radio>
+      </nb-radio-group>
+
+      <input nbInput type="hidden" formControlName="measurement">
+    </div>
+  </div>
+
+  <div class="form-control-group" *ngIf="!editionsData || (editionsData && editionsData.length < 1)">
+    <p class="desc-price">Price</p>
+
+    <div class="price-currency">
+      <input nbInput fullWidth type="text" formControlName="priceLoc" placeholder="Price">
+
+      <!--<nb-select placeholder="Currency" (selectedChange)="setFormValue($event, 'currencyLoc')" [selected]="artworkData?.price?.currency">-->
+        <!--<nb-option *ngFor="let currency of currency" value="{{currency.value}}">{{currency.title}}</nb-option>-->
+      <!--</nb-select>-->
+      <ngx-select placeholder="Currency" [items]="currency" optionValueField="value" optionTextField="title"
+                  [noAutoComplete]="true" [defaultValue]="artworkData?.price?.currency"
+                  (select)="setFormValue($event, 'currencyLoc')">
+      </ngx-select>
+
+      <input nbInput type="hidden" formControlName="currencyLoc">
+    </div>
+  </div>
+
+  <!--Only for Colletor-->
+  <ng-container *ngIf="profileData?.type.toLowerCase() === 'collector'">
+    <div class="form-control-group width-30 full-date frame-glass">
+      <label>Framed</label>
+      <nb-checkbox (change)="newFields(frameTik, 'frame')" #frameTik [value]="collectorFields.frame"></nb-checkbox>
+    </div>
+
+    <div class="form-control-group width-60 full-date frame-glass">
+      <label>Glass</label>
+      <nb-checkbox (change)="newFields(glassTik, 'glass')" #glassTik [value]="collectorFields.glass"></nb-checkbox>
+    </div>
+
+    <ng-container *ngIf="collectorFields.frame">
+      <div class="form-control-group width-30">
+        <input nbInput fullWidth type="text" formControlName="widthFrame" placeholder="Frame height">
+      </div>
+      <div class="form-control-group width-30 center-frame">
+        <input nbInput fullWidth type="text" formControlName="heightFrame" placeholder="Frame width">
+      </div>
+      <div class="form-control-group width-30">
+        <input nbInput fullWidth type="text" formControlName="depthFrame" placeholder="Frame depth">
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="collectorFields.glass">
+      <div class="form-control-group">
+        <input nbInput fullWidth type="text" formControlName="glass" placeholder="Glass type">
+      </div>
+    </ng-container>
+
+    <div class="form-control-group">
+      <!--<nb-select class="currency" placeholder="How work is acquired" [selected]="artworkData?.acquired?.toUpperCase()" -->
+                 <!--(selectedChange)="setFormValue($event, 'acquired')">-->
+        <!--<nb-option *ngFor="let acquired of acquiredList" value="{{acquired.value}}">{{acquired.title}}</nb-option>-->
+      <!--</nb-select>-->
+      <div class="currency">
+        <ngx-select placeholder="How work is acquired" [items]="acquiredList" optionValueField="value" optionTextField="title"
+                    [noAutoComplete]="true" [defaultValue]="artworkData?.acquired?.toUpperCase()"
+                    (select)="setFormValue($event, 'acquired')">
+        </ngx-select>
+      </div>
+
+      <input nbInput type="hidden" formControlName="acquired">
+    </div>
+
+    <div class="form-control-group">
+      <p class="desc-price">Price paid</p>
+
+      <div class="price-currency">
+        <input nbInput fullWidth type="text" formControlName="pricePaid" placeholder="Price paid">
+
+        <!--<nb-select class="currency" placeholder="Currency" [selected]="artworkData?.price_paid?.currency"-->
+                   <!--(selectedChange)="setFormValue($event, 'currencyPaid')">-->
+          <!--<nb-option *ngFor="let currency of currency" value="{{currency.value}}">{{currency.title}}</nb-option>-->
+        <!--</nb-select>-->
+        <div class="currency">
+          <ngx-select placeholder="Currency" [items]="currency" optionValueField="value" optionTextField="title"
+                      [noAutoComplete]="true" [defaultValue]="artworkData?.price_paid?.currency"
+                      (select)="setFormValue($event, 'currencyPaid')">
+          </ngx-select>
+        </div>
+
+        <input nbInput type="hidden" formControlName="currencyPaid">
+      </div>
+    </div>
+
+    <div class="form-control-group">
+      <input nbInput fullWidth type="text" formControlName="purchasePlace" placeholder="Purchase place">
+    </div>
+
+    <div class="form-control-group">
+      <p class="desc-price">Insurance value</p>
+
+      <div class="price-currency">
+        <input nbInput fullWidth type="text" formControlName="insurancePrice" placeholder="Insurance price">
+
+        <!--<nb-select class="currency" placeholder="Currency" [selected]="artworkData?.insurance?.currency"-->
+                   <!--(selectedChange)="setFormValue($event, 'currencyInsurance')">-->
+          <!--<nb-option *ngFor="let currency of currency" value="{{currency.value}}">{{currency.title}}</nb-option>-->
+        <!--</nb-select>-->
+        <div class="currency">
+          <ngx-select placeholder="Currency" [items]="currency" optionValueField="value" optionTextField="title"
+                      [noAutoComplete]="true" [defaultValue]="artworkData?.insurance?.currency"
+                      (select)="setFormValue($event, 'currencyInsurance')">
+          </ngx-select>
+        </div>
+
+        <input nbInput type="hidden" formControlName="currencyInsurance">
+      </div>
+    </div>
+  </ng-container>
+  <!--END Only for Colletor-->
+
+  <div class="form-control-group">
+    <textarea nbInput fullWidth formControlName="notes" placeholder="Notes"></textarea>
+  </div>
+
+  <br>
+  <br>
+
+  <h5>All tags</h5>
+  <div class="form-control-group">
+    <input class="tags-input" type="text" placeholder="Tags" nbInput fullWidth #tagsAr name="tagsAr"
+           (keydown.enter)="actionTag('set', tagsAr.value); tagsAr.value = ''; $event.preventDefault()">
+    <div class="add tags-add" (click)="actionTag('set', tagsAr.value); tagsAr.value = ''">
+      <span>+</span>
+    </div>
+    <ul class="tags">
+      <li *ngFor="let tag of tagsArr; let i = index">{{tag}} <i class="icon-cancel" (click)="actionTag('remove', i)"></i></li>
+    </ul>
+    <input nbInput type="hidden" formControlName="tags">
+  </div>
+
+  <div class="button-block">
+    <button class="custom-btn custom-btn-primary-empty back" [routerLink]="'/pages/artworks/all'">{{'COMMON.BUTTONS.CANCEL' | translate}}</button>
+    <button class="custom-btn custom-btn-primary-filled next"
+            (click)="sendData(formArtwork)"
+            [disabled]="!formArtwork.valid"
+    >{{'COMMON.BUTTONS.SAVE' | translate}}</button>
+  </div>
+</form>
+<ngx-image-gallery *ngIf="artworkData?.image || tempAvatar?.tempUrl" [images]="[{url: artworkData?.image}]" [conf]="galConf"></ngx-image-gallery>

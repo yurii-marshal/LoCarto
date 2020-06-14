@@ -1,0 +1,193 @@
+<div class="avatar-block">
+  <div class="bg">
+    <div class="img" [ngStyle]="{'background-image': 'url(' + (banner?.url || exhibition?.bannerUrl) + ')',
+                                'transform': (banner?.rotation || exhibition?.rotation)}"
+         [ngClass]="{'need-transform': (banner?.rotation || exhibition?.rotation)}"></div>
+  </div>
+  <div class="actions" *ngIf="!viewMode">
+    <div class="file-container">
+      <i class="icon-pencil"></i>
+      <input type="file" (change)="photoChange($event)" accept="image/gif, image/jpeg, image/png"/>
+    </div>
+  </div>
+  <nb-spinner *ngIf="snipperPhoto" [message]="''"></nb-spinner>
+</div>
+
+<div class="steps-body has-bg">
+  <form [formGroup]="draftFormExhibition">
+    <div class="container-card">
+        <h4 class="basic-title">General</h4>
+
+        <div class="form-control-group">
+          <label>Exhibition title *</label>
+          <input nbInput fullWidth type="text" formControlName="title" required [readonly]="viewMode">
+        </div>
+
+        <div class="form-control-group dynamic-wrapper width-50 half">
+          <label>{{fullDateCreation ? 'Start date *' : 'Start year *'}}</label>
+          <div class="input-wrap">
+            <input nbInput fullWidth
+                   name="startDate" formControlName="startDate" required
+                   [owlDateTime]="dt1" [readonly]="(!fullDateCreation || viewMode)" ngxDateView [needChange]="changeYear">
+            <span [hidden]="viewMode" [owlDateTimeTrigger]="dt1" ><i class="fa fa-calendar"></i></span>
+            <owl-date-time #dt1 [pickerType]="'calendar'" [startView]="'multi-years'"
+                           (confirmSelectedChange)="fullDateCreation ? selectDate(dt1, $event, 'startDate') : ''"
+                           (yearSelected)="fullDateCreation ? '' : selectDate(dt1, $event, 'startDate')"></owl-date-time>
+          </div>
+        </div>
+
+        <div class="form-control-group dynamic-wrapper width-50 date-right">
+          <label>{{fullDateCreation ? 'End date *' : 'End year *'}}</label>
+          <div class="input-wrap">
+            <input nbInput fullWidth required
+                   [min]="draftFormExhibition.get('startDate').value" name="endDate" formControlName="endDate"
+                   [owlDateTime]="dt2" [readonly]="(!fullDateCreation || viewMode)" ngxDateView [needChange]="changeYear">
+            <span [hidden]="viewMode" [owlDateTimeTrigger]="dt2"><i class="fa fa-calendar"></i></span>
+            <owl-date-time #dt2 [pickerType]="'calendar'" [startView]="'multi-years'"
+                           (confirmSelectedChange)="fullDateCreation ? selectDate(dt2, $event, 'endDate') : ''"
+                           (yearSelected)="fullDateCreation ? '' : selectDate(dt2, $event, 'endDate')"></owl-date-time>
+          </div>
+        </div>
+
+        <div class="form-control-group full-date" *ngIf="!viewMode">
+          <label>Full date</label>
+          <nb-checkbox (change)="changeTypeDate($event)" [value]="fullDateCreation">
+          </nb-checkbox>
+        </div>
+
+        <div class="form-control-group">
+          <label>Description of the exhibition</label>
+          <textarea nbInput fullWidth formControlName="description" [readonly]="viewMode"></textarea>
+        </div>
+
+        <br>
+        <br>
+
+        <h4 class="basic-title info">Info about exhibition venue</h4>
+        <div class="form-control-group">
+          <label>Name of gallery, museum, etc</label>
+          <input nbInput fullWidth type="text" formControlName="nameLocation" [readonly]="viewMode">
+        </div>
+
+        <div class="form-control-group">
+          <label>Address *</label>
+          <input nbInput fullWidth type="text" *ngIf="!viewMode" formControlName="address" name="address" required
+                 ngx-google-places-autocomplete (onAddressChange)="handleAddressChange($event, 'address')">
+          <input nbInput fullWidth type="text" *ngIf="viewMode" formControlName="address" name="address" readonly="true">
+          <!--<input nbInput type="hidden" formControlName="address" name="address" required>-->
+        </div>
+
+        <div class="form-control-group">
+          <label>Website</label>
+          <input nbInput fullWidth type="url" formControlName="website" name="website" [readonly]="viewMode"
+                 (keyup)="validationAct('link', draftFormExhibition, 'website', $event.target.value)"
+                 [status]="draftFormExhibition.get('website').dirty ? (draftFormExhibition.get('website').invalid  ? 'danger' : 'success') : ''"
+                 [attr.aria-invalid]="draftFormExhibition.get('website').invalid && draftFormExhibition.get('website').touched ? true : null">
+          <ng-container *ngIf="!viewMode && draftFormExhibition.get('website').invalid && draftFormExhibition.get('website').touched">
+            <p class="error-message">
+              Link should be a valid!
+            </p>
+          </ng-container>
+        </div>
+
+        <div class="form-control-group">
+          <label>Phone</label>
+          <input type="text" [pattern]="phonePattern" [maxlength]="15"
+                 [readonly]="viewMode" formControlName="phone"
+                 ng2TelInput nbInput fullWidth name="phone"
+                 (intlTelInputObject)="telInputObject($event)"
+                 [ng2TelInputOptions]="{initialCountry: selectedCountry?.iso2}"
+                 [status]="draftFormExhibition.get('phone').dirty ? (draftFormExhibition.get('phone').invalid  ? 'danger' : 'success') : ''"
+                 (countryChange)="onCountryChange($event)"
+                 [attr.aria-invalid]="draftFormExhibition.get('phone').invalid && draftFormExhibition.get('phone').touched ? true : null"
+          />
+
+          <ng-container *ngIf="!viewMode && draftFormExhibition.get('phone').invalid && draftFormExhibition.get('phone').touched">
+            <p class="error-message">
+              Invalid phone number
+            </p>
+          </ng-container>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="add" (click)="addWorkDays()" *ngIf="!showWorkDays && !viewMode">
+          <span>+</span>Add work days
+        </div>
+
+        <br>
+
+        <div *ngIf="showWorkDays">
+          <h5 class="title-wd">Work days:</h5>
+          <div class="appointment" *ngIf="!viewMode">
+            <nb-checkbox (change)="changeVal($event, 'appointment')" [value]="draftFormExhibition.get('appointment').value"></nb-checkbox>
+            <label>By appointment</label>
+          </div>
+          <ul class="days">
+            <li *ngFor="let day of days; let i = index">
+              <div class="val-active">
+                <ngx-switcher [firstValue]="false" [secondValue]="true" [vertical]="true" *ngIf="!viewMode"
+                              (valueChange)="toggleDay($event, i)" [value]="day.active">
+                </ngx-switcher>
+                <label>{{day.title}}</label>
+              </div>
+              <p class="closed" *ngIf="!day.active">Closed</p>
+              <div class="info" *ngIf="day.active">
+                <div class="dynamic-wrapper width-50">
+                  <input nbInput type="text" placeholder="From" [value]="day.from"
+                         [owlDateTime]="dtfrom" readonly>
+                  <span [hidden]="viewMode" [owlDateTimeTrigger]="dtfrom"><i class="fa fa-caret-down"></i></span>
+                  <owl-date-time #dtfrom [pickerType]="'timer'"
+                                 (afterPickerClosed)="timeAction('from', dtfrom, $event, i)"></owl-date-time>
+                </div>
+
+                <div class="dynamic-wrapper width-50">
+                  <input nbInput type="text" placeholder="To" [value]="day.to"
+                         [owlDateTime]="dtto" [min]="day.from" readonly>
+                  <span [hidden]="viewMode" [owlDateTimeTrigger]="dtto"><i class="fa fa-caret-down"></i></span>
+                  <owl-date-time #dtto [pickerType]="'timer'"
+                                 (afterPickerClosed)="timeAction('to', dtto, $event, i)"></owl-date-time>
+                </div>
+              </div>
+              <div class="set-times" *ngIf="day.active && !viewMode"><i class="icon-exchange-1" (click)="setTimes(day, i)"
+                                                           nbTooltip="Make this time default for all days" nbTooltipPlacement="right"></i></div>
+            </li>
+          </ul>
+
+          <br>
+          <br>
+        </div>
+
+        <br>
+        <br>
+
+        <h4 class="basic-title inst">Add instagram tags</h4>
+        <div class="form-control-group">
+          <input *ngIf="!viewMode" class="tags-input" nbInput fullWidth type="text" #tagsAr name="tagsAr" placeholder="Tags"
+                 (keydown.enter)="actionTag('set', tagsAr.value); tagsAr.value = ''; $event.preventDefault()">
+          <div *ngIf="!viewMode" class="add tags-add" (click)="actionTag('set', draftFormExhibition.get('tagsAr')); setFormValue('', 'tagsAr')">
+            <span>+</span>
+          </div>
+          <ul class="tags">
+            <li *ngFor="let tag of tagsArr; let i = index">{{tag}} <i class="icon-cancel" (click)="actionTag('remove', i)"></i></li>
+          </ul>
+          <input nbInput type="hidden" formControlName="tags">
+        </div>
+
+        <br>
+        <br>
+
+    </div>
+
+    <div class="button-block" *ngIf="!viewMode">
+      <button class="custom-btn custom-btn-primary-empty back" [routerLink]="'/pages/exhibitions'">Cancel</button>
+      <button class="custom-btn custom-btn-primary-filled next active-btn"
+              (click)="sendForm(draftFormExhibition, true)">{{exhibition?.isDraft ? 'Publish' : 'Back to draft'}}</button>
+      <button class="custom-btn custom-btn-primary-filled next" (click)="sendForm(draftFormExhibition)"
+              [disabled]="!draftFormExhibition.valid">Save</button>
+    </div>
+
+  </form>
+  <nb-spinner *ngIf="showSnipper" [message]="''"></nb-spinner>
+</div>

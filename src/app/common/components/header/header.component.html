@@ -1,0 +1,60 @@
+<div class="header-container"
+     [class.left]="position === 'normal'"
+     [class.right]="position === 'inverse'">
+
+    <h2 class="title-page" *ngIf="pageTitle && (titleType === 'str')"><span class="icon-left" *ngIf="backUrl" [routerLink]="backUrl"></span> {{pageTitle}}</h2>
+
+    <ul class="nav-titles" *ngIf="pageTitle && (titleType === 'arr')">
+      <li *ngFor="let item of pageTitle" [ngClass]="{'active': item.active}">
+        <a class="title-page" [routerLink]="item.link">{{item.title}}</a>
+      </li>
+    </ul>
+</div>
+
+<div class="header-container">
+  <nb-actions
+    size="medium"
+    [class.right]="position === 'normal'"
+    [class.left]="position === 'inverse'">
+    <nb-action *nbIsGranted="['view', 'user']">
+      <div class="user-container">
+        <div class="user-picture image" (click)="setCurrentProfile(currentProfile?._id); $event.stopPropagation()">
+          <i class="icon-user"></i>
+          <div class="img" [ngStyle]="{'background-image': ((currentProfile?._id && currentProfile.photos.avatar) ? 'url(' + currentProfile.photos.avatar : '')}"></div>
+        </div>
+        <div class="info-container"> <!-- *ngIf="currentProfile?.name" -->
+          <div class="user-name" (click)="setCurrentProfile(currentProfile?._id)">{{currentProfile?.name}}</div>
+        </div>
+
+        <ul class="list-accounts">
+          <li *ngFor="let profile of profiles" (click)="setCurrentProfile(profile._id)">
+            <div class="account-picture">
+              <i class="icon-user"></i>
+              <div class="img"
+                   [ngStyle]="{'background-image': ((profile?._id && profile.photos.avatar) ? 'url(' + profile.photos.avatar : '' )}"></div>
+              <!-- [ngStyle]="{'background-image': (profile?._id ? 'url(' + serverUrl + '/profiles/' + profile?._id + '/avatar)' : '' )} -->
+            </div>
+            <div class="info">
+              <p class="name">{{profile.name}}</p>
+              <p class="position">{{profile.type === 'COLLECTOR' ? 'Collector' : (profile.curator ? 'Curator' : 'Artist')}}</p>
+            </div>
+          </li>
+          <li class="more">
+            <div class="add" [routerLink]="'/pages/profile-new-profile'">
+              <span>+</span>Add new role
+            </div>
+          </li>
+          <li class="logout"><p (click)="doLogOut()">Logout</p></li>
+        </ul>
+      </div>
+    </nb-action>
+
+    <!--<nb-action icon="icon-cog"[routerLink]="'/pages/settings/role'" ></nb-action> -->
+    <!-- (click)="toggleSettings()" -->
+    <!--<nb-action class="control-item" disabled icon="icon-bell-alt"></nb-action>-->
+  </nb-actions>
+</div>
+
+<div class="action-bar" *ngIf="action?.active" [ngClass]="{'show': showAction}">
+  <p>{{action.message}}</p>
+</div>

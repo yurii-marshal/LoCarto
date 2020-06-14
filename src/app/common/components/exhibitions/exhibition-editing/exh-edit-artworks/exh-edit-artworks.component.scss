@@ -1,0 +1,56 @@
+@import '../../../../styles/variables';
+
+:host {
+  display: block;
+}
+
+.container-block {
+  position: relative;
+  margin-top: -1rem;
+  min-height: 700px;
+  padding: 2em 3em;
+}
+
+.desc {
+  position: absolute;
+  top: 43%;
+  left: 1.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0;
+}
+
+.folder-list .folder ul {
+  padding: 0 1.5em;
+}
+
+.folder {
+  .avatar,
+  .h4 {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &.public h4 {
+    left: 1.5rem;
+  }
+
+  h4 {
+    left: 4.7em;
+    max-width: 230px;
+  }
+
+  .avatar {
+    width: 50px;
+    height: 50px;
+    background-color: $color-fg-border;
+    border-radius: 50%;
+    overflow: hidden;
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    top: 29%;
+    left: 2em;
+  }
+}

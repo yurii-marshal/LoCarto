@@ -1,0 +1,8 @@
+<nb-spinner class="custom-snipper" *ngIf="showSnipper" [message]="''"></nb-spinner>
+<ngx-artworks *ngIf="curUrl && curUrl === 'all'" [link]="paginationLink" [maxPage]="maxPage" [curPage]="curPage"
+              [data]="artworks" (needUpdate)="getArtworks($event)"
+              [buttonsShow]="['portfolio', 'commission', 'collection']" (emitSort)="setSort($event)"
+              (emitFilter)="setFilter($event)"></ngx-artworks>
+<ngx-portfolios *ngIf="curUrl && curUrl === 'portfolios'"></ngx-portfolios>
+<ngx-sketches *ngIf="curUrl && curUrl === 'sketches'"></ngx-sketches>
+<ngx-tags *ngIf="curUrl && curUrl === 'tags'"></ngx-tags>

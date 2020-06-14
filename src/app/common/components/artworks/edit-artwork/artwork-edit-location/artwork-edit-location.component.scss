@@ -1,0 +1,385 @@
+@import '../../../../styles/themes';
+@import '../../../../styles/variables';
+
+.locations-form {
+  padding: 3rem 2rem;
+  margin: auto;
+  margin-bottom: 1.5rem;
+  background: #fff;
+  border-radius: .375rem;
+  box-shadow: 0 2px 12px 0 #dfe3eb;
+
+  .location {
+    max-width: 420px;
+    margin: auto;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+}
+.form-control-group {
+  &:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+  .left {
+    float: left;
+  }
+  .right {
+    float: right;
+  }
+  .right,
+  .left {
+    width: 48%;
+
+    input {
+      width: 100%;
+    }
+  }
+
+  &.half {
+    width: 48%;
+
+    input {
+      width: 100%;
+    }
+  }
+}
+.form-control-group + .form-control-group {
+  margin-top: 1rem;
+}
+.button-block {
+  margin-top: 4rem;
+
+  &:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+  .back,
+  .next {
+    width: 48%;
+  }
+  .back {
+    float: left;
+  }
+  .next {
+    float: right;
+
+    &.center {
+      float: none;
+      margin: auto;
+      display: block;
+    }
+  }
+
+  button[disabled] {
+    background: lighten($color-fg, 45%);
+    border-color: lighten($color-fg, 45%);
+
+    &:hover {
+      cursor: initial;
+    }
+  }
+}
+
+.add {
+
+  &:hover {
+    color: $color-fg-highlight;
+    cursor: pointer;
+
+    span {
+      background: $color-fg-highlight;
+    }
+  }
+
+  span {
+    display: inline-block;
+    font-size: 1.5em;
+    text-align: center;
+    margin-right: 1rem;
+    border-radius: 50%;
+    background: $color-fg;
+    color: #fff;
+    width: 35px;
+    line-height: 35px;
+    transition: .25s all;
+  }
+
+  &.file-container span {
+    width: 50px;
+    line-height: 50px;
+  }
+}
+.add-fix {
+  position: fixed;
+  bottom: 3rem;
+  right: 3rem;
+
+  &.move-top {
+    bottom: 10rem;
+  }
+
+  .add:not([class*='file-container']) {
+    span {
+      margin: 0;
+      width: 50px;
+      line-height: 50px;
+    }
+  }
+}
+.editions-table {
+  width: 100%;
+
+  td {
+    position: relative;
+  }
+
+  .actions {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  p {
+    color: $color-fg;
+    margin-bottom: 0;
+  }
+
+  .where-name {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .user-logo {
+    width: 35px;
+    height: 35px;
+    display: inline-block;
+    margin-right: .7rem;
+    border-radius: 50%;
+    background-color: lighten($color-fg, 85%);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    vertical-align: middle;
+  }
+
+  .icon-location {
+    color: $color-fg-highlight;
+    font-size: 1.2em;
+    margin-right: 1rem;
+    margin-left: .5rem;
+  }
+
+  tr th:nth-child(2),
+  tr td:nth-child(2) {
+    width: 120px;
+  }
+  tr th:first-child,
+  tr td:first-child {
+    width: 100px;
+  }
+  tr th:nth-child(5),
+  tr td:nth-child(5) {
+    width: 220px;
+  }
+
+
+  .actions {
+    transition: all .3s;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  tbody tr {
+    transition: all .35s;
+  }
+
+  tbody tr:hover {
+    box-shadow: 0 0 6px 0 rgba(0,0,0,.5);
+    transform: scale(1.01);
+
+    .actions {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  .where {
+    i {
+      margin: 0;
+    }
+    span {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 115px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+
+  nb-checkbox ::ng-deep label {
+    padding: 0;
+  }
+}
+
+.number {
+  border: 1px solid $color-fg-highlight;
+  border-radius: 10px;
+  padding: .1rem .5rem;
+  width: 3rem;
+  text-align: center;
+  color: $color-fg;
+  background: #fff;
+}
+
+.actions {
+  font-size: 1.1em;
+
+  .remove,
+  .edit {
+    cursor: pointer;
+    transition: all .25s;
+  }
+  .remove:hover {
+    color: red;
+  }
+  .edit:hover {
+    color: $color-fg;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  position: relative;
+  margin-top: 10%;
+
+  .icon {
+    background: url("../../../../../../assets/images/ic_empty_state.svg") no-repeat;
+    background-position: center;
+    background-size: contain;
+    display: inline-block;
+    width: 155px;
+    height: 115px;
+    margin-bottom: .5rem;
+  }
+}
+.info-block {
+  background: #fff;
+  padding: 1em 1em;
+  margin-bottom: 1em;
+
+  .empty-state {
+    margin-bottom: 4em;
+  }
+}
+.base-state {
+  .icon {
+    background-image: url('../../../../../../assets/images/ic_photo_doc1.svg');
+    width: 15%;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    &:before {
+      content: '';
+      display: block;
+      padding-bottom: 100%;
+    }
+  }
+  .icon,
+  .description,
+  .button-block {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .description {
+    margin-left: 7%;
+    margin-right: 3%;
+    width: 50%;
+
+    p {
+      margin-bottom: 0;
+    }
+  }
+  .button-block {
+    width: 25%;
+    margin-top: 0;
+  }
+}
+
+.step {
+  .title-step {
+
+    span {
+      width: 27px;
+      line-height: 25px;
+      border: 1px solid $color-fg-highlight;
+      border-radius: 50%;
+      text-align: center;
+      margin-right: .5em;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+
+  form {
+    margin-top: .5em;
+  }
+
+  .form-control-group {
+    width: 35%;
+    display: inline-block;
+    margin-top: 0;
+    vertical-align: middle;
+
+    & + .form-control-group {
+      margin-left: 2%;
+    }
+
+
+    &.buttons {
+      width: 20%;
+      margin-left: 5%;
+    }
+  }
+
+  .step-values {
+    width: 60%;
+    display: inline-block;
+
+    p {
+      margin-bottom: 0;
+      border: 1px solid $color-fg-border;
+      display: inline-block;
+      vertical-align: middle;
+      padding: .7em 1em;
+      width: 50%;
+      color: $color-fg;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      i {
+        color: $color-fg-highlight;
+      }
+    }
+
+    .location {
+      border-top-left-radius: 7px;
+      border-bottom-left-radius: 7px;
+    }
+    .place {
+      border-left: 0;
+      border-top-right-radius: 7px;
+      border-bottom-right-radius: 7px;
+    }
+  }
+}

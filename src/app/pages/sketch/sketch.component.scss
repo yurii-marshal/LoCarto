@@ -1,0 +1,245 @@
+@import '../../common/styles/variables';
+
+.container-card {
+  padding: 3rem 2rem;
+  max-width: 700px;
+  width: 93%;
+  margin: auto;
+  margin-bottom: 1.5rem;
+  background: #fff;
+  border-radius: .375rem;
+  box-shadow: 0 2px 12px 0 #dfe3eb;
+}
+
+h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.form-control-group + .form-control-group {
+  margin-top: 1rem;
+}
+
+.gallery.over-zone /deep/ .drop-zone {
+  box-shadow: inset 0 0 20px 0 $color-fg-highlight;
+  border-color: $color-fg-highlight;
+}
+
+.gallery {
+  margin-top: 2rem;
+}
+
+.gallery /deep/ .drop-zone {
+  text-align: center;
+  border-radius: 0;
+  width: 100%;
+  height: 330px;
+  background: #ebeff5;
+  border-color: lighten($color-fg, 75%);
+  padding: 2rem 2rem;
+  overflow: auto;
+  transition: all .25s;
+
+  .content {
+    height: auto;
+  }
+
+  .list {
+    width: 100%;
+    text-align: left;
+
+    .item {
+      display: inline-block;
+      width: 31%;
+      vertical-align: top;
+      background: #fff;
+      height: 240px;
+      margin-right: 2%;
+      border-radius: 4px;
+      position: relative;
+      margin-bottom: 2%;
+      overflow: hidden;
+      box-shadow: 0 2px 12px 0 rgba($color-fg, 0.25);
+    }
+
+    .item-more {
+      float: left;
+      margin-bottom: 0;
+    }
+
+    .add {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: $color-fg;
+
+      span {
+        display: block;
+        margin: auto;
+        margin-bottom: 1rem;
+      }
+    }
+
+    .temp-image {
+      width: 100%;
+      height: 75%;
+      background-size: cover;
+      background-position: center;
+      background-color: lighten($color-fg, 85%);
+      position: relative;
+
+      &.doc,
+      &.pdf,
+      &.xls {
+        background-size: 40% auto;
+        background-repeat: no-repeat;
+      }
+
+      &.doc {
+        background-image: url("../../../assets/images/ic_doc.svg") !important;
+      }
+      &.pdf {
+        background-image: url("../../../assets/images/ic_pdf.svg") !important;
+      }
+      &.xls {
+        background-image: url("../../../assets/images/ic_xksx.svg") !important;
+      }
+    }
+
+    .name,
+    .sizes {
+      margin-top: .5rem;
+      margin-bottom: .5rem;
+      text-align: left;
+      padding: 0 1rem;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      color: $color-fg;
+    }
+
+    .sizes {
+      color: lighten($color-fg, 70%);
+    }
+
+    .close {
+      position: absolute;
+      right: .5rem;
+      top: .5rem;
+      font-size: 1.5em;
+      text-align: center;
+      border-radius: 50%;
+      background: #fff;
+      color: $color-fg;
+      width: 30px;
+      z-index: 5;
+      line-height: 30px;
+    }
+
+    .cover-label {
+      display: none;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background: $color-fg2-highlight;
+      color: #fff;
+      padding: 0 1rem;
+    }
+  }
+
+  .dnb-list{
+    .item:first-child {
+      box-shadow: 0 0 0 4px $color-fg2-highlight;
+
+      .cover-label {
+        display: block;
+      }
+    }
+  }
+}
+
+.button-block {
+  max-width: 400px;
+  margin: auto;
+  margin-top: 4rem;
+
+  &:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+  .back,
+  .next {
+    width: 48%;
+  }
+  .back {
+    float: left;
+  }
+  .next {
+    float: right;
+  }
+
+  button[disabled] {
+    background: lighten($color-fg, 45%);
+    border-color: lighten($color-fg, 45%);
+
+    &:hover {
+      cursor: initial;
+    }
+  }
+}
+
+.empty {
+
+  .icon {
+    display: inline-block;
+    width: 185px;
+    height: 185px;
+    background: url("../../../assets/images/ic_photo_docs.svg") no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
+
+  .descr {
+    display: inline-block;
+    margin-right: 1rem;
+    color: lighten($color-fg, 70%);
+    vertical-align: middle;
+    margin-top: 0;
+  }
+
+  .file-container {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+  }
+}
+
+.add {
+
+  &:hover {
+    color: $color-fg-highlight;
+    cursor: pointer;
+
+    span {
+      background: $color-fg-highlight;
+    }
+  }
+
+  span {
+    display: inline-block;
+    font-size: 1.5em;
+    text-align: center;
+    margin-right: 1rem;
+    border-radius: 50%;
+    background: $color-fg;
+    color: #fff;
+    width: 35px;
+    line-height: 35px;
+    transition: .25s all;
+  }
+}

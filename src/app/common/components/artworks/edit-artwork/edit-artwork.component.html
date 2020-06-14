@@ -1,0 +1,323 @@
+<div class="nav-container">
+  <ul class="nav-titles">
+    <li *ngFor="let item of tabs; let i = index" [ngClass]="{'active': activeTab === i + 1}">
+      <a class="title-page" (click)="setActiveTab(i + 1)">{{item.title}}</a>
+    </li>
+  </ul>
+</div>
+
+<div class="tabs-head">
+	<div class="steps-body" [ngClass]="{'has-bg': activeTab === 1}">
+	  <file-drop (onFileDrop)="dropped($event)" *ngIf="activeTab === 3"
+	             (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)"></file-drop>
+	  <!-- ----------- 1 tab --------- -->
+	  <div class="container-card" *ngIf="activeTab === 1">
+	      <ngx-artwork-edit-basic [formData]="formArtwork" [profile]="profileData" [categoriesData]="categories"
+	                              [curCat]="selectedCat" [editions]="editionsData" [optionsData]="options" [dataArtwork]="artworkData"
+	                              [tagsData]="tagsArr" [changeYearStatus]="changeYear"
+	                              (updateArtwork)="sendData($event)"
+	                              (forceUpdateFiles)="updateFiles($event.files, $event.fromMain)"
+	                              (photoChangeEvent)="photoChange($event.event, $event.type)">
+	      </ngx-artwork-edit-basic>
+	  </div>
+	  <!-- ----------- END 1 tab --------- -->
+
+	  <!-- ----------- 2 tab --------- -->
+	  <div class="container-card editions" *ngIf="activeTab === 2">
+
+
+	    <ngx-artwork-edit-location [formData]="formLocations" [curCat]="selectedCat" [artStoragesData]="artStorages"
+	                               [editions]="editionsData" [showStepsStatus]="showSteps" [typeStepStatus]="typeStep"
+	                               [photographyData]="photography"
+	                               (openModalEvent)="openModal($event.copy, $event.modal, $event.type, $event.index)"
+	                               (setNextEvent)="setNext($event)" (setNewCopiesEvent)="setNewCopies($event.event, $event.i)"
+	                               (updateArtworkLoc)="sendDataLoc($event)">
+	    </ngx-artwork-edit-location>
+	  </div>
+	  <!-- ----------- END 2 tab --------- -->
+
+	  <!-- ----------- 3 files tab --------- -->
+	  <div class="container-card files" *ngIf="activeTab === 3">
+	    <ngx-artwork-edit-files [mainFilesData]="mainFiles" [files]="filesData" [filesUrlData]="filesUrl"
+	                            (openModalEvent)="openModal($event.copy, $event.modal, $event.type, $event.index)"
+	                            (photoChangeEvent)="photoChange($event.event, $event.type)"
+	                            (updateFilesEvent)="updateFiles($event.files, $event.fromMain)">
+	    </ngx-artwork-edit-files>
+	  </div>
+	  <!-- ----------- END 3 files tab --------- -->
+
+	  <!-- ----------- 4 books tab --------- -->
+	  <div class="container-card books" *ngIf="activeTab === 4">
+	    <div class="row">
+	      <div class="col-3" *ngFor="let item of booksData; let i = index">
+	        <div class="book">
+	          <div class="image" [ngStyle]="{'background-image': 'url(' + item.book?.covers?.medium + ')'}">
+	            <div class="remove" title="Delete" (click)="openModal('', removeModal, 'removeBook', i)"><i class="icon-trash"></i></div>
+	          </div>
+	          <h5>{{item.book?.title}}</h5>
+	          <p>{{item.book?.publisher}}</p>
+	          <p>{{item.book?.year}}</p>
+	        </div>
+	      </div>
+
+	      <div class="add-fix">
+	        <div class="file-container add" (click)="openModal('', addBookModal)">
+	          <span>+</span>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	  <!-- ----------- END 4 books tab --------- -->
+	</div>
+
+	<!--<div class="add-fix" [ngClass]="{'move-top': bottomOfPage}">-->
+		<!--<div class="file-container add">-->
+			<!--<span>+</span>-->
+			<!--<input type="file" (change)="photoChange($event)" multiple/>-->
+		<!--</div>-->
+	<!--</div>-->
+</div>
+
+<ng-template #deleteCopieModal let-data let-ref="dialogRef">
+  <nb-card  class="del-editions-modal">
+    <nb-card-header>Delete a set</nb-card-header>
+    <nb-card-body>
+      <table class="editions-table">
+        <thead>
+          <tr>
+            <th>Number</th>
+            <th>Artwork size</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Where</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let copy of setEditions; let i = index">
+            <td class="text-center"><span class="number">{{copy.id?.replace('-', '/')}}</span></td>
+            <td>{{copy.sizes?.artwork[0]}}x{{copy.sizes?.artwork[1]}}{{copy.sizes?.artwork[2] ? 'x' + copy.sizes?.artwork[2] : ''}} {{copy.sizes?.units === 'in' ? 'inch' : copy.sizes?.units}}</td>
+            <td>{{copy.price?.value}} {{copy.price?.currency}}</td>
+            <td><span *ngIf="copy.locationStatus">In</span> {{copy.locationStatus}}</td>
+            <td>
+              <!--<div class="user-logo"></div>-->
+              <i class="icon-location" *ngIf="copy.locationPlace"></i><span>{{copy.locationPlace}}</span>
+              <!--<p class="where-name">User name</p>-->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </nb-card-body>
+    <nb-card-footer>
+      <div class="button-block">
+        <button class="custom-btn custom-btn-primary-empty back" (click)="ref.close()">{{'COMMON.BUTTONS.CANCEL' | translate}}</button>
+        <button class="custom-btn custom-btn-primary-filled next"
+                (click)="deleteSet(setEditions[0], ref)"
+        >{{'COMMON.BUTTONS.DELETE' | translate}}</button>
+      </div>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #editCopieModal let-data let-ref="dialogRef">
+  <nb-card  class="proof-modal">
+    <nb-card-header>Edit copy</nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="formCopy">
+        <div class="number">{{currentCopy?.id?.replace('-', '/')}}</div>
+
+        <p class="width-50 sizes-copy">Artwork size: {{currentCopy?.sizes?.artwork[0]}}x{{currentCopy?.sizes?.artwork[1]}}{{currentCopy.sizes.artwork[2] ? 'x' + currentCopy?.sizes?.artwork[2] : ''}} {{currentCopy?.sizes?.units === 'in' ? 'inch' : currentCopy?.sizes?.units}}</p>
+
+        <div class="form-control-group" *ngIf="formCopy.get('place').value === 'artstorage' ||
+                                               (formCopy.get('place').value === 'notCreated' && photography) || !formCopy.get('place').value">
+          <!--<nb-select placeholder="Choose place" (selectedChange)="setFormCopyValue($event, 'place')" [selected]="formCopy.get('place').value">-->
+            <!--<nb-option *ngFor="let place of places" [value]="place.id"-->
+                       <!--[hidden]="place.id !== 'artstorage' && (place.id !== 'notCreated' && photography)">-->
+              <!--{{place.title}}-->
+            <!--</nb-option>-->
+          <!--</nb-select>-->
+
+          <ngx-select placeholder="Choose place" [items]="places" optionValueField="id" optionTextField="title"
+                      [defaultValue]="formCopy.get('place').value" [noAutoComplete]="true"
+                      (select)="setFormCopyValue($event, 'place')">
+          </ngx-select>
+
+          <input nbInput type="hidden" formControlName="id">
+          <input nbInput type="hidden" formControlName="place">
+        </div>
+
+        <div class="form-control-group" *ngIf="formCopy.get('place').value === 'collection' && formCopy.get('place').value === 'commission'">
+          <input nbInput fullWidth type="text" formControlName="place" readonly>
+        </div>
+
+        <div class="form-control-group" *ngIf="formCopy.get('place').value === 'artstorage'">
+          <!--<nb-select *ngIf="formCopy.get('place').value === 'artstorage'" placeholder="Choose place"-->
+                     <!--(selectedChange)="setFormCopyValue($event, 'namePlace')" [selected]="formCopy.get('id').value">-->
+            <!--<nb-option *ngFor="let storage of artStorages" [value]="storage._id">{{storage.title}}</nb-option>-->
+            <!--<nb-option *ngIf="artStorages && artStorages.length < 1">No storage yet</nb-option>-->
+          <!--</nb-select>-->
+
+          <ngx-select *ngIf="formCopy.get('place').value === 'artstorage'" placeholder="Choose place"
+                      [items]="artStorages" optionValueField="_id" optionTextField="title"
+                      [defaultValue]="formCopy.get('id').value" [noAutoComplete]="true"
+                      (select)="setFormCopyValue($event, 'namePlace')">
+          </ngx-select>
+        </div>
+
+        <div class="form-control-group" *ngIf="(formCopy.get('place').value !== 'notCreated' && photography) && formCopy.get('place').value !== 'artstorage'">
+          <input nbInput fullWidth type="text" formControlName="namePlace" placeholder="Place name"
+                 [readonly]="(!formCopy.get('place').value || formCopy.get('place').value === 'collection' || formCopy.get('place').value === 'commission')">
+        </div>
+
+
+        <div class="form-control-group" *ngIf="selectedCat?.sizes?.motif">
+          <label class="width-30">Motif size</label>
+          <div class="width-60">
+            <input nbInput type="number" class="width-50" placeholder="Height" formControlName="heightMot">
+            <input nbInput type="number" class="width-50" placeholder="Width" formControlName="widthMot">
+          </div>
+        </div>
+
+        <div class="form-control-group">
+          <label class="width-30">Price</label>
+          <div class="width-60">
+            <input nbInput type="text" class="width-50" formControlName="priceCop" placeholder="Sales price">
+            <!--<nb-select placeholder="Currency" class="width-50" (selectedChange)="setFormCopyValue($event, 'currencyCop')" [selected]="formCopy.get('currencyCop').value">-->
+                <!--<nb-option *ngFor="let currency of currency" value="{{currency.value}}">{{currency.title}}</nb-option>-->
+            <!--</nb-select>-->
+            <div class="width-50">
+              <ngx-select placeholder="Currency"
+                          [items]="currency" optionValueField="value" optionTextField="title"
+                          [defaultValue]="formCopy.get('currencyCop').value" [noAutoComplete]="true"
+                          (select)="setFormCopyValue($event, 'currencyCop')">
+              </ngx-select>
+            </div>
+          </div>
+          <input nbInput type="hidden" formControlName="currencyCop">
+        </div>
+
+        <div class="button-block">
+            <button class="custom-btn custom-btn-primary-empty back" (click)="ref.close()">{{'COMMON.BUTTONS.CANCEL' | translate}}</button>
+            <button class="custom-btn custom-btn-primary-filled next"
+                    (click)="editCopy(formCopy, ref)"
+            >{{'COMMON.BUTTONS.SAVE' | translate}}</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+
+<ng-template #addBookModal let-data let-ref="dialogRef">
+  <nb-card class="literature-modal">
+    <nb-card-header>Add new literature</nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="literatureAdd">
+        <h5>Choose from existing literature</h5>
+
+        <div class="form-control-group dynamic-wrapper">
+          <input nbInput fullWidth type="text" placeholder="Literature title"
+                 #lit (keyup)="findExisting('dynamicLiterature', lit.value, 'existingLit')" formControlName="nameLiterature">
+          <i class="icon-search"></i>
+          <ul class="dynamic" *ngIf="dynamicLiterature && dynamicLiterature.length > 0">
+            <li *ngFor="let item of dynamicLiterature" (click)="selectedExisting('literature', item)">{{item.name}}</li>
+          </ul>
+          <p *ngIf="dynamicLiterature && dynamicLiterature.length < 1">Sorry, no result</p>
+
+          <input nbInput type="hidden" formControlName="literatureId">
+        </div>
+
+
+        <div class="literature-wrapper">
+          <div class="form-control-group">
+            <input nbInput type="text" [status]="getLiteratureValue('isbnNumber').dirty ? (getLiteratureValue('isbnNumber').valid  ? 'success' : 'danger') : ''"
+                   class="width-60" placeholder="ISBN number" #isbn formControlName="isbnNumber" (keyup)="validationIsbn($event.target.value, i)">
+            <button class="custom-btn custom-btn-primary-filled next width-30 float-right"
+                    [disabled]="!getLiteratureValue('isbnNumber').valid"
+                    (click)="findBook(isbn.value)">{{'COMMON.BUTTONS.FIND' | translate}}</button>
+            <div class="error" *ngIf="getLiteratureValue('isbnNumber').dirty &&
+                          !getLiteratureValue('isbnNumber').valid">Not valid ISBN number</div>
+          </div>
+
+          <div class="finded-book" *ngIf="findedBook && findedBook">
+            <div class="question" *ngIf="!findedBook?.selected">
+              <p class="width-60">This is the book what you are looking for?</p>
+              <div class="width-30 float-right">
+                <button class="custom-btn custom-btn-primary-empty back width-50" (click)="bookAction('no', i)">No</button>
+                <button class="custom-btn custom-btn-primary-filled next width-50" (click)="bookAction('yes', i)">Yes</button>
+              </div>
+            </div>
+
+            <div class="book">
+              <div class="image" [ngStyle]="{'background-image': 'url(' + findedBook?.covers?.medium + ')'}"></div>
+              <h5>{{findedBook.title}}</h5>
+              <p>{{findedBook.publisher}}</p>
+              <p>{{findedBook.year}}</p>
+            </div>
+
+            <input nbInput type="hidden" formControlName="findedIsbn">
+          </div>
+
+          <div class="form-control-group" *ngIf="!findedBook?.selected">
+            <input nbInput fullWidth type="text" placeholder="Title" formControlName="title">
+          </div>
+
+          <div class="form-control-group" *ngIf="!findedBook?.selected">
+            <input nbInput fullWidth type="text" placeholder="Author" formControlName="author">
+          </div>
+
+          <div class="form-control-group" *ngIf="!findedBook?.selected">
+            <input nbInput type="text" class="width-60" placeholder="Publisher" formControlName="publisher">
+            <input nbInput type="text" class="width-30 float-right" placeholder="Year" formControlName="year">
+          </div>
+
+          <div class="form-control-group page-illustration">
+            <input nbInput type="text" class="width-30" placeholder="Page №" formControlName="page">
+            <input nbInput type="text" class="width-30" placeholder="Illustration №" formControlName="illustration">
+          </div>
+        </div>
+
+        <div class="button-block">
+          <button class="custom-btn custom-btn-primary-empty back" (click)="ref.close()">{{'COMMON.BUTTONS.CANCEL' | translate}}</button>
+          <button class="custom-btn custom-btn-primary-filled next"
+                  (click)="addLiterature(literatureAdd, ref)"
+          >{{'COMMON.BUTTONS.SAVE' | translate}}</button>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
+
+
+<ng-template #removeModal let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Delete {{currentDelete.title}}</nb-card-header>
+    <nb-card-body class="delete-modal">
+      <p class="description">
+        {{currentDelete.question}}
+      </p>
+      <div class="icon"></div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button class="custom-btn custom-btn-primary-empty" (click)="ref.close()">Cancel</button>
+      <button class="custom-btn custom-btn-primary-filled" (click)="deleteAction(currentDelete.type, ref, currentDelete)">Delete</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+
+<ng-template #addEditionsModal let-data let-ref="dialogRef">
+  <nb-card class="editions-modal">
+    <nb-card-header>Add new set of editions</nb-card-header>
+    <nb-card-body class="add-editions-modal">
+      <ngx-generator-editions [form]="addEditions" [category]="selectedCat" [listOptions]="options"
+                          [listCategories]="categories"></ngx-generator-editions>
+    </nb-card-body>
+    <nb-card-footer>
+      <div class="button-block">
+        <button class="custom-btn custom-btn-primary-empty" (click)="ref.close()">Cancel</button>
+        <button class="custom-btn custom-btn-primary-filled next" [disabled]="!addEditions.valid"
+                (click)="addSetEditions(addEditions, ref)">Add set</button>
+      </div>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

@@ -1,0 +1,102 @@
+<form [formGroup]="collectorForm">
+  <div class="profile-info" *ngIf="profileData">
+    <div class="row">
+      <div class="col-6">
+        <h3>About me</h3>
+
+        <div class="form-control-group">
+          <div class="key-cont">
+            <input nbInput fullWidth type="text" formControlName="name" placeholder="Name *" required
+                   [status]="collectorForm.get('name').dirty ? (collectorForm.get('name').invalid  ? 'danger' : 'success') : ''"
+                   [attr.aria-invalid]="collectorForm.get('name').invalid && collectorForm.get('name').touched ? true : null">
+            <ng-container *ngIf="collectorForm.get('name').invalid && collectorForm.get('name').touched">
+              <p class="error-message">
+                Name is required
+              </p>
+            </ng-container>
+          </div>
+
+          <div class="val-cont">
+            <label>Public</label>
+          </div>
+        </div>
+        <div formGroupName="contacts" class="form-control-group">
+          <div class="form-control-group" formGroupName="email">
+            <div class="key-cont">
+              <input nbInput fullWidth type="email" formControlName="value" placeholder="E-mail"
+                     (keyup)="validationAct('email', collectorForm.controls.contacts, 'email', $event.target.value)"
+                     [status]="collectorForm.controls.contacts.controls.email.dirty ? (collectorForm.controls.contacts.controls.email.invalid  ? 'danger' : 'success') : ''"
+                     [attr.aria-invalid]="collectorForm.controls.contacts.controls.email.invalid && collectorForm.controls.contacts.controls.email.touched ? true : null">
+              <ng-container *ngIf="collectorForm.controls.contacts.controls.email.invalid && collectorForm.controls.contacts.controls.email.touched">
+                <p class="error-message">
+                  Please, enter a valid e-mail
+                </p>
+              </ng-container>
+            </div>
+            <div class="val-cont">
+              <label></label>
+              <ngx-switcher [firstValue]="false" [secondValue]="true" [vertical]="true"
+                            (valueChange)="toggleDirection($event, 'email')" [value]="collectorForm?.controls.contacts?.controls.email ? !collectorForm?.controls.contacts?.controls.email?.value.hidden : false">
+              </ngx-switcher>
+            </div>
+          </div>
+          <div class="form-control-group" formGroupName="phone">
+            <div class="key-cont">
+              <label>Phone</label>
+              <input type="text" [pattern]="phonePattern" [maxlength]="15" formControlName="value"
+                     ng2TelInput nbInput fullWidth name="phone"
+                     (change)="onPhoneChange($event)"
+                     [status]="collectorForm?.controls?.contacts?.controls?.phone.dirty ? (collectorForm?.controls?.contacts?.controls?.phone.invalid  ? 'danger' : 'success') : ''"
+                     [ng2TelInputOptions]="{initialCountry: selectedCountry?.iso2}"
+                     (countryChange)="onCountryChange($event)"
+                     [attr.aria-invalid]="collectorForm?.controls?.contacts?.controls?.phone.invalid && collectorForm?.controls?.contacts?.controls?.phone.touched ? true : null"
+              />
+
+              <ng-container *ngIf="collectorForm?.controls?.contacts?.controls?.phone.invalid && collectorForm?.controls?.contacts?.controls?.phone.touched">
+                <p class="error-message">
+                  Please, enter valid phone number
+                </p>
+              </ng-container>
+            </div>
+            <div class="val-cont">
+              <label></label>
+              <ngx-switcher [firstValue]="false" [secondValue]="true" [vertical]="true"
+                            (valueChange)="toggleDirection($event, 'phone')" [value]="collectorForm?.controls.contacts?.controls.phone ? !collectorForm?.controls.contacts?.controls.phone?.value.hidden : false">
+              </ngx-switcher>
+            </div>
+          </div>
+          <div class="form-control-group" formGroupName="address">
+            <div class="key-cont">
+              <input nbInput fullWidth type="text" formControlName="value" placeholder="Address">
+            </div>
+            <div class="val-cont">
+              <label></label>
+              <ngx-switcher [firstValue]="false" [secondValue]="true" [vertical]="true"
+                            (valueChange)="toggleDirection($event, 'address')" [value]="collectorForm?.controls.contacts?.controls.address ? !collectorForm?.controls.contacts?.controls.address?.value.hidden : false">
+              </ngx-switcher>
+            </div>
+          </div>
+          <div class="form-control-group" formGroupName="company">
+            <div class="key-cont">
+              <input nbInput fullWidth type="text" formControlName="value" placeholder="Company">
+            </div>
+            <div class="val-cont">
+              <label></label>
+              <ngx-switcher [firstValue]="false" [secondValue]="true" [vertical]="true"
+                            (valueChange)="toggleDirection($event, 'company')" [value]="collectorForm?.controls.contacts?.controls.company ? !collectorForm?.controls.contacts?.controls.company?.value.hidden : false">
+              </ngx-switcher>
+            </div>
+          </div>
+        </div>
+
+        <div class="button-block">
+          <button class="custom-btn custom-btn-primary-filled next"
+                  [disabled]="!collectorForm.value.name
+                  || collectorForm?.controls?.contacts?.controls?.phone.invalid
+                  || !collectorForm.controls.contacts.valid"
+                  (click)="saveData(collectorForm)">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

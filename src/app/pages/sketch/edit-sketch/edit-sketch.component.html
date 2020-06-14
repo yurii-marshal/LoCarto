@@ -1,0 +1,52 @@
+<div class="container-block">
+
+  <ul class="sketches-list row">
+    <li *ngFor="let image of sketch?.images; let v = index" class="col-4" >
+      <div class="box">
+        <div class="box-image">
+          <div class="image-block" [ngStyle]="{'background-image': 'url(' + image.url + ')', 'transform': image?.rotation}"
+               [ngClass]="{'need-transform': image?.rotation}">
+          </div>
+        </div>
+        <div class="more">
+          <div class="remove" (click)="openModal(removeModal, sketch, v)" title="Delete"><i class="icon-trash"></i></div>
+        </div>
+        <button class="custom-btn custom-btn-primary-empty" (click)="openGallery(v)">Open file</button>
+      </div>
+    </li>
+  </ul>
+
+  <div class="empty-state" *ngIf="showMask">
+    <div class="icon"></div>
+    <p>Add your sketch</p>
+  </div>
+
+  <nb-spinner *ngIf="showSnipper" [message]="''"></nb-spinner>
+</div>
+
+<ngx-image-gallery *ngIf="sketch && sketch.images" [images]="sketch?.images" [conf]="conf"></ngx-image-gallery>
+
+<div class="add-fix">
+  <div class="file-container add">
+    <span>+</span>
+    <input type="file" (change)="photoChange($event)" multiple/>
+  </div>
+</div>
+
+<nb-spinner *ngIf="showSnipper" [message]="''"></nb-spinner>
+
+<ng-template #removeModal let-data let-ref="dialogRef">delete-modal
+  <nb-card>
+    <nb-card-header>Remove file</nb-card-header>
+    <nb-card-body class="delete-modal">
+      <p class="description">
+        Do you really want delete this file?
+      </p>
+      <div class="icon"></div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button class="custom-btn custom-btn-primary-empty" (click)="ref.close()">Cancel</button>
+      <button class="custom-btn custom-btn-primary-filled" (click)="deleteFile(ref)">Delete</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

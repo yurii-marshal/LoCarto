@@ -1,0 +1,59 @@
+<form [formGroup]="formArtwork">
+  <h4 class="tab-title">{{'ADDING_ARTWORK.TITLES.CATEGORY' | translate}}</h4>
+
+  <div class="form-control-group birthday month">
+    <!--<nb-select placeholder="Category *" (selectedChange)="setFormValue($event, 'category')" *ngIf="categories">-->
+      <!--<nb-option *ngFor="let category of categories" value="{{category.id}}">{{category.title}}</nb-option>-->
+    <!--</nb-select>-->
+
+    <ngx-select placeholder="Category *" [items]="categories" optionValueField="id" optionTextField="title" *ngIf="categories"
+                [noAutoComplete]="true" (select)="setFormValue($event, 'category')">
+      <ng-template ngx-select-option let-option let-text="text">
+        {{option.data.title.charAt(0).toUpperCase() + option.data.title.slice(1).toLowerCase()}}
+      </ng-template>
+    </ngx-select>
+    <input nbInput type="hidden" formControlName="category" required>
+  </div>
+
+  <div formArrayName="fields" class="all-fields form-control-group" *ngIf="getArrForms('fields').length > 0 && getArrForms('fields').controls">
+    <div *ngFor="let field of getArrForms('fields').controls; let i = index" [formGroupName]="i" class="form-control-group">
+      <div *ngIf="field.value.base">
+        <div class="form-control-group" *ngIf="field.value.type === 'multi' || field.value.type === 'single'">
+          <!--<nb-select [placeholder]="field.value.title" [multiple]="field.value.type === 'multi'"-->
+                     <!--(selectedChange)="setFormValue($event, 'subcategory', i); setFormValue($event.id, field.value, i);">-->
+            <!--<nb-option *ngFor="let opt of field.value['options']" [value]="opt">{{opt.title}}</nb-option>-->
+          <!--</nb-select>-->
+
+          <ngx-select [placeholder]="field.value.title" [items]="field.value['options']" optionValueField="id" optionTextField="title"
+                      [noAutoComplete]="true"
+                      (selectionChanges)="setFormValue($event[0].data, 'subcategory', i, $event)"
+                      (select)="setFormValue($event, field.value, i)">
+            <ng-template ngx-select-option let-option let-text="text">
+              {{option.data.title.charAt(0).toUpperCase() + option.data.title.slice(1).toLowerCase()}}
+            </ng-template>
+          </ngx-select>
+          <!-- [multiple]="field.value.type === 'multi'" -->
+        </div>
+
+        <input type="hidden" formControlName="fieldId">
+
+        <div class="form-control-group" *ngIf="field.value.type === 'text'">
+          <input nbInput fullWidth type="text" [placeholder]="field.value.title">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <input type="hidden" *ngIf="getArrForms('fields').length > 0 && getArrForms('fields').controls[0].value.base" formControlName="subcategory" required>
+
+  <div class="button-block">
+    <button class="custom-btn custom-btn-primary-empty back" [routerLink]="'/pages/artworks/all'">
+      {{'COMMON.BUTTONS.CANCEL' | translate}}
+    </button>
+    <button class="custom-btn custom-btn-primary-filled next"
+            [title]="getArrForms('fields').controls[0]?.value.base + '---' + (formArtwork.controls.subcategory.valid && formArtwork.controls.category.valid) + '----' + formArtwork.controls.category.valid"
+            (click)="changeTab(activeTab + 1)"
+            [disabled]="getArrForms('fields').controls[0]?.value.base ? !(formArtwork.controls.subcategory.valid && formArtwork.controls.category.valid) : !formArtwork.controls.category.valid"
+    >{{'COMMON.BUTTONS.NEXT' | translate}}</button>
+  </div>
+</form>

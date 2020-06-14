@@ -1,0 +1,36 @@
+<div class="steps-body has-bg">
+  <div class="container-card">
+
+    <h5>New</h5>
+    <p *ngIf="!newHistory || (newHistory && newHistory.length < 1)">No actions today</p>
+    <ul class="users">
+      <li *ngFor="let item of newHistory">
+        <div class="info">
+          <div class="img" [ngStyle]="{'background-image': 'url(' + item.profileData?.photos?.avatar + ')'}"></div>
+          <p class="name">{{item.profileData?.curator ? item.profileData?.curator : item.profileData?.name}} <span class="action">{{item.action}}</span></p>
+          <p class="type">{{item?.role === 'creator' ? 'Creator' : item?.role === 'admin' ? 'Admin' : 'Exhibiting artist'}}</p>
+        </div>
+        <div class="actions">
+          <!--<div class="artwork"></div>-->
+        </div>
+      </li>
+    </ul>
+
+    <br>
+    <br>
+
+    <h5>Old</h5>
+    <p *ngIf="!oldHistory || (oldHistory && oldHistory.length < 1)">No history</p>
+    <ul class="users">
+      <li *ngFor="let item of oldHistory">
+        <div class="info">
+          <div class="img" [ngStyle]="{'background-image': 'url(' + item.profileData?.photos?.avatar + ')'}"></div>
+          <p class="name">{{item.profileData?.curator ? item.profileData?.curator : item.profileData?.name}} <span class="action">{{item.action}}</span></p>
+          <p class="type">{{item?.role === 'creator' ? 'Creator' : item?.role === 'admin' ? 'Admin' : 'Exhibiting artist'}}</p>
+        </div>
+        <div class="actions">
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

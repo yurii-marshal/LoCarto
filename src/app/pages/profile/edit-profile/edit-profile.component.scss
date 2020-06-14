@@ -1,0 +1,336 @@
+@import "../../../common/styles/custom-tabs";
+@import "../../../common/styles/variables";
+
+.image-block {
+  height: 350px;
+  position: relative;
+  margin-top: 1rem;
+}
+.banner-block {
+  width: 100%;
+  height: 100%;
+  background-color: lighten($color-fg, 77%);
+  position: relative;
+  overflow: hidden;
+
+  &:before {
+    content: '\e80e';
+    font-family: fontello;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 50px;
+    width: 100px;
+    line-height: 100px;
+    background: #000;
+    border-radius: 50%;
+    text-align: center;
+  }
+
+  .temp-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 5;
+    position: relative;
+  }
+
+  .banner-image {
+    box-shadow: 0 2px 12px 0 rgba($color-fg, 0.25);
+    display: block;
+    position: absolute;
+    bottom: 2rem;
+    right: 3rem;
+    width: 50px;
+    line-height: 50px;
+    color: #fff;
+    background: $color-fg;
+    border-radius: 50%;
+    text-align: center;
+    transition: all .25s;
+    z-index: 10;
+
+    .icon-camera {
+      font-size: 20px;
+    }
+
+    &:hover {
+      background: $color-fg-highlight;
+    }
+  }
+}
+.birthday {
+  display: inline-block;
+  width: 50%;
+
+  input {
+    width: 100%;
+  }
+
+  &.day,
+  &.month,
+  &.year {
+    width: 30%;
+  }
+  &.month,
+  &.year {
+    margin-left: 5% !important;
+  }
+}
+nb-select ::ng-deep {
+  button.btn-primary {
+    font-size: .92em;
+    text-transform: initial;
+    color: #A4ABB2 !important;
+    padding: 0.75rem 1.2rem;
+  }
+}
+.form-control-group textarea {
+  margin-bottom: -2px;
+}
+.snipper-avatar {
+  border-radius: 50%;
+}
+.profile-image {
+  width: 100px;
+  line-height: 100px;
+  text-align: center;
+  position: absolute;
+  bottom: 2rem;
+  left: 3rem;
+  z-index: 10;
+
+  &:hover {
+    &:before {
+      background: lighten($color-fg, 70%);
+    }
+    &:after {
+      background: $color-fg-highlight;
+    }
+  }
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    background: lighten($color-fg, 65%);
+    transition: all .25s;
+  }
+
+  &:after {
+    content: '\e815';
+    font-family: fontello;
+    color: #fff;
+    border-radius: 50%;
+    background: $color-fg;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    text-align: center;
+    line-height: 15px;
+    padding: 8px 9px;
+    font-size: 14px;
+    z-index: 10;
+    transition: all .25s;
+  }
+
+  .icon-user {
+    color: #fff;
+    font-size: 27px;
+    position: relative;
+    z-index: 4;
+  }
+
+  input[type="file"] {
+    z-index: 15;
+  }
+
+  .temp-image {
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 7;
+    border-radius: 50%;
+  }
+}
+textarea {
+  min-height: 115px;
+}
+.birthday {
+  display: inline-block;
+  width: 46%;
+
+  input {
+    width: 100%;
+  }
+
+}
+.birthday.right {
+  margin-left: 8%;
+}
+.profile-info {
+  margin-top: 2rem;
+  margin-bottom: 5rem;
+  background: #fff;
+  padding: 3rem 5rem;
+  position: relative;
+}
+
+.form-control-group + .form-control-group {
+  margin-top: 1rem;
+}
+
+.add {
+  clear: both;
+  margin-top: 1rem;
+
+  &:hover {
+    color: $color-fg-highlight;
+    cursor: pointer;
+
+    span {
+      background: $color-fg-highlight;
+    }
+  }
+
+  span {
+    display: inline-block;
+    font-size: 1.5em;
+    text-align: center;
+    margin-right: 1rem;
+    border-radius: 50%;
+    background: $color-fg;
+    color: #fff;
+    width: 35px;
+    line-height: 35px;
+    transition: .25s all;
+  }
+}
+.education {
+  .item {
+    position: relative;
+
+    & + .item {
+      margin-top: 1rem;
+      border-top: 1px solid lighten($color-fg, 75%);
+      padding-top: 1rem;
+
+      .remove-item {
+        top: 42px;
+      }
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+  }
+}
+.grant {
+  .item {
+    position: relative;
+    margin-top: 1rem;
+
+    & + .item {
+      border-top: 1px solid lighten($color-fg, 75%);
+      padding-top: 1rem;
+
+      .remove-item {
+        top: 42px;
+      }
+    }
+    .name {
+      width: 65%;
+      display: inline-block;
+    }
+    .year {
+      width: 30%;
+      float: right;
+      margin-top: 0;
+    }
+    input {
+      width: 100%;
+    }
+  }
+}
+.remove-item {
+  position: absolute;
+  left: -38px;
+  top: 29px;
+  color: lighten($color-fg, 65%);
+  transition: .25s all;
+  font-size: 25px;
+
+  &:hover {
+    cursor: pointer;
+    color: red;
+  }
+}
+.error-message {
+  color: red;
+  margin-bottom: .2rem;
+  margin-top: .1rem;
+  font-size: .9em;
+}
+h3 {
+  margin-bottom: 1.5rem;
+}
+h5 {
+  margin-top: 2.5rem;
+  margin-bottom: 1.2rem;
+}
+.social {
+  position: relative;
+
+  i {
+    position: absolute;
+    left: .5rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  input {
+    padding-left: 35px;
+  }
+}
+.form-control-group.social + .form-control-group.social {
+  margin-top: 2rem;
+}
+.button-block {
+  margin-top: 2rem;
+
+  .custom-btn {
+    display: inline-block;
+    width: 46%;
+
+    & + .custom-btn {
+      margin-left: 8%;
+    }
+  }
+}
+
+.key-cont {
+  width: 80%;
+}
+.val-cont {
+  margin-left: 1em;
+}
+.key-cont,
+.val-cont {
+  display: inline-block;
+  vertical-align: middle;
+}

@@ -1,0 +1,55 @@
+<div class="search-block">
+  <form #searchForm="ngForm">
+    <div class="input-block">
+      <input nbInput fullWidth type="text" ngModel #search="ngModel" name="search">
+      <button class="search-btn" (click)="send(searchForm)"><i class="icon-search"></i></button>
+    </div>
+    <div class="add clear" *ngIf="searchForm.value.search" (click)="send(searchForm, true)">
+      <span class="icon-cancel"></span>Clear search
+    </div>
+  </form>
+</div>
+
+
+<div class="container-block">
+
+  <ul class="tags">
+    <li class="show-all" *ngIf="currentArtworks && currentArtworks.length" (click)="showAll()">Show all</li>
+    <li *ngFor="let tag of tags; let i = index"
+        (click)="showArtworks(tag.artworks, i)"
+        [hidden]="currentArtworks && currentArtworks.length > 0 && i !== activeTag">
+      {{tag.name}} <span>{{tag.count}}</span> <i class="icon-cancel" (click)="$event.stopPropagation(); openModal(removeModal, tag)"></i>
+    </li>
+  </ul>
+
+  <ngx-artworks *ngIf="currentArtworks" [data]="currentArtworks" [linkButtonMode]="true" [showMode]="true" [checkActionMode]="false"></ngx-artworks>
+
+  <!--<div class="empty-state" *ngIf="showMask">-->
+    <!--<div class="icon"></div>-->
+    <!--<p>No tags yet</p>-->
+  <!--</div>-->
+  <div *ngIf="showMask" class="empty-card tags-card">
+    <div class="icon tags-icon"></div>
+    <h5 class="status-title">No tags yet</h5>
+  </div>
+
+  <nb-spinner *ngIf="showSnipper" [message]="''"></nb-spinner>
+</div>
+
+
+<ng-template #removeModal let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Delete tag</nb-card-header>
+    <nb-card-body class="delete-modal">
+      <p class="description">
+        All artworks which has this tag will be unlinked with this tag.
+        <br> Do you really want delete it?
+      </p>
+      <div class="icon"></div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button class="custom-btn custom-btn-primary-empty" (click)="ref.close()">Cancel</button>
+      <button class="custom-btn custom-btn-primary-filled" (click)="deleteTag(ref)">Delete</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

@@ -1,0 +1,15 @@
+<div class="nav-list">
+    <ul>
+        <li><a href="">Support</a></li>
+        <li><a href="">User Agreements</a></li>
+    </ul>
+</div>
+
+<div class="all-rights">
+    <p>
+        All rights reserved © {{currentYear}} Locarto
+    </p>
+</div>
+
+<ngx-progress-bar class="progress-modal" [ngClass]="{'show': (files && files.length > 0)}" [data]="files"
+                  *ngIf="files && files.length > 0 && showProg" (allUploaded)="showProg = !$event"></ngx-progress-bar>

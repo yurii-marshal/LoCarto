@@ -1,0 +1,25 @@
+<div class="final">
+  <h2>Great work!</h2>
+  <p class="description">Exhibition added. You can pick artworks for this exhibition</p>
+
+  <div class="row">
+    <div class="col-4">
+      <div class="final-item exhibitions">
+        <div class="image-block" [routerLink]="'/pages/exhibitions/edit/' + createdId"></div>
+        <h5 [routerLink]="'/pages/exhibitions/edit/' + createdId">View exhibition</h5>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="final-item artworks">
+        <div class="image-block"></div>
+        <h5>Select artworks</h5>
+      </div>
+    </div>
+    <div class="col-4 exhibition">
+      <div class="final-item">
+        <div class="image-block" [routerLink]="'/pages/exhibitions/add'"></div>
+        <h5 [routerLink]="'/pages/exhibitions/add'">Add new exhibition</h5>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,306 @@
+<form #formProfile="ngForm">
+  <div class="profile-info" *ngIf="profileData">
+    <div class="row">
+      <div class="col-6">
+        <h3>About me</h3>
+
+        <div class="form-control-group">
+          <label>Artist name *</label>
+          <input nbInput fullWidth type="text" [ngModel]="profileData?.name" #name="ngModel" name="name">
+        </div>
+
+        <div class="form-control-group" *ngIf="profileData?.curator">
+          <label>Curator name *</label>
+          <input nbInput fullWidth type="text" [ngModel]="profileData?.curator" #nameCu="ngModel" name="nameCu">
+        </div>
+
+        <div class="form-control-group">
+          <label>City and country of birth</label>
+          <input nbInput fullWidth type="text" #countryBirth="ngModel" name="countryBirth" placeholder="City and country of birth"
+                 [(ngModel)]="profileData.birth.country"
+                 ngx-google-places-autocomplete  (onAddressChange)="handleAddressChange($event, 'birth')"
+                 [status]="countryBirth.dirty ? (countryBirth.invalid  ? 'danger' : 'success') : ''"
+                 [attr.aria-invalid]="countryBirth.invalid && countryBirth.touched ? true : null">
+          <input nbInput type="hidden" [(ngModel)]="profileData.birth.city" #cityBirth="ngModel" name="cityBirth">
+        </div>
+
+        <div class="form-control-group birthday">
+          <label>Date of birth</label>
+          <div class="dynamic-wrapper">
+            <input nbInput name="birthDate" [max]="todayDate"
+                   [(ngModel)]="birthDateAll" #birthDate="ngModel" [owlDateTime]="dt1">
+            <span [owlDateTimeTrigger]="dt1"><i class="fa fa-calendar"></i></span>
+            <owl-date-time #dt1 [pickerType]="'calendar'" [startView]="'multi-years'"></owl-date-time>
+          </div>
+        </div>
+
+
+        <div class="form-control-group" *ngIf="profileData?.curator">
+          <label>City and country of death</label>
+          <input nbInput fullWidth type="text" #countryDeath="ngModel" name="countryDeath"
+                 [(ngModel)]="profileData.death.country"
+                 ngx-google-places-autocomplete  (onAddressChange)="handleAddressChange($event, 'death')">
+          <input nbInput type="hidden" [(ngModel)]="profileData.death.city" #cityDeath="ngModel" name="cityDeath">
+        </div>
+
+        <div class="form-control-group birthday day" *ngIf="profileData?.curator">
+          <label>Date of death</label>
+
+          <div class="dynamic-wrapper">
+            <input nbInput [max]="todayDate" name="deathDate" [(ngModel)]="deathDateAll" #deathDate="ngModel"
+                   [owlDateTime]="dt2" [min]="formProfile.value.birthDate">
+            <span [owlDateTimeTrigger]="dt2"><i class="fa fa-calendar"></i></span>
+            <owl-date-time #dt2 [pickerType]="'calendar'" [startView]="'multi-years'"></owl-date-time>
+          </div>
+        </div>
+
+        <div class="form-control-group">
+          <label>Biography</label>
+          <textarea nbInput fullWidth [ngModel]="profileData?.biography" #biography="ngModel" name="biography"></textarea>
+        </div>
+
+
+	      <ng-template *ngIf="false"> <!-- TODO temporary hidden -->
+        <hr>
+
+        <div class="education">
+          <div class="item" *ngFor="let education of profileData?.education; let i = index;">
+            <div class="form-control-group">
+              <label>University or courses names</label>
+              <input nbInput fullWidth [(ngModel)]="education.title" type="text"
+                     name="university{{i}}">
+            </div>
+
+            <div class="form-control-group birthday">
+              <label>Date of start</label>
+              <div class="dynamic-wrapper">
+                <input nbInput name="startDate{{i}}" [(ngModel)]="selectedYearStart[i]" #startDate="ngModel"
+                       [owlDateTime]="dtsd" [max]="todayDate" readonly ngxDateView
+                       [needChange]="(educationYearChanges && educationYearChanges[i]) ? educationYearChanges[i][0] : ''">
+                <span [owlDateTimeTrigger]="dtsd"><i class="fa fa-calendar"></i></span>
+                <owl-date-time #dtsd [pickerType]="'calendar'" [startView]="'multi-years'"
+                               (yearSelected)="selectDate(dtsd, 'selectedYearStart', i, $event)"></owl-date-time>
+              </div>
+            </div>
+
+            <div class="form-control-group birthday right">
+              <label>Date of graduated</label>
+              <div class="dynamic-wrapper">
+                <input nbInput name="endDate{{i}}" [(ngModel)]="selectedYearEnd[i]" #endDate="ngModel"
+                       [owlDateTime]="dted" [min]="selectedYearStart[i]" [max]="todayDate" readonly ngxDateView
+                       [needChange]="(educationYearChanges && educationYearChanges[i]) ? educationYearChanges[i][1] : ''">
+                <span [owlDateTimeTrigger]="dted"><i class="fa fa-calendar"></i></span>
+                <owl-date-time #dted [pickerType]="'calendar'" [startView]="'multi-years'"
+                               (yearSelected)="selectDate(dted, 'selectedYearEnd', i, $event)"></owl-date-time>
+              </div>
+
+            </div>
+            <ng-container *ngIf="datesEducation && (datesEducation[i] === 'error')">
+              <p class="error-message">
+                Start date must be earlier then end date
+              </p>
+            </ng-container>
+
+            <i class="icon-trash remove-item" (click)="removeItem(i, 'education')"></i>
+          </div>
+        </div>
+
+        <div class="add" (click)="addItem('education', 'education')">
+          <span>+</span>Add education
+        </div>
+
+        <hr>
+
+        <div class="grant">
+          <div class="item" *ngFor="let grant of profileData.grants; let i = index;">
+            <div class="form-control-group birthday">
+              <label> Grant name</label>
+              <input nbInput type="text" [(ngModel)]="grant.title" name="grantName{{i}}">
+            </div>
+
+            <div class="birthday right">
+              <label>Year</label>
+
+              <div class="dynamic-wrapper">
+                <input nbInput name="grantYear{{i}}" [(ngModel)]="selectedYear[i]"
+                       [owlDateTime]="dtgr" [max]="todayDate" readonly ngxDateView [needChange]="grantYearChanges[i]">
+                <span [owlDateTimeTrigger]="dtgr"><i class="fa fa-calendar"></i></span>
+                <owl-date-time #dtgr [pickerType]="'calendar'" [startView]="'multi-years'"
+                               (yearSelected)="selectDate(dtgr, 'selectedYear', i, $event)"></owl-date-time>
+              </div>
+
+            </div>
+
+            <i class="icon-trash remove-item" (click)="removeItem(i, 'grants')"></i>
+          </div>
+        </div>
+
+        <div class="add" (click)="addItem('grant', 'grants')">
+          <span>+</span>Add grant
+        </div>
+        </ng-template> <!-- TODO temporary hidden -->
+
+
+        <div class="button-block">
+          <button class="custom-btn custom-btn-primary-filled next"
+                  [disabled]="!formProfile.value.name || phone.invalid"
+                  (click)="saveData(formProfile)">Save</button>
+        </div>
+
+      </div>
+
+      <div class="col-6">
+        <h3>Contact data</h3>
+
+        <div class="form-control-group">
+          <div class="key-cont">
+            <label>E-mail</label>
+            <input nbInput fullWidth
+                   [ngModel]="profileData?.contacts?.email?.value" #email="ngModel" name="email"
+                   (keyup)="validation('email', formProfile, 'email', $event.target.value)"
+                   [status]="email.dirty ? (email.invalid  ? 'danger' : 'success') : ''">
+            <ng-container *ngIf="email.invalid && email.touched">
+              <p class="error-message">
+                Email should be the real one!
+              </p>
+            </ng-container>
+          </div>
+          <div class="val-cont">
+            <label>Public</label>
+            <ngx-switcher [firstValue]="false" [secondValue]="true" [vertical]="true"
+                          (valueChange)="toggleDirection($event, 'email')" [value]="profileData?.contacts?.email ? !profileData?.contacts?.email?.hidden : false">
+            </ngx-switcher>
+          </div>
+        </div>
+
+        <div class="form-control-group">
+          <div class="key-cont">
+            <label>Phone</label>
+
+            <input type="text" [pattern]="phonePattern" [maxlength]="15"
+                   [ngModel]="phoneInput?.value"
+                   (change)="onPhoneChange($event)"
+                   ng2TelInput nbInput fullWidth name="phone" #phone="ngModel"
+                   [status]="phone.dirty ? (phone.invalid  ? 'danger' : 'success') : ''"
+                   [ng2TelInputOptions]="{initialCountry: selectedCountry?.iso2}"
+                   (countryChange)="onCountryChange($event)"/>
+
+            <ng-container *ngIf="!phone.valid && !phone.pristine && !phone.untouched">
+              <p *ngIf="phone.errors.pattern" class="error-message">
+                Invalid phone number
+              </p>
+            </ng-container>
+          </div>
+          <div class="val-cont">
+            <label></label>
+            <ngx-switcher [vertical]="true"
+                          (valueChange)="toggleDirection($event, 'phone')"
+                          [value]="phoneInput?.hidden">
+            </ngx-switcher>
+          </div>
+        </div>
+
+        <div class="form-control-group">
+          <div class="key-cont">
+            <label>Studio address</label>
+            <input nbInput fullWidth type="text" name="studioAddress" placeholder="Studio address" #studioAddress="ngModel"
+                   [ngModel]="profileData.contacts?.studio?.value"
+                   ngx-google-places-autocomplete  (onAddressChange)="handleAddressChange($event, 'studio', formProfile)"
+                   [status]="studioAddress.dirty ? (studioAddress.invalid  ? 'danger' : 'success') : ''"
+                   [attr.aria-invalid]="studioAddress.invalid && studioAddress.touched ? true : null">
+
+          </div>
+
+          <div class="val-cont">
+            <label></label>
+            <ngx-switcher [firstValue]="false" [secondValue]="true" [vertical]="true"
+                          (valueChange)="toggleDirection($event, 'studio')" [value]="profileData?.contacts?.studio ? !profileData?.contacts?.studio?.hidden : false">
+            </ngx-switcher>
+          </div>
+
+        </div>
+
+        <div class="form-control-group">
+          <div class="key-cont">
+            <label>Website</label>
+            <input nbInput fullWidth [ngModel]="profileData?.contacts?.website?.value" #website="ngModel" name="website"
+                   (keyup)="validation('link', formProfile, 'website', $event.target.value)"
+                   [status]="website.dirty ? (website.invalid  ? 'danger' : 'success') : ''"
+                   [attr.aria-invalid]="website.invalid && website.touched ? true : null">
+            <ng-container *ngIf="website.invalid && website.touched">
+              <p class="error-message">
+                Link should be a valid!
+              </p>
+            </ng-container>
+          </div>
+          <div class="val-cont">
+            <label></label>
+            <ngx-switcher [firstValue]="false" [secondValue]="true" [vertical]="true"
+                          (valueChange)="toggleDirection($event, 'website')" [value]="profileData?.contacts?.website ? !profileData?.contacts?.website?.hidden : false">
+            </ngx-switcher>
+          </div>
+        </div>
+
+        <h5>My social networks</h5>
+
+        <div class="form-control-group social">
+          <i class="icon-instagram"></i>
+          <input nbInput fullWidth type="text" [ngModel]="profileData?.contacts?.instagram?.value" #instagram="ngModel" name="instagram"
+                 [status]="instagram.dirty ? (instagram.invalid  ? 'danger' : 'success') : ''"
+                 (keyup)="validation('link', formProfile, 'instagram', $event.target.value)">
+          <ng-container *ngIf="instagram.invalid && instagram.touched">
+            <p class="error-message">
+              Link should be a valid!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-control-group social">
+          <i class="icon-wikipedia-w"></i>
+          <input nbInput fullWidth type="text" [ngModel]="profileData?.contacts?.wikipedia?.value" #wikipedia="ngModel" name="wikipedia"
+                 [status]="wikipedia.dirty ? (wikipedia.invalid  ? 'danger' : 'success') : ''"
+                 (keyup)="validation('link', formProfile, 'wikipedia', $event.target.value)">
+          <ng-container *ngIf="wikipedia.invalid && wikipedia.touched">
+            <p class="error-message">
+              Link should be a valid!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-control-group social">
+          <i class="icon-facebook"></i>
+          <input nbInput fullWidth type="text" [ngModel]="profileData?.contacts?.facebook?.value" #facebook="ngModel" name="facebook"
+                 [status]="facebook.dirty ? (facebook.invalid  ? 'danger' : 'success') : ''"
+                 (keyup)="validation('link', formProfile, 'facebook', $event.target.value)">
+          <ng-container *ngIf="facebook.invalid && facebook.touched">
+            <p class="error-message">
+              Link should be a valid!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-control-group social">
+          <i class="icon-twitter"></i>
+          <input nbInput fullWidth type="text" [ngModel]="profileData?.contacts?.twitter?.value" #twitter="ngModel" name="twitter"
+                 [status]="twitter.dirty ? (twitter.invalid  ? 'danger' : 'success') : ''"
+                 (keyup)="validation('link', formProfile, 'twitter', $event.target.value)">
+          <ng-container *ngIf="twitter.invalid && twitter.touched">
+            <p class="error-message">
+              Link should be a valid!
+            </p>
+          </ng-container>
+        </div>
+        <div class="form-control-group social">
+          <i class="icon-linkedin"></i>
+          <input nbInput fullWidth type="text" [ngModel]="profileData?.contacts?.linkedin?.value" #linkedin="ngModel" name="linkedin"
+                 [status]="linkedin.dirty ? (linkedin.invalid  ? 'danger' : 'success') : ''"
+                 (keyup)="validation('link', formProfile, 'linkedin', $event.target.value)">
+          <ng-container *ngIf="linkedin.invalid && linkedin.touched">
+            <p class="error-message">
+              Link should be a valid!
+            </p>
+          </ng-container>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</form>

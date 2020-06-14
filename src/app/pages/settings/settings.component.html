@@ -1,0 +1,225 @@
+<div class="card">
+  <nb-accordion>
+
+    <nb-accordion-item *ngIf="!accountMode" [collapsed]="false">
+      <nb-accordion-item-header>Curators</nb-accordion-item-header>
+      <nb-accordion-item-body class="noti" *ngIf="isOwner">
+        <ul class="curators">
+          <li *ngFor="let curator of curators; let i = index">
+            <div class="info">
+              <div class="name">
+                <span *ngIf="editMode !== i">{{curator.name}}</span>
+                <form *ngIf="editMode === i">
+                  <input nbInput type="text"  ngModel #nameCur="ngModel" name="nameCur" placeholder="Set Name">
+                  <button class="custom-btn custom-btn-primary-filled"
+                          (click)="actionCurator('change', curator, '', nameCur.value)">Save</button>
+                </form>
+              </div>
+              <p class="position">{{curator.email}}</p>
+            </div>
+
+            <div class="actions">
+              <i class="icon-cancel" (click)="editMode = undefined" *ngIf="editMode === i"></i>
+              <i class="icon-pencil-2 edit" (click)="actionCurator('edit', curator, i)" *ngIf="editMode !== i"></i>
+              <i class="icon-trash remove" (click)="actionCurator('remove', curator, '', roleModal)"></i>
+            </div>
+          </li>
+
+          <li *ngIf="!curators || (curators && curators.length < 1)">No curators of this profile</li>
+
+          <li class="more">
+            <div class="add" *ngIf="!showSearchField" (click)="showSearchField = true"> <!-- (click)="openModal(createPortfolio)" -->
+              <span>+</span>Add curator
+            </div>
+
+            <div class="form-control-group email-wr" *ngIf="showSearchField">
+              <form [formGroup]="formAccounts">
+                <div class="inputs">
+                  <input class="email-input" nbInput fullWidth type="text" formControlName="email" placeholder="Curator e-mail"
+                         (keyup)="searchUsers($event.target.value)">
+                  <input class="name-input" nbInput fullWidth type="text" formControlName="name" placeholder="Set curator name"
+                         required>
+                </div>
+                <div class="add user-add" (click)="curAccount ? setUser(formAccounts) : ''" [ngClass]="{'active': curAccount}">
+                  <span>+</span>
+                </div>
+              </form>
+            </div>
+          </li>
+        </ul>
+      </nb-accordion-item-body>
+
+      <nb-accordion-item-body class="noti" *ngIf="!isOwner">
+        <p class="only-owner">Only owner can change this information</p>
+      </nb-accordion-item-body>
+    </nb-accordion-item>
+
+    <nb-accordion-item *ngIf="accountMode">
+      <nb-accordion-item-header>{{ 'SETTINGS.TITLES.EMAIL' | translate }} <span class="email-in-title">{{account?.email?.norm}}</span></nb-accordion-item-header>
+      <nb-accordion-item-body class="with-inputs">
+        <div class="form-control-group">
+          <label>{{ 'SETTINGS.TEXTS.PRIMARY_EMAIL' | translate }}</label>
+          <input nbInput fullWidth class="input-full-width input-md input-rectangle" type="email" name="email"
+                 [ngModel]="account?.email?.norm" #email="ngModel" required>
+          <button class="custom-btn custom-btn-primary-filled"
+                  [disabled]="!email?.value"
+                  (click)="openModal(emailModal, email.value)">{{ 'COMMON.BUTTONS.CHANGE' | translate }}</button>
+        </div>
+      </nb-accordion-item-body>
+    </nb-accordion-item>
+
+    <nb-accordion-item *ngIf="accountMode">
+      <nb-accordion-item-header>{{ 'SETTINGS.TITLES.CHANGE_PASSWORD' | translate }}</nb-accordion-item-header>
+      <nb-accordion-item-body class="with-inputs">
+        <div class="form-control-group pass">
+          <label>Please confirm your old password and then type a new one.</label>
+          <div class="password-input">
+            <input nbInput fullWidth class="input-full-width input-md input-rectangle" [type]="visibleOld ? 'text' : 'password'" name="oldPass"
+                   [ngModel]="oldPassword" #oldPass="ngModel" placeholder="{{ 'SETTINGS.PLACEHOLDERS.OLD_PASS' | translate }}" required>
+            <i [ngClass]="{'icon-visibility': !visibleOld, 'icon-hide': visibleOld}" (click)="showHidePass('visibleOld')"></i>
+          </div>
+          <button class="custom-btn custom-btn-primary-filled"
+                  [disabled]="!oldPass?.value"
+                  (click)="confirmOldPass(oldPass.value)">{{ 'COMMON.BUTTONS.CONFIRM' | translate }}</button>
+          <div class="result" *ngIf="showNewBlock.error">
+            <p class="err" *ngIf="showNewBlock.error">Password incorrect</p>
+          </div>
+        </div>
+
+        <div class="form-control-group" *ngIf="showNewBlock.success">
+          <br>
+          <label>{{ 'SETTINGS.TEXTS.SET_NEW_PASS' | translate }}</label>
+          <div class="password-input">
+            <input nbInput fullWidth class="input-full-width input-md input-rectangle" [type]="visibleNew ? 'text' : 'password'" name="newPass"
+                   [ngModel]="newPassword" #newPass="ngModel" placeholder="{{ 'SETTINGS.PLACEHOLDERS.NEW_PASS' | translate }}"
+                   [minlength]="3"
+                   [maxlength]="50"
+                   required>
+            <i [ngClass]="{'icon-visibility': !visibleNew, 'icon-hide': visibleNew}" (click)="showHidePass('visibleNew')"></i>
+          </div>
+          <button class="custom-btn custom-btn-primary-filled"
+                  [disabled]="!newPass?.value || newPass.errors?.minlength || newPass.errors?.maxlength"
+                  (click)="saveNewPass(newPass.value, passModal)">Save</button>
+          <ng-container *ngIf="newPass.invalid && newPass.touched ">
+            <p class="error-message" *ngIf="newPass.errors?.required">
+              {{ 'SETTINGS.TEXTS.PASS_REQUIRED' | translate }}
+            </p>
+            <p class="error-message" *ngIf="newPass.errors?.minlength || newPass.errors?.maxlength">
+              {{ 'SETTINGS.TEXTS.PASS_ERROR' | translate }}
+            </p>
+          </ng-container>
+        </div>
+      </nb-accordion-item-body>
+    </nb-accordion-item>
+
+    <nb-accordion-item *ngIf="accountMode">
+      <nb-accordion-item-header>{{ 'SETTINGS.TITLES.NOTIFICATIONS' | translate }}</nb-accordion-item-header>
+      <nb-accordion-item-body class="noti">
+        <div class="item">
+          <p class="title">{{ 'SETTINGS.TEXTS.SUBSCRIBE' | translate }}</p>
+          <ngx-switcher
+                  [firstValue]="false"
+                  [secondValue]="true"
+                  [value]="notifications.news"
+                  (valueChange)="toggleDirection($event, 'news')"
+                  [vertical]="true">
+          </ngx-switcher>
+        </div>
+        <div class="item">
+          <p class="title">{{ 'SETTINGS.TEXTS.COMMUNICATION' | translate }}</p>
+          <ngx-switcher
+                  [firstValue]="false"
+                  [secondValue]="true"
+                  [value]="notifications.communication"
+                  (valueChange)="toggleDirection($event, 'communication')"
+                  [vertical]="true">
+          </ngx-switcher>
+        </div>
+        <div class="item">
+          <p class="title">{{ 'SETTINGS.TEXTS.EXHIBITION' | translate }}</p>
+          <ngx-switcher
+                  [firstValue]="false"
+                  [secondValue]="true"
+                  [value]="notifications.exhibition"
+                  (valueChange)="toggleDirection($event, 'exhibition')"
+                  [vertical]="true">
+          </ngx-switcher>
+        </div>
+        <nb-spinner *ngIf="showSnipper" [message]="''"></nb-spinner>
+      </nb-accordion-item-body>
+    </nb-accordion-item>
+  </nb-accordion>
+
+  <ul class="accounts" *ngIf="accounts">
+    <li *ngFor="let account of accounts" (click)="chooseProf(account)">
+      <p class="name">{{account.email?.norm}}</p>
+    </li>
+    <li *ngIf="showInvitation" class="not-found">
+      <h6>Not found.</h6>
+      <p>Check your search query or invite a <br> member to Locarto</p>
+      <button class="custom-btn custom-btn-primary-filled" (click)="setUser(formAccounts, true)">Invite to Locarto</button>
+    </li>
+  </ul>
+  <nb-spinner *ngIf="showSnipperInvite" [message]="''"></nb-spinner>
+</div>
+
+<ng-template #emailModal let-data let-ref="dialogRef">
+  <form #emailForm="ngForm">
+    <nb-card class="email-modal">
+      <nb-card-header>Confirm change of email</nb-card-header>
+      <nb-card-body>
+        <div *ngIf="!resultPass">
+          <p class="description">Please confirm your password to change primary email.</p>
+          <div class="form-control-group password-input">
+            <input nbInput fullWidth type="password" class="input-full-width input-md input-rectangle" name="pass" placeholder="{{ 'SETTINGS.PLACEHOLDERS.ENTER_CUR_PASS' | translate }}"
+                   ngModel #pass="ngModel" [type]="visibleOld ? 'text' : 'password'" required>
+            <i [ngClass]="{'icon-visibility': !visibleOld, 'icon-hide': visibleOld}" (click)="showHidePass('visibleOld')"></i>
+          </div>
+        </div>
+        <div *ngIf="resultPassErr">
+          <p class="error-message">Try again!</p>
+        </div>
+        <div *ngIf="resultPass" class="result-ok">
+          <i class="icon-shield"></i>
+          <p>Email is changed successfully.</p>
+        </div>
+      </nb-card-body>
+      <nb-card-footer *ngIf="!resultPass">
+        <button class="custom-btn custom-btn-primary-filled" (click)="changeEmail(emailForm.value.pass, ref, emailForm)"
+                [disabled]="!emailForm?.valid">{{ 'COMMON.BUTTONS.CONFIRM' | translate }}</button>
+      </nb-card-footer>
+      <nb-card-footer *ngIf="resultPass">
+        <button class="custom-btn custom-btn-primary-filled" (click)="ref.close()">Ok</button>
+      </nb-card-footer>
+    </nb-card>
+  </form>
+</ng-template>
+
+<ng-template #passModal let-data let-ref="dialogRef">
+  <nb-card class="email-modal password-modal">
+    <nb-card-body>
+      <div class="result-ok">
+        <i class="icon-shield"></i>
+        <p>{{ 'SETTINGS.TEXTS.PASS_CHANGED' | translate }}</p>
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button class="custom-btn custom-btn-primary-filled" (click)="ref.close()">Ok</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #roleModal let-data let-ref="dialogRef">
+  <nb-card class="delete-modal">
+    <nb-card-header>Delete curator</nb-card-header>
+    <nb-card-body>
+      <p class="description">
+        {{ 'SETTINGS.TEXTS.ARE_YOU_SURE' | translate }}
+      </p>
+    </nb-card-body>
+    <nb-card-footer>
+      <button class="custom-btn custom-btn-primary-empty" (click)="ref.close()">{{ 'COMMON.BUTTONS.CANCEL' | translate }}</button>
+      <button class="custom-btn custom-btn-primary-filled" (click)="removeRole(currentCur, ref)">Remove</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

@@ -1,0 +1,291 @@
+@import '../../../../styles/themes';
+@import '../../../../styles/variables';
+
+.container-card {
+  & > h4 {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+}
+
+.steps-body {
+  position: relative;
+  padding: 3rem 2rem;
+  width: 93%;
+  margin: auto;
+  margin-bottom: 1.5rem;
+
+  &.has-bg {
+    background: #fff;
+    border-radius: .375rem;
+    box-shadow: 0 2px 12px 0 #dfe3eb;
+  }
+}
+
+.container-card {
+  max-width: 460px;
+  margin: auto;
+}
+
+.button-block {
+  margin-top: 3.5em;
+  margin-bottom: 2em;
+
+  &:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+  .back,
+  .next {
+    width: 48%;
+  }
+  .back {
+    float: left;
+  }
+  .next {
+    float: right;
+  }
+
+  button[disabled] {
+    background: lighten($color-fg, 45%);
+    border-color: lighten($color-fg, 45%);
+
+    &:hover {
+      cursor: initial;
+    }
+  }
+}
+
+.form-control-group + .form-control-group {
+  margin-top: 1rem;
+}
+
+textarea {
+  min-height: 200px;
+}
+
+[nbInput].input-full-width.tags-input {
+  display: inline-block;
+  width: 85%;
+}
+
+.tags-add {
+  float: right;
+  margin-top: .3rem;
+
+  span {
+    margin: 0;
+  }
+}
+
+.width-60 {
+  width: 64%;
+}
+.width-30 {
+  width: 32%;
+}
+.width-50 {
+  width: 48%;
+  display: inline-block;
+  vertical-align: top;
+
+  & + .width-50 {
+    margin-left: 4%;
+  }
+}
+
+.add {
+
+  &:hover {
+    color: $color-fg-highlight;
+    cursor: pointer;
+
+    span {
+      background: $color-fg-highlight;
+    }
+  }
+
+  span {
+    display: inline-block;
+    font-size: 1.5em;
+    text-align: center;
+    margin-right: 1rem;
+    border-radius: 50%;
+    background: $color-fg;
+    color: #fff;
+    width: 35px;
+    line-height: 35px;
+    transition: .25s all;
+  }
+}
+
+.description {
+  margin-bottom: 0;
+  color: $color-fg;
+}
+
+.form-control-group {
+  &.email-wr,
+  &.type-wr {
+    display: inline-block;
+  }
+  &.email-wr {
+    width: 50%;
+    vertical-align: middle;
+
+    input {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-right: 0;
+    }
+  }
+  &.type-wr {
+    width: 50%;
+  }
+}
+
+nb-select {
+  width: 72%;
+  display: inline-block;
+
+  & ::ng-deep {
+    button[nbButton] {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-left: 0;
+    }
+  }
+}
+.user-add {
+  display: inline-block;
+  margin-left: 4%;
+  vertical-align: middle;
+}
+h5 {
+  font-weight: 600;
+}
+
+.users {
+  li {
+    border-top: 1px solid $color-fg-border;
+    border-bottom: 1px solid $color-fg-border;
+    padding: .5em 0;
+
+    & + li {
+      border-top: 0;
+    }
+
+    &:hover {
+      .edit-delete {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+
+  .img,
+  .info {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .img {
+    width: 40px;
+    height: 40px;
+    background-color: $color-fg-border;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    overflow: hidden;
+    float: left;
+  }
+  .artwork {
+    width: 45px;
+    height: 45px;
+    background-color: $color-fg-border;
+    float: right;
+  }
+
+  .info {
+    width: 85%;
+  }
+  .name {
+    color: $color-fg;
+    margin-top: .3em;
+  }
+  .action {
+    color: lighten($color-fg, 60%);
+    margin-left: .4em;
+  }
+  .type {
+    font-size: .9em;
+  }
+
+  .name,
+  .type {
+    margin-left: 50px;
+    margin-bottom: 0;
+  }
+}
+.actions {
+  display: inline-block;
+  width: 15%;
+  vertical-align: middle;
+
+  nb-select {
+    width: auto;
+    min-width: 140px;
+  }
+
+  nb-select ::ng-deep {
+    button.btn-primary {
+      padding: 0.4rem 2rem .4rem .4rem;
+      border-top: 0;
+      box-shadow: none;
+      border-bottom: 0;
+      border-right: 0;
+      border-radius: 0;
+      margin-right: 0.5em;
+    }
+  }
+}
+.edit-delete {
+  display: inline-block;
+  font-size: 1.1em;
+  float: right;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .25s;
+
+  .remove,
+  .edit {
+    cursor: pointer;
+    transition: all .25s;
+  }
+  .remove:hover {
+    color: red;
+  }
+  .edit:hover {
+    color: $color-fg;
+  }
+
+  i {
+    display: inline-block;
+    font-size: 1em;
+    text-align: center;
+    border-radius: 50%;
+    background: #000;
+    color: #fff;
+    width: 30px;
+    line-height: 30px;
+    transition: .25s all;
+    margin-left: .65em;
+
+    &:hover {
+      cursor: pointer;
+      background: $color-fg-highlight;
+    }
+  }
+}

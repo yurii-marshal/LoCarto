@@ -1,0 +1,55 @@
+@import "../../../../styles/custom-tabs";
+@import "../../../../styles/variables";
+@import "../../../../styles/mixins";
+
+h2,
+.description {
+  text-align: center;
+}
+.final-item {
+  background: #fff;
+  box-shadow: 0 2px 12px 0 #dfe3eb;
+  transition: all .45s;
+
+  h5 {
+    padding: 1.5rem 1rem 1.5rem 1rem;
+    outline: none;
+    margin-top: 0;
+    text-align: center;
+    margin-bottom: 4rem;
+
+    &:hover {
+      cursor: pointer;
+      color: $color-fg-highlight;
+    }
+  }
+  .image-block {
+    height: 200px;
+    background-position: center;
+    background-size: cover;
+    background-color: nb-theme(tabs-separator);
+    outline: none;
+    transition: all .25s;
+
+    &:hover {
+      cursor: pointer;
+      opacity: .8;
+    }
+  }
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+.artworks .image-block {
+  background-image: url("../../../../../../assets/images/ic_artwall.svg");
+}
+.artist .image-block {
+  background-image: url("../../../../../../assets/images/ic_profile_2.svg");
+}
+.artwork .image-block {
+  background-image: url("../../../../../../assets/images/ic_artwork.svg");
+}
+.addartwork .image-block {
+  background-image: url("../../../../../../assets/images/ic_addartwork.svg");
+}

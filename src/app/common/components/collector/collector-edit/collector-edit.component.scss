@@ -1,0 +1,11 @@
+@import '../../../../pages/profile/edit-profile/edit-profile.component';
+
+.profile-info {
+  margin-top: 0;
+}
+
+.val-cont /deep/ {
+  .switch-label.vertical .switch {
+    margin-top: -1em !important;
+  }
+}

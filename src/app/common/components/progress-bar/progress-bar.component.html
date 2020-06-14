@@ -1,0 +1,18 @@
+<div class="card">
+  <div class="header-block">
+    {{files?.length}} files uploading
+    <i class="icon-cancel" (click)="close()"></i>
+  </div>
+  <div class="body-block">
+    <ul>
+      <li *ngFor="let file of files">
+        <div class="icon"><i class="icon-doc-inv"></i></div>
+        <p class="name">{{file.name}}</p>
+        <div class="prog">
+          <i class="icon-ok-circled finish" *ngIf="file.progress === 100"></i>
+	        <round-progress [current]="file.progress" [max]="100" [color]="'#000'" [radius]="20" [stroke]="7" *ngIf="file.progress !== 100"></round-progress>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

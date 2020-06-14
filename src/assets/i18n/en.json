@@ -1,0 +1,88 @@
+{
+  "COMMON": {
+    "BUTTONS": {
+      "CHANGE": "Change",
+      "CONFIRM": "Confirm",
+      "SAVE": "Save",
+      "CANCEL": "Cancel",
+      "REMOVE_FOREVER": "Remove forever",
+      "BACK": "Back",
+      "NEXT": "Next",
+      "BROWSE": "Browse",
+      "FIND": "Find",
+      "SEND": "Send",
+      "GENERATE_SET": "Generate set of copies",
+      "DELETE": "Delete"
+    }
+  },
+  "SETTINGS": {
+    "TITLES": {
+      "EMAIL": "E-mail",
+      "CHANGE_PASSWORD": "Change password",
+      "NOTIFICATIONS": "Notifications",
+      "CONFIRM_EMAIL": "Delete role"
+    },
+    "TEXTS": {
+      "PRIMARY_EMAIL": "Primary email (account ID)",
+      "CONFIRM_OLD_PASS": "Confirm your old password",
+      "SET_NEW_PASS": "Set your new password",
+      "PASS_REQUIRED": "Password is required!",
+      "PASS_ERROR": "Password should contains from 6 to 50 characters",
+      "SUBSCRIBE": "Subscribe to Locarto news",
+      "COMMUNICATION": "Communication notification",
+      "EXHIBITION": "Exhibition notification",
+      "TO_CONFIRM": "To confirm change your current e-mail for this profile, <br/>please enter your password.",
+      "EMAIL_CHANGED": "E-mail is changed successfully",
+      "PASS_CHANGED": "Password is changed successfully",
+      "ARE_YOU_SURE": "Are you sure you want remove current role?",
+      "CURATOR": "Curator",
+      "ARTIST": "Artist"
+    },
+    "PLACEHOLDERS": {
+      "OLD_PASS": "Old password",
+      "NEW_PASS": "New password",
+      "ENTER_CUR_PASS": "Enter current password"
+    }
+  },
+  "ADDING_ARTWORK": {
+    "TABS": {
+      "CATEGORY": "Category",
+      "BASIC": "Basic info",
+      "COPIES": "Copies",
+      "LOCATION": "Location",
+      "GALLERY": "Gallery",
+      "EXHIBITION": "Exhibition",
+      "LITERATURE": "Literature"
+    },
+    "TITLES": {
+      "CATEGORY": "Category",
+      "BASIC": "Basic info",
+      "COPIES": "Copies",
+      "LOCATION": "Location",
+      "GALLERY": "Photos & Documents",
+      "EXHIBITION": "Exhibition history",
+      "LITERATURE": "Literature",
+      "ADD_TAGS": "Add tags",
+      "DRAG_DROP": "Drag & Drop"
+    },
+    "TEXTS": {
+      "FILES": "Files here or"
+    }
+  },
+  "ADDING_PROFILE": {
+    "TABS": {
+      "BASIC": "Basic info",
+      "ABOUT_ARTIST": "About artist",
+      "PROFILE_PHOTOS": "Profile photos"
+    },
+    "TITLES": {
+      "BASIC": "Basic info",
+      "ABOUT_ARTIST": "About artist",
+      "ADD_PHOTOS": "Add photos",
+      "GREAT_WORK": "Great work!"
+    }
+  },
+  "ProfileComponent": {
+    "TEXT_ART_PROFESSIONAL": "Short text about art-professional capabilities"
+  }
+}

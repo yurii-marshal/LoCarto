@@ -1,0 +1,61 @@
+<div class="container-block files">
+  <file-drop (onFileDrop)="dropped($event)"
+             (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)"></file-drop>
+  <div class="row" ngxDroppable (drop)="movedFiles($event)">
+
+    <div class="empty-card files-card col-3 in-list" *ngIf="!showMask">
+      <div class="icon files-icon"></div>
+      <p class="desc">Add photos of exhibition</p>
+      <div class="file-container banner-image">
+        <button class="custom-btn custom-btn-primary-filled"><i class="icon-ic_plus"></i> Add photos</button>
+        <input type="file" (change)="photoChange($event)" multiple/>
+      </div>
+    </div>
+
+    <div class="file col-3" *ngFor="let image of filesData; let i = index" [attr.data-item]="image._id" ngxDraggable> <!-- [ngxDraggable]="(i > 0) ? 'true' : ''" -->
+      <div class="box">
+        <div class="box-image">
+          <div [class]="'image-block ' + setClassName(image.name)" [ngStyle]="{'background-image': 'url(' + (image?.url || image?.tempUrl) + ')',
+               'transform': image?.rotation}" [ngClass]="{'need-transform': image?.rotation}"
+               (click)="openGallery(i)">
+          </div>
+          <div class="actions" *ngIf="!viewMode">
+            <div class="remove" title="Delete"
+                 (click)="openModal('', removeModal, 'removeFile', i); $event.stopPropagation()"><i class="icon-trash"></i>
+            </div>
+          </div>
+        </div>
+        <p class="name">{{image.name}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="showMask" class="empty-card files-card">
+    <div class="icon files-icon"></div>
+    <h5 class="status-title">No photos yet</h5>
+    <p class="desc">Add photos of exhibition</p>
+    <div class="file-container banner-image">
+      <button class="custom-btn custom-btn-primary-filled"><i class="icon-ic_plus"></i> Add photos</button>
+      <input type="file" (change)="photoChange($event)" multiple/>
+    </div>
+  </div>
+
+  <nb-spinner *ngIf="showSnipper" [message]="''"></nb-spinner>
+</div>
+<ngx-image-gallery *ngIf="filesUrl" [images]="filesUrl" [conf]="galConf"></ngx-image-gallery>
+
+<ng-template #removeModal let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Delete {{currentDelete.title}}</nb-card-header>
+    <nb-card-body class="delete-modal">
+      <p class="description">
+        {{currentDelete.question}}
+      </p>
+      <div class="icon"></div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button class="custom-btn custom-btn-primary-empty" (click)="ref.close()">Cancel</button>
+      <button class="custom-btn custom-btn-primary-filled" (click)="deleteAction(currentDelete.type, ref, currentDelete)">Delete</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

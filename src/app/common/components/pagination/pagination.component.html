@@ -1,0 +1,36 @@
+<ul class="pagination">
+  <li class="prev">
+    <a *ngIf="routerUrl" [routerLink]="routerUrl" [queryParams]="{ page: (curPage === 1) ? 1 : (curPage - 1)}"><i class="icon-left"></i></a>
+    <a *ngIf="!routerUrl" (click)="changePage((curPage === 1) ? 1 : (curPage - 1))"><i class="icon-left"></i></a>
+  </li>
+
+  <li *ngIf="curPage > 4">
+    <a *ngIf="routerUrl" [routerLink]="routerUrl" [queryParams]="{ page: 1}">1</a>
+    <a *ngIf="!routerUrl" (click)="changePage(1)">1</a>
+  </li>
+  <li *ngIf="curPage > 4" class="points">...</li>
+
+  <li *ngFor="let page of beforeCurrent">
+    <a *ngIf="routerUrl" [routerLink]="routerUrl" [queryParams]="{ page: page}">{{page}}</a>
+    <a *ngIf="!routerUrl" (click)="changePage(page)">{{page}}</a>
+  </li>
+
+  <li class="active"><a>{{curPage}}</a></li>
+
+  <li *ngFor="let page of afterCurrent">
+    <a *ngIf="routerUrl" [routerLink]="routerUrl" [queryParams]="{ page: page}">{{page}}</a>
+    <a *ngIf="!routerUrl" (click)="changePage(page)">{{page}}</a>
+  </li>
+
+  <li *ngIf="curPage + 3 < max" class="points">...</li>
+
+  <li *ngIf="curPage + 3 < max">
+    <a *ngIf="routerUrl" [routerLink]="routerUrl" [queryParams]="{ page: max}">{{max}}</a>
+    <a *ngIf="!routerUrl" (click)="changePage(max)">{{max}}</a>
+  </li>
+
+  <li class="next">
+    <a *ngIf="routerUrl" [routerLink]="routerUrl" [queryParams]="{ page: (curPage === max) ? max : curPage + 1}"><i class="icon-right"></i></a>
+    <a *ngIf="!routerUrl" (click)="changePage((curPage === max) ? max : (curPage + 1))"><i class="icon-right"></i></a>
+  </li>
+</ul>

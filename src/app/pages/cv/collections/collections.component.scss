@@ -1,0 +1,22 @@
+.flex-centered {
+  margin: auto;
+}
+nb-card-body {
+  display: flex;
+  min-height: 500px;
+}
+
+.title {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.sub-title {
+  text-align: center;
+  display: block;
+  margin-bottom: 3rem;
+}
+
+.custom-btn {
+  margin-bottom: 2rem;
+}

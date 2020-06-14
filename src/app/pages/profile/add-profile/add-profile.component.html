@@ -1,0 +1,49 @@
+ <div class="steps">
+    <ul class="steps-header">
+      <li *ngFor="let tab of tabs; let i = index"
+          [ngClass]="{'active': activeTab === i + 1, 'prev': activeTab > i + 1, 'next': activeTab < i + 1 }"
+          (click)="setActiveTab(i + 1, true)">
+        <p class="title"><span>{{tab.title | translate}}</span></p>
+      </li>
+    </ul>
+
+    <div class="steps-body">
+      <!-- ----------- 1 step --------- -->
+      <div class="container-card" [hidden]="activeTab !== 1">
+        <ngx-artist-basic *ngIf="profileType === 'artist'"
+                          [newSet]="fromNew" [tab]="activeTab" [getForm]="needGetData"
+                          (formData)="formPro = $event" (socialsData)="socialsUpd($event)"
+                          (changeTab)="setActiveTab($event)"></ngx-artist-basic>
+        <ngx-collector-add-basic *ngIf="profileType === 'collector'" [tab]="activeTab"
+                                 [form]="collectorForm" (changeTab)="setActiveTab($event)"
+                                 (dataToSend)="sendData('COLLECTOR', $event)"></ngx-collector-add-basic>
+      </div>
+      <!-- ----------- END 1 step ----- -->
+
+
+      <!-- ----------- 2 step --------- -->
+      <div class="container-card" [hidden]="activeTab !== 2" *ngIf="activeTab >= 2">
+        <ngx-artist-add-about *ngIf="profileType === 'artist'"
+                              [type]="formPro.value.typePr" [tab]="activeTab" [getForm]="needGetData"
+                              (formData)="formProAbout = $event" (dataToSend)="sendData('ARTIST', $event)"
+                              (changeTab)="setActiveTab($event)"></ngx-artist-add-about>
+      </div>
+      <!-- ----------- END 2 step ----- -->
+
+
+      <!-- ----------- 3 step --------- -->
+      <div class="container-card" [hidden]="activeTab !== 3" *ngIf="false">
+        <!-- TODO currently hidden -->
+      </div>
+      <!-- --- END step --------------- -->
+
+
+      <!-- ----- final result --------- -->
+      <div *ngIf="finalResult" class="final">
+        <ngx-profile-final [id]="createdId"></ngx-profile-final>
+      </div>
+      <!-- ----- END final result ----- -->
+
+      <nb-spinner *ngIf="showSnipper" [message]="''"></nb-spinner>
+    </div>
+  </div>

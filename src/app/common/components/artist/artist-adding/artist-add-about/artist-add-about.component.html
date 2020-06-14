@@ -1,0 +1,140 @@
+<form #formProfile="ngForm" aria-labelledby="title">
+  <h4 class="title-tab">{{'ADDING_PROFILE.TITLES.ABOUT_ARTIST' | translate}}</h4>
+
+  <!-- ------------------ ARTIST ------------------- -->
+  <div *ngIf="typePro !== 'curator'">
+    <div class="form-control-group">
+      <input nbInput fullWidth type="text" #countryBirth="ngModel" name="countryBirth" placeholder="City and country of birth"
+             [(ngModel)]="addresses.birthAdd"
+             ngx-google-places-autocomplete  (onAddressChange)="handleAddressChange($event, 'birth')"
+             [status]="countryBirth.dirty ? (countryBirth.invalid  ? 'danger' : 'success') : ''"
+             [attr.aria-invalid]="countryBirth.invalid && countryBirth.touched ? true : null">
+      <input nbInput type="hidden" [(ngModel)]="addresses.birthCity" #cityBirth="ngModel" name="cityBirth">
+    </div>
+
+    <div class="form-control-group birthday dynamic-wrapper">
+      <input nbInput placeholder="Date of birth" name="birthDate" [max]="todayDate"
+             [(ngModel)]="birthDateAll" #birthDate="ngModel" [owlDateTime]="dt1">
+      <span [owlDateTimeTrigger]="dt1"><i class="fa fa-calendar"></i></span>
+      <owl-date-time #dt1 [pickerType]="'calendar'" [startView]="'multi-years'"></owl-date-time>
+    </div>
+
+    <div class="form-control-group">
+      <textarea nbInput fullWidth ngModel #biography="ngModel" name="biography" placeholder="Biography"></textarea>
+    </div>
+  </div>
+  <!-- ------------------ END ARTIST ------------------- -->
+
+
+  <!-- ------------------ CURATOR ------------------- -->
+  <div *ngIf="typePro === 'curator'">
+    <div class="form-control-group">
+      <input nbInput fullWidth type="text" #countryBirth="ngModel" name="countryBirth" placeholder="City and country of birth"
+             [(ngModel)]="addresses.birthAdd"
+             ngx-google-places-autocomplete  (onAddressChange)="handleAddressChange($event, 'birth')">
+      <input nbInput type="hidden" [(ngModel)]="addresses.birthCity" #cityBirth="ngModel" name="cityBirth">
+    </div>
+
+    <div class="form-control-group birthday dynamic-wrapper">
+      <input nbInput placeholder="Date of birth" [max]="todayDate" name="birthDate" [(ngModel)]="birthDateAll" #birthDate="ngModel" [owlDateTime]="dt3">
+      <span [owlDateTimeTrigger]="dt3"><i class="fa fa-calendar"></i></span>
+      <owl-date-time #dt3 [pickerType]="'calendar'" [startView]="'multi-years'"></owl-date-time>
+    </div>
+
+    <div class="form-control-group add death-info" *ngIf="!deathInfo" (click)="addItem('death')">
+      <span>+</span>Add death info
+    </div>
+
+    <hr *ngIf="deathInfo">
+    <div class="death-info-block form-control-group" *ngIf="deathInfo">
+      <div class="form-control-group">
+        <input nbInput fullWidth type="text" #countryDeath="ngModel" name="countryDeath" placeholder="City and country of death"
+               [(ngModel)]="addresses.deathAdd"
+               ngx-google-places-autocomplete  (onAddressChange)="handleAddressChange($event, 'death')">
+        <input nbInput type="hidden" [(ngModel)]="addresses.deathCity" #cityDeath="ngModel" name="cityDeath">
+      </div>
+
+      <div class="form-control-group birthday dynamic-wrapper">
+        <input nbInput placeholder="Date of death" [max]="todayDate" name="deathDate" [(ngModel)]="deathDateAll" #deathDate="ngModel"
+               [owlDateTime]="dt2" [min]="formProfile.value.birthDate">
+        <span [owlDateTimeTrigger]="dt2"><i class="fa fa-calendar"></i></span>
+        <owl-date-time #dt2 [pickerType]="'calendar'" [startView]="'multi-years'"></owl-date-time>
+      </div>
+
+      <div class="form-control-group add death-info-hide" (click)="hideItem()">
+        <span>+</span>Hide death info
+      </div>
+    </div>
+
+    <div class="form-control-group">
+      <textarea nbInput fullWidth ngModel #biography="ngModel" name="biography" placeholder="Biography"></textarea>
+    </div>
+
+
+	  <ng-template *ngIf="false"> <!-- TODO temporary hidden -->
+    <hr>
+
+    <div class="education">
+      <div class="item" *ngFor="let education of educationsCu; let i = index;">
+        <div class="form-control-group">
+          <input nbInput fullWidth [(ngModel)]="educationsCu[i].university"
+                 name="university{{i}}" placeholder="University or courses names">
+        </div>
+
+        <div class="form-control-group date-left year dynamic-wrapper">
+          <input nbInput placeholder="Start year" name="startDate{{i}}" [(ngModel)]="selectedYearStart[i]" #startDate="ngModel"
+                 [owlDateTime]="dtsdcur" readonly [max]="todayDate" ngxDateView [needChange]="educationYearChanges[i][0]">
+          <span [owlDateTimeTrigger]="dtsdcur"><i class="fa fa-calendar"></i></span>
+          <owl-date-time #dtsdcur [pickerType]="'calendar'" [startView]="'multi-years'"
+                         (yearSelected)="selectDate(dtsdcur, 'selectedYearStart', i, $event)"></owl-date-time>
+
+        </div>
+
+        <div class="form-control-group date-right year dynamic-wrapper">
+          <input nbInput placeholder="Graduated year" name="endDate{{i}}" [(ngModel)]="selectedYearEnd[i]" #endDate="ngModel"
+                 [owlDateTime]="dtedcur" [min]="selectedYearStart[i]" [max]="todayDate" readonly ngxDateView [needChange]="educationYearChanges[i][1]">
+          <span [owlDateTimeTrigger]="dtedcur"><i class="fa fa-calendar"></i></span>
+          <owl-date-time #dtedcur [pickerType]="'calendar'" [startView]="'multi-years'"
+                         (yearSelected)="selectDate(dtedcur, 'selectedYearEnd', i, $event)"></owl-date-time>
+        </div>
+
+        <i class="icon-trash remove-item" (click)="removeItem(i, 'educationsCu')"></i>
+      </div>
+    </div>
+
+    <div class="add" (click)="addItem('education', 'educationsCu')">
+      <span>+</span>Add education
+    </div>
+
+    <div class="grant" *ngIf="grantCu && grantCu.length > 0">
+      <div class="item" *ngFor="let education of grantCu; let i = index;">
+        <div class="form-control-group name">
+          <input nbInput [(ngModel)]="grantCu[i].name"
+                 name="grantName{{i}}" placeholder="Grant name">
+        </div>
+
+        <div class="form-control-group year dynamic-wrapper">
+          <input nbInput placeholder="Year" name="grantYear{{i}}" [(ngModel)]="selectedYear[i]"
+                 [owlDateTime]="dtgrcur" [max]="todayDate" readonly ngxDateView [needChange]="grantYearChanges[i]">
+          <span [owlDateTimeTrigger]="dtgrcur"><i class="fa fa-calendar"></i></span>
+          <owl-date-time #dtgrcur [pickerType]="'calendar'" [startView]="'multi-years'"
+                         (yearSelected)="selectDate(dtgrcur, 'selectedYear', i, $event)"></owl-date-time>
+        </div>
+
+        <i class="icon-trash remove-item" (click)="removeItem(i, 'grantCu')"></i>
+      </div>
+    </div>
+
+    <div class="add" (click)="addItem('grant', 'grantCu')">
+      <span>+</span>Add grant
+    </div>
+    </ng-template><!-- TODO END temporary hidden -->
+
+  </div>
+
+  <div class="button-block">
+    <button class="custom-btn custom-btn-primary-empty back" (click)="setActiveTab(activeTab - 1)">Back</button>
+    <button class="custom-btn custom-btn-primary-filled next" (click)="sendData()">Next</button>
+  </div>
+  <!-- ------------------ END CURATOR ------------------- -->
+</form>

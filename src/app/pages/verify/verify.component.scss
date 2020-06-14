@@ -1,0 +1,14 @@
+@import "../../common/styles/variables";
+
+.success {
+  color: $color-fg-highlight;
+}
+.error {
+  color: red;
+}
+.already {
+  color: green;
+}
+/deep/ .nb-theme-default nb-card-header {
+  display: none;
+}

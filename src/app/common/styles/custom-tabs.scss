@@ -1,0 +1,301 @@
+@import '../styles/themes';
+@import '../styles/variables';
+@import '../styles/mixins';
+
+@include nb-install-component() {
+
+  nb-tabset.full-width ::ng-deep {
+    & > ul {
+      max-width: 700px;
+      margin: auto;
+      margin-bottom: 1em;
+
+      li {
+        flex: 1 0 auto;
+
+        &.active span {
+          opacity: 1;
+          visibility: visible;
+        }
+
+        span {
+          opacity: 0;
+          visibility: hidden;
+          margin: auto;
+          background: nb-theme(color-fg-heading);
+          color: #fff;
+          position: relative;
+          padding: .3em .5em;
+          border-radius: 7px;
+          min-width: 140px;
+
+          &::after {
+            content: '';
+            width: 0;
+            height: 0;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -7px;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 7px solid nb-theme(color-fg-heading);
+          }
+        }
+
+        &:first-child a::before {
+          display: none;
+        }
+
+        a {
+          position: relative;
+          padding-top: 0;
+          padding-bottom: 2em;
+          color: nb-theme(color-fg-heading);
+
+          &::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 20px;
+            height: 20px;
+            display: block;
+            border: 6px solid nb-theme(color-fg-heading);
+            box-sizing: border-box;
+            transform: translateX(-50%);
+            border-radius: 50%;
+          }
+
+          &::before {
+            content: '';
+            display: block;
+            position: absolute;
+            background: nb-theme(color-fg-heading);
+            width: 93%;
+            height: 2px;
+            border-radius: 3px;
+            bottom: 9px;
+            left: -47%;
+          }
+        }
+
+        &:last-child a::before {
+          width: 90%;
+          left: -45%;
+        }
+
+        &.active + li,
+        &.active + li + li,
+        &.active + li + li + li,
+        &.active + li + li + li + li {
+          a {
+            color: nb-theme(color-fg);
+
+            &::after {
+              border: 1px solid nb-theme(color-fg);
+            }
+
+            &::before {
+              background: nb-theme(color-fg);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.steps ::ng-deep {
+  position: relative;
+
+  .container-card {
+    max-width: 460px;
+    margin: auto;
+
+    .tab-title {
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+  }
+
+  .steps-header {
+    list-style: none;
+    padding-left: 0;
+    max-width: 700px;
+    margin: auto;
+    margin-bottom: 1em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    li {
+      flex: 1 0 auto;
+
+      &.active p {
+
+        &:before {
+          background: $color-fg;
+        }
+        &:after {
+          border-color: $color-fg;
+        }
+        span {
+          background: $color-fg;
+
+          &::after {
+            border-top: 7px solid $color-fg;
+          }
+        }
+      }
+
+      &.prev p {
+        &:before {
+          background: $color-fg;
+        }
+        &:after {
+          content: '\f06d';
+          font-family: fontello;
+          color: $color-fg;
+          font-size: 22px;
+          border: 0;
+          line-height: 20px;
+        }
+        &:hover {
+          cursor: pointer;
+        }
+        span {
+          background: $color-fg;
+
+          &::after {
+            border-top: 7px solid $color-fg;
+          }
+        }
+      }
+
+      &.next {
+        &:hover p {
+          &:after {
+            cursor: pointer;
+            border-color: $color-fg-highlight;
+          }
+        }
+      }
+
+      &:first-child p::before {
+        display: none;
+      }
+
+      p {
+        min-width: 140px;
+        margin: auto;
+        position: relative;
+        padding-bottom: 2em;
+        text-align: center;
+
+        span {
+          background: darken($color-fg-border, 15%);
+          color: #fff;
+          position: relative;
+          padding: .3em .5em;
+          border-radius: 7px;
+          display: block;
+          max-width: 90%;
+          margin: auto;
+
+          &:after {
+            content: '';
+            width: 0;
+            height: 0;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -7px;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 7px solid darken($color-fg-border, 15%);
+          }
+        }
+
+
+
+        &::before {
+          content: '';
+          display: block;
+          position: absolute;
+          background: lighten($color-fg, 75%);
+          width: calc(100% - 20px);
+          height: 2px;
+          border-radius: 3px;
+          bottom: 9px;
+          left: calc(-50% + 10px);
+          transition: all .25s;
+        }
+
+        &::after {
+          content: '';
+          transition: all .25s;
+          position: absolute;
+          left: 50%;
+          bottom: 0;
+          width: 20px;
+          height: 20px;
+          display: block;
+          border: 6px solid lighten($color-fg, 75%);
+          box-sizing: border-box;
+          transform: translateX(-50%);
+          border-radius: 50%;
+        }
+      }
+
+      &.next {
+        p {
+
+          &::after {
+            border: 1px solid lighten($color-fg, 75%);
+          }
+
+          &::before {
+            background: lighten($color-fg, 75%);
+          }
+        }
+      }
+    }
+  }
+
+  .steps-body {
+    background: #fff;
+    margin-bottom: 1.5rem;
+    border-radius: .375rem;
+    box-shadow: 0 2px 12px 0 #dfe3eb;
+    padding: 3rem 2rem;
+  }
+
+  .button-block {
+    &:after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+    .back,
+    .next {
+      width: 48%;
+    }
+    .back {
+      float: left;
+    }
+    .next {
+      float: right;
+    }
+
+    button[disabled] {
+      background: lighten($color-fg, 45%);
+      border-color: lighten($color-fg, 45%);
+
+      &:hover {
+        cursor: initial;
+      }
+    }
+  }
+}

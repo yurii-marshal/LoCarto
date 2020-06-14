@@ -1,0 +1,64 @@
+<div class="search-block">
+  <form #searchForm="ngForm">
+    <div class="input-block">
+      <input nbInput fullWidth type="text" ngModel #search="ngModel" name="search">
+      <button class="search-btn" (click)="send(searchForm)"><i class="icon-search"></i></button>
+    </div>
+    <div class="add clear" *ngIf="searchForm.value.search" (click)="send(searchForm, true)">
+      <span class="icon-cancel"></span>Clear search
+    </div>
+  </form>
+
+</div>
+
+
+<div class="container-block">
+
+  <ul class="sketches-list row">
+    <li class="col-4 empty-card sketches-card" *ngIf="sketches && sketches.length > 0">
+      <div class="wrap">
+        <div class="icon sketches-icon sketches-icon-grid"></div>
+        <button class="custom-btn custom-btn-primary-filled" [routerLink]="'/pages/sketch'"><i class="icon-ic_plus"></i> Add Sketchbook</button>
+      </div>
+    </li>
+    <li *ngFor="let sketch of sketches; let v = index" class="col-4" [ngClass]="{'selected': sketch.selected}">
+      <div class="box">
+        <div class="image-block" [ngStyle]="{'background-image': 'url(' + sketch.image + ')'}">
+          <div class="more" [ngClass]="{'cancel': sketch.editMode}" *ngIf="!viewMode">
+            <div class="remove" (click)="openModal(removeModal, sketch)" title="Delete"><i class="icon-trash"></i></div>
+          </div>
+          <button class="custom-btn custom-btn-primary-empty" *ngIf="!viewMode" [routerLink]="'/pages/sketch/' + sketch._id">View sketch</button>
+        </div>
+        <div class="info">
+          <h5>{{sketch.title}}</h5>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+  <div *ngIf="showMask" class="empty-card sketches-card">
+    <div class="icon sketches-icon"></div>
+    <h5 class="status-title">No sketches yet</h5>
+    <p class="desc">Digitalize your sketchbooks <br> by using photos or files</p>
+    <button class="custom-btn custom-btn-primary-filled" [routerLink]="'/pages/sketch'"><i class="icon-ic_plus"></i> Add Sketchbook</button>
+  </div>
+
+  <nb-spinner *ngIf="showSnipper" [message]="''"></nb-spinner>
+</div>
+
+<ng-template #removeModal let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Delete sketch</nb-card-header>
+    <nb-card-body class="delete-modal">
+      <p class="description">
+        All files which has this sketch will be unlinked with this tag.
+        <br> Do you really want delete this sketch?
+      </p>
+      <div class="icon"></div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button class="custom-btn custom-btn-primary-empty" (click)="ref.close()">Cancel</button>
+      <button class="custom-btn custom-btn-primary-filled" (click)="deleteSketch(ref)">Delete</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

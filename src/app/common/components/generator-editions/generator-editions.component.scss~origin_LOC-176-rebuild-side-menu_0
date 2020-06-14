@@ -1,0 +1,270 @@
+@import '../../styles/themes';
+@import '../../styles/variables';
+@import '~bootstrap/scss/mixins/breakpoints';
+@import '~@nebular/theme/styles/global/breakpoints';
+
+.generator {
+  position: relative;
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+
+  &::before {
+    content: '';
+    display: block;
+    border: 1px dashed $color-fg-highlight;
+    border-radius: 10px;
+    left: 0;
+    top: 0;
+    transform: scale(1.5, 1.15);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+  }
+}
+.generator .next {
+  width: 100%;
+}
+
+.form-control-group + .form-control-group {
+  margin-top: 1rem;
+}
+
+.radios {
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+.price {
+  margin-top: 1rem;
+}
+
+.measurement {
+  .right {
+    text-align: right;
+  }
+
+  nb-radio-group {
+    margin-top: .5rem;
+    display: block;
+  }
+
+  nb-radio-group nb-radio:last-child::ng-deep label {
+    padding-right: 0;
+  }
+}
+
+nb-radio-group {
+
+  nb-radio {
+    display: inline-block;
+  }
+}
+
+label {
+  display: block;
+}
+
+
+[class*='width'] {
+  display: inline-block;
+}
+.width-60 {
+  width: 64%;
+}
+.width-30 {
+  width: 32%;
+}
+.width-50 {
+  width: 48%;
+  display: inline-block;
+  vertical-align: top;
+
+  & + .width-50 {
+    margin-left: 4%;
+  }
+}
+.form-control-group {
+  position: relative;
+}
+.form-control-group {
+  position: relative;
+
+  &:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+  .left {
+    float: left;
+  }
+  .right {
+    float: right;
+  }
+  .right,
+  .left {
+    width: 48%;
+
+    input {
+      width: 100%;
+    }
+  }
+
+  &.half {
+    width: 48%;
+
+    input {
+      width: 100%;
+    }
+  }
+}
+.number {
+  position: absolute;
+  border: 1px solid $color-fg-highlight;
+  border-radius: 10px;
+  padding: .1rem 0;
+  width: 3rem;
+  text-align: center;
+  left: -4rem;
+  top: -3px;
+  color: $color-fg;
+  background: #fff;
+}
+.descr {
+  color: $color-fg;
+  margin-bottom: 0;
+  vertical-align: bottom;
+  margin-top: .7rem;
+}
+.button-block {
+  margin-top: 4rem;
+}
+.ordinary + .ordinary {
+  margin-top: 1rem;
+}
+.info {
+  position: absolute;
+  right: -0.5rem;
+  top: 4px;
+  line-height: 20px;
+  width: 20px;
+  text-align: center;
+  color: #fff;
+  border-radius: 50%;
+  background: $color-fg-highlight;
+  transition: all .25s;
+
+  &:hover {
+    cursor: pointer;
+    background: $color-fg;
+  }
+}
+
+.all-editions > div + div {
+  margin-top: 3rem;
+}
+.proofs.ordinary {
+  box-shadow: 0 2px 12px 0 #dfe3eb;
+  border-radius: 7px;
+  position: relative;
+
+  .remove-item {
+    top: .3em;
+    right: .3em;
+    transform: none;
+  }
+
+  & + .proofs.ordinary {
+    margin-top: 1em;
+  }
+}
+.types-editions {
+
+  .type {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+
+    li {
+      position: relative;
+      display: inline-block;
+
+      & + li {
+        margin-left: .7em;
+      }
+    }
+  }
+
+  h5 {
+    padding: 0;
+    margin-bottom: .5em;
+    border-bottom: 0;
+    font-weight: 700;
+    font-size: 1.1em;
+  }
+
+  .number {
+    position: relative;
+    left: 0;
+    top: 0;
+  }
+
+  & > div {
+    border-top: 1px solid $color-fg-border;
+    padding: 1em 1.5em;
+  }
+}
+.proofs,
+.ordinary {
+
+  .info-copie {
+    position: relative;
+    padding: 1em 1.5em;
+    color: $color-fg;
+  }
+
+  .info-copie p {
+    margin-bottom: .3rem;
+  }
+
+  .remove-item {
+    right: 0;
+    top: 50%;
+    position: absolute;
+    transform: translateY(-50%);
+
+    &:hover {
+      color: red;
+    }
+  }
+}
+
+.remove-item {
+  position: absolute;
+  right: -38px;
+  top: 5px;
+  color: lighten($color-fg, 65%);
+  transition: .25s all;
+  font-size: 25px;
+  z-index: 5;
+
+  &:hover {
+    cursor: pointer;
+    color: red;
+  }
+}
+
+.error {
+  color: red;
+  margin-top: .5rem;
+  text-align: center;
+  font-size: 1.2em;
+  margin-bottom: 0;
+}
+
+button[disabled] {
+  background: lighten($color-fg, 45%);
+  border-color: lighten($color-fg, 45%);
+
+  &:hover {
+    cursor: initial;
+  }
+}

@@ -1,0 +1,14 @@
+<label>Phone</label>
+
+<input type="text" [pattern]="phonePattern" [maxlength]="15"
+       [(ngModel)]="phoneValue"
+       ng2TelInput nbInput fullWidth name="phone" #phone="ngModel"
+       [status]="phone.dirty ? (phone.invalid  ? 'danger' : 'success') : ''"
+       (intlTelInputObject)="initTelInputObject($event)"
+       (countryChange)="onCountryChange($event)"/>
+
+<ng-container *ngIf="!phone.valid && !phone.pristine && !phone.untouched">
+  <p *ngIf="phone.errors.pattern" class="error-message">
+    Invalid phone number
+  </p>
+</ng-container>

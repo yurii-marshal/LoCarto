@@ -1,0 +1,57 @@
+<h1 id="title" class="title">Create an account</h1>
+
+<nb-alert *ngIf="showMessages?.error && errors?.length" outline="danger" role="alert">
+  <p class="alert-title"><b>Oh snap!</b></p>
+  <ul class="alert-message-list">
+    <li *ngFor="let error of errors" class="alert-message">{{ error }}</li>
+  </ul>
+</nb-alert>
+
+<nb-alert *ngIf="showMessages?.success" outline="success" role="alert">
+  <p class="alert-title"><b>Congratulations!</b> <br/>Check your Email for verification.</p>
+  <ul class="alert-message-list">
+    <li *ngFor="let message of messages" class="alert-message">{{ message }}</li>
+  </ul>
+</nb-alert>
+
+<form (ngSubmit)="register(form)" #form="ngForm" aria-labelledby="title">
+  <div class="form-control-group" *ngIf="!showMessages?.success">
+    <input nbInput
+           [(ngModel)]="user.email"
+           #email="ngModel"
+           id="input-email"
+           name="email"
+           pattern=".+@.+..+"
+           placeholder="Email"
+           fullWidth
+           [status]="email.dirty ? (email.invalid  ? 'danger' : 'success') : ''"
+           required="true"
+           [attr.aria-invalid]="email.invalid && email.touched ? true : null">
+    <ng-container *ngIf="email.invalid && email.touched">
+      <p class="error-message" *ngIf="email.errors?.required">
+        Email is required!
+      </p>
+      <p class="error-message" *ngIf="email.errors?.pattern">
+        Email should be the real one!
+      </p>
+    </ng-container>
+  </div>
+
+  <div class="form-control-group accept-group" *ngIf="!showMessages?.success">
+    <nb-checkbox name="terms" #terms="ngModel" [(ngModel)]="user.terms" required="true" [status]="(terms && terms.invalid) ? 'danger' : 'success'">
+      Agree to <a href="#" target="_blank"><strong>Terms & Conditions</strong></a>
+    </nb-checkbox>
+  </div>
+
+  <button class="custom-btn custom-btn-primary-empty" *ngIf="!showMessages?.success" [disabled]="!form.valid"
+          [class.btn-pulse]="submitted">
+    Register
+  </button>
+
+  <nb-spinner *ngIf="showSnipper" [message]="''"></nb-spinner>
+
+  <section class="another-action" aria-label="Sign in">
+    Already have an account? <a class="text-link" [routerLink]="'/auth/sign-in'">Log in</a>
+  </section>
+</form>
+

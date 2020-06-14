@@ -1,0 +1,137 @@
+<section class="logo-container">
+  <span class="part-black">LOC</span>
+  <span class="part-brown">ART</span>
+  <span class="part-black">O</span>
+</section>
+
+<nb-tabset (changeTab)="changeTab($event)">
+  <nb-tab tabTitle="Register" [active]="tabTitle === 'Register'">
+    <div class="chart-container">
+      <form (ngSubmit)="register(regform)" #regform="ngForm" aria-labelledby="register-title">
+        <div class="form-control-group" *ngIf="!showMessages.success">
+          <label for="register-input-email">Email address</label>
+          <input nbInput
+                 [(ngModel)]="userRegistration.email"
+                 #email="ngModel"
+                 id="register-input-email"
+                 name="email"
+                 pattern=".+@.+..+"
+                 placeholder="example@gmail.com"
+                 fullWidth autocomplete="off"
+                 [status]="email.dirty ? (email.invalid  ? 'danger' : 'success') : ''"
+                 required="true"
+                 [attr.aria-invalid]="email.invalid && email.touched ? true : null">
+          <!--<ng-container *ngIf="email.invalid && email.touched">-->
+            <!--<p class="error-message" *ngIf="email.errors?.required && !showMessages?.error">-->
+              <!--Email is required!-->
+            <!--</p>-->
+            <!--<p class="error-message" *ngIf="email.errors?.pattern">-->
+              <!--Please enter a valid email-->
+            <!--</p>-->
+          <!--</ng-container>-->
+          <nb-alert *ngIf="showMessages?.error && errors?.length"
+                    outline="danger" role="alert">
+            <ul class="alert-message-list">
+              <li *ngFor="let error of errors" class="alert-message">{{ error }}</li>
+            </ul>
+          </nb-alert>
+        </div>
+
+        <nb-alert *ngIf="showMessages.success" outline="success" role="alert">
+          <p class="alert-title"><b>Congratulations!</b> <br/>Check your Email for verification.</p>
+          <ul class="alert-message-list">
+            <li *ngFor="let message of messages" class="alert-message">{{ message }}</li>
+          </ul>
+        </nb-alert>
+
+        <div class="send-btn-container">
+          <button class="custom-btn custom-btn-primary" *ngIf="!showMessages?.success" [class.btn-pulse]="submitted">
+            Register
+          </button>
+        </div>
+
+        <nb-spinner *ngIf="showSnipper" [message]="''"></nb-spinner>
+      </form>
+    </div>
+  </nb-tab>
+  <nb-tab tabTitle="Sign In" [lazyLoad]="true" [active]="tabTitle === 'Sign In'">
+    <div class="chart-container">
+      <form (ngSubmit)="login(loginform)" #loginform="ngForm" aria-labelledby="login-title">
+        <input type="text" style="display: none"/>
+        <div class="form-control-group">
+          <label class="label" for="login-input-email">Email address</label>
+          <input nbInput
+                 fullWidth autocomplete="off"
+                 [(ngModel)]="userLogin.email"
+                 #email="ngModel"
+                 name="email"
+                 id="login-input-email"
+                 pattern=".+@.+\..+"
+                 placeholder="example@gmail.com"
+                 [status]="email.dirty ? (email.invalid  ? 'danger' : 'success') : ''"
+                 [required]="true"
+                 [attr.aria-invalid]="email.invalid && email.touched ? true : null">
+          <ng-container *ngIf="email.invalid && email.touched">
+            <p class="error-message" *ngIf="email.errors?.required">
+              Email is required!
+            </p>
+            <p class="error-message" *ngIf="email.errors?.pattern">
+              Please enter a valid email
+            </p>
+          </ng-container>
+        </div>
+
+        <div class="form-control-group">
+          <label class="label" for="login-input-password">Password</label>
+          <input nbInput
+                 fullWidth
+                 [(ngModel)]="userLogin.password"
+                 #password="ngModel"
+                 name="password"
+                 type="password"
+                 id="login-input-password"
+                 placeholder="Password"
+                 [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : ''"
+                 [required]="true"
+                 [minlength]="6"
+                 [maxlength]="50"
+                 [attr.aria-invalid]="password.invalid && password.touched ? true : null">
+          <ng-container *ngIf="password.invalid && password.touched ">
+            <p class="error-message" *ngIf="password.errors?.required">
+              Password is required!
+            </p>
+            <p class="error-message" *ngIf="password.errors?.minlength || password.errors?.maxlength">
+              Password should contains from 6 to 50 characters
+            </p>
+          </ng-container>
+
+          <nb-alert *ngIf="showMessages?.error && errors?.length" outline="danger" role="alert">
+            <ul class="alert-message-list">
+              <li *ngFor="let error of errors" class="alert-message">{{ error }}</li>
+            </ul>
+          </nb-alert>
+
+          <nb-alert *ngIf="showMessages?.success && messages?.length && !submitted" outline="success" role="alert">
+            <ul class="alert-message-list">
+              <li *ngFor="let message of messages" class="alert-message">{{ message }}</li>
+            </ul>
+          </nb-alert>
+        </div>
+
+        <div class="form-control-group accept-group">
+          <a class="forgot-password" routerLink="../request-password">Forgot password?</a>
+        </div>
+
+        <nb-spinner *ngIf="showSnipper" [message]="''"></nb-spinner>
+
+        <div class="send-btn-container">
+          <button [disabled]="submitted || !loginform.valid"
+                  [class.btn-pulse]="submitted"
+                  class="custom-btn custom-btn-primary">
+            Login
+          </button>
+        </div>
+      </form>
+    </div>
+  </nb-tab>
+</nb-tabset>
